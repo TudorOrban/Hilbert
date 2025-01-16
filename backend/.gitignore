@@ -38,4 +38,4 @@ docker-compose.dev.yml
 docker-compose.prod.yml
 
 ### Config ###
-src/resources/application.properties
+src/main/resources/application.properties
