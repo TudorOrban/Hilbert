@@ -1,5 +1,6 @@
 package com.hilbert.core.user.controller;
 
+import com.hilbert.core.user.dto.CreateUserDto;
 import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -41,5 +42,27 @@ public class UserControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(Objects.requireNonNull(response.getBody()).getUsername()).isEqualTo(username);
         assertThat(response.getBody().getEmail()).isEqualTo(userDto.getEmail());
+    }
+
+    @Test
+    public void whenValidCreateUserDto_thenUserShouldBeCreated() {
+        // Arrange
+        String username = "testuser";
+        String email = "test@example.com";
+        CreateUserDto userDto = new CreateUserDto(username, "test@example.com", "password");
+        UserDataDto userDataDto = new UserDataDto();
+        userDataDto.setUsername(username);
+        userDataDto.setEmail(email);
+
+        when(userService.createUser(userDto)).thenReturn(userDataDto);
+
+        // Act
+        ResponseEntity<UserDataDto> response = userController.createUser(userDto);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(response.getBody()).isNotNull();
+        assertThat(Objects.requireNonNull(response.getBody()).getUsername()).isEqualTo(username);
+        assertThat(response.getBody().getEmail()).isEqualTo("test@example.com");
     }
 }
