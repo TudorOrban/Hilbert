@@ -39,3 +39,6 @@ docker-compose.prod.yml
 
 ### Config ###
 src/main/resources/application.properties
+
+### Data ###
+src/main/resources/static/dictionary
