@@ -4,6 +4,9 @@ import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.dto.UserMapper;
 import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
+import com.hilbert.shared.error.ResourceIdentifierType;
+import com.hilbert.shared.error.ResourceNotFoundException;
+import com.hilbert.shared.error.ResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +25,14 @@ public class UserServiceImpl implements UserService {
     public UserDataDto getByUsername(String username) {
         Optional<User> userOpt = this.userRepository.findByUsername(username);
         if (userOpt.isEmpty()) {
-            // TODO: Throw exception
+            throw new ResourceNotFoundException(username, ResourceType.USER, ResourceIdentifierType.USERNAME);
         }
         User foundUser = userOpt.get();
 
         return this.mapUserToUserDataDto(foundUser);
     }
 
-    
+
     private UserDataDto mapUserToUserDataDto(User user) {
         return UserMapper.INSTANCE.userToUserDataDto(user);
     }
