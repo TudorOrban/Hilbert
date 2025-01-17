@@ -39,6 +39,7 @@ docker-compose.prod.yml
 
 ### Config ###
 src/main/resources/application.properties
+src/main/resources/keycloak.json
 
 ### Data ###
 src/main/resources/static/dictionary
