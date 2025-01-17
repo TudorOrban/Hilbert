@@ -1,23 +1,25 @@
 package com.hilbert.core.user.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
 
-public class UserDetailsImpl implements UserDetails {
+@Setter
+public class UserDetailsImpl implements UserDetails, Serializable {
+
     @Serial
     private static final long serialVersionUID = 1L;
 
     private String username;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
-
-    public UserDetailsImpl(String username, Collection<GrantedAuthority> authorities) {
-        this.username = username;
-        this.authorities = authorities;
-    }
+    @Getter
+    private Integer organizationId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
