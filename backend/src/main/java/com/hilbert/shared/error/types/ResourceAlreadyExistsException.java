@@ -1,4 +1,4 @@
-package com.hilbert.shared.error;
+package com.hilbert.shared.error.types;
 
 public class ResourceAlreadyExistsException extends RuntimeException {
     public ResourceAlreadyExistsException(String identifier, ResourceType resourceType, ResourceIdentifierType identifierType) {

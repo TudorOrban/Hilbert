@@ -5,15 +5,13 @@ import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.dto.UserMapper;
 import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
-import com.hilbert.shared.error.ResourceAlreadyExistsException;
-import com.hilbert.shared.error.ResourceIdentifierType;
-import com.hilbert.shared.error.ResourceNotFoundException;
-import com.hilbert.shared.error.ResourceType;
+import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
+import com.hilbert.shared.error.types.ResourceIdentifierType;
+import com.hilbert.shared.error.types.ResourceNotFoundException;
+import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {

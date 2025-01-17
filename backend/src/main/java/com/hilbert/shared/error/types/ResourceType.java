@@ -1,4 +1,4 @@
-package com.hilbert.shared.error;
+package com.hilbert.shared.error.types;
 
 public enum ResourceType {
     USER;
