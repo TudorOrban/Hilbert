@@ -1,6 +1,7 @@
 package com.hilbert.core.user.service;
 
 import com.hilbert.core.user.dto.CreateUserDto;
+import com.hilbert.core.user.dto.UpdateUserDto;
 import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
@@ -88,7 +89,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void whenUsernameAlreadyExists_thenThrowUsernameAlreadyExistsException() {
+    public void whenUsernameAlreadyExists_thenUsernameAlreadyExistsExceptionShouldBeThrown() {
         // Arrange
         String username = "testuser";
         CreateUserDto userDto = new CreateUserDto(username, "test@example.com", "password");
@@ -97,6 +98,47 @@ public class UserServiceTest {
         // Act & Assert
         assertThrows(ResourceAlreadyExistsException.class, () -> {
             userService.createUser(userDto);
+        });
+    }
+
+    @Test
+    public void whenValidUpdateUserDto_thenUserShouldBeUpdated() {
+        // Arrange
+        Long id = 1L;
+        String username = "testuser";
+        String email = "test@example.com";
+        UpdateUserDto userDto = new UpdateUserDto(id, username, email);
+        User updatedUser = new User();
+        updatedUser.setUsername(username);
+        updatedUser.setEmail(email);
+        User existingUser = new User();
+        existingUser.setUsername("beforeupdate");
+        existingUser.setEmail("beforeupdate@example.com");
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
+        when(userRepository.save(any(User.class))).thenReturn(updatedUser);
+
+        // Act
+        UserDataDto userDataDto = userService.updateUser(userDto);
+
+        // Assert
+        assertThat(userDataDto).isNotNull();
+        assertThat(userDataDto.getUsername()).isEqualTo(username);
+        assertThat(userDataDto.getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    public void whenInvalidUserId_thenResourceNotFoundExceptionShouldBeThrown() {
+        // Arrange
+        Long id = 1L;
+        String username = "testuser";
+        String email = "test@example.com";
+        UpdateUserDto userDto = new UpdateUserDto(id, username, email);
+
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            userService.updateUser(userDto);
         });
     }
 }

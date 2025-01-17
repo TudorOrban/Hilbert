@@ -1,6 +1,7 @@
 package com.hilbert.core.user.service;
 
 import com.hilbert.core.user.dto.CreateUserDto;
+import com.hilbert.core.user.dto.UpdateUserDto;
 import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.dto.UserMapper;
 import com.hilbert.core.user.model.User;
@@ -49,6 +50,18 @@ public class UserServiceImpl implements UserService {
         User savedUser = this.userRepository.save(user);
 
         return this.mapUserToUserDataDto(savedUser);
+    }
+
+    public UserDataDto updateUser(UpdateUserDto userDto) {
+        User existingUser = this.userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(userDto.getId().toString(), ResourceType.USER, ResourceIdentifierType.ID));
+
+        existingUser.setUsername(userDto.getUsername());
+        existingUser.setEmail(userDto.getEmail());
+
+        User updatedUser = this.userRepository.save(existingUser);
+
+        return this.mapUserToUserDataDto(updatedUser);
     }
 
     private UserDataDto mapUserToUserDataDto(User user) {
