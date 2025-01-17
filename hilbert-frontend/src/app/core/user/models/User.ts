@@ -10,6 +10,16 @@ export interface UserDataDto {
     role?: string;
 }
 
+export interface LoginDto {
+    username: string;
+    password: string;
+}
+
+export interface LoginResponseDto {
+    accessToken: string;
+    tokenType: string;
+}
+
 export interface CreateUserDto {
     username: string;
     email: string;
