@@ -1,6 +1,7 @@
 package com.hilbert.core.user.jwt;
 
 import com.hilbert.core.user.model.UserDetailsImpl;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret")
+    @Value("${jwt.secret}")
     private String JWT_SECRET;
 
     private static final long JWT_EXPIRATION = 604800000L; // 1 week
