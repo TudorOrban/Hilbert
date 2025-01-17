@@ -1,6 +1,7 @@
 package com.hilbert.core.user.controller;
 
 import com.hilbert.core.user.dto.CreateUserDto;
+import com.hilbert.core.user.dto.UpdateUserDto;
 import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ public class UserControllerTest {
         // Arrange
         String username = "testuser";
         String email = "test@example.com";
-        CreateUserDto userDto = new CreateUserDto(username, "test@example.com", "password");
+        CreateUserDto userDto = new CreateUserDto(username, email, "password");
         UserDataDto userDataDto = new UserDataDto();
         userDataDto.setUsername(username);
         userDataDto.setEmail(email);
@@ -60,9 +61,32 @@ public class UserControllerTest {
         ResponseEntity<UserDataDto> response = userController.createUser(userDto);
 
         // Assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
         assertThat(response.getBody()).isNotNull();
         assertThat(Objects.requireNonNull(response.getBody()).getUsername()).isEqualTo(username);
-        assertThat(response.getBody().getEmail()).isEqualTo("test@example.com");
+        assertThat(response.getBody().getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    public void whenValidUpdateUserDto_thenUserShouldBeUpdated() {
+        // Arrange
+        Long id = 1L;
+        String username = "testuser";
+        String email = "test@example.com";
+        UpdateUserDto userDto = new UpdateUserDto(id, username, email);
+        UserDataDto userDataDto = new UserDataDto();
+        userDataDto.setUsername(username);
+        userDataDto.setEmail(email);
+
+        when(userService.updateUser(userDto)).thenReturn(userDataDto);
+
+        // Act
+        ResponseEntity<UserDataDto> response = userController.updateUser(userDto);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
+        assertThat(response.getBody()).isNotNull();
+        assertThat(Objects.requireNonNull(response.getBody()).getUsername()).isEqualTo(username);
+        assertThat(response.getBody().getEmail()).isEqualTo(email);
     }
 }

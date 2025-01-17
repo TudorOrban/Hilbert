@@ -1,6 +1,7 @@
 package com.hilbert.core.user.controller;
 
 import com.hilbert.core.user.dto.CreateUserDto;
+import com.hilbert.core.user.dto.UpdateUserDto;
 import com.hilbert.core.user.dto.UserDataDto;
 import com.hilbert.core.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,18 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDataDto> createUser(@RequestBody CreateUserDto userDto) {
         UserDataDto userDataDto = userService.createUser(userDto);
-        return ResponseEntity.status(201).body(userDataDto); // 201 Created
+        return ResponseEntity.ok(userDataDto);
     }
+
+    @PutMapping
+    public ResponseEntity<UserDataDto> updateUser(@RequestBody UpdateUserDto userDto) {
+        UserDataDto userDataDto = userService.updateUser(userDto);
+        return ResponseEntity.ok(userDataDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
 }
