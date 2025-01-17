@@ -64,6 +64,13 @@ public class UserServiceImpl implements UserService {
         return this.mapUserToUserDataDto(updatedUser);
     }
 
+    public void deleteUser(Long id) {
+        User foundUser = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id.toString(), ResourceType.USER, ResourceIdentifierType.ID));
+
+        this.userRepository.delete(foundUser);
+    }
+
     private UserDataDto mapUserToUserDataDto(User user) {
         return UserMapper.INSTANCE.userToUserDataDto(user);
     }

@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -137,8 +137,37 @@ public class UserServiceTest {
 
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
+        // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> {
             userService.updateUser(userDto);
+        });
+    }
+
+    @Test
+    public void whenValidUserId_thenUserShouldBeDeleted() {
+        // Arrange
+        Long id = 1L;
+        User existingUser = new User();
+        existingUser.setId(id);
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
+
+        // Act
+        userService.deleteUser(id);
+
+        // Assert
+        verify(userRepository, times(1)).delete(existingUser);
+    }
+
+    @Test
+    public void whenInvalidUserId_thenUSerShouldNotBeDeleted() {
+        Long id = 1L;
+
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            this.userService.deleteUser(id);
         });
     }
 }
