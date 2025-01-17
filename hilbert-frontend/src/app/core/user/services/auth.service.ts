@@ -11,7 +11,7 @@ import * as jwt_decoder from "jwt-decode";
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl: string = "http://localhost:8080/api/v1";
+    private apiUrl: string = "http://localhost:8080/api/v1/auth";
     private currentUserSubject = new BehaviorSubject<UserDataDto | null>(null);
 
     constructor(
@@ -56,8 +56,10 @@ export class AuthService {
     }
 
     fetchAndSetCurrentUser(username: string): void {
+        console.log("username", username);
         this.userService.getUserByUsername(username).subscribe(
             (user) => {
+                console.log("User: ", user);
                 this.setCurrentUser(user);
             },
             (error) => {

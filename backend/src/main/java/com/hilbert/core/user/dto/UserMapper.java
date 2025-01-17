@@ -9,11 +9,11 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-//    @Mapping(source = "user.username", target = "username")
-//    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "user.email", target = "email")
     UserDataDto userToUserDataDto(User user);
 
-//    @Mapping(source = "userDto.username", target = "username")
-//    @Mapping(source = "userDto.email", target = "email")
+    @Mapping(source = "userDto.username", target = "username")
+    @Mapping(source = "userDto.email", target = "email")
     User createUserDtoToUser(CreateUserDto userDto);
 }
