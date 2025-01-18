@@ -2,8 +2,7 @@ package com.hilbert.features.article.model;
 
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
-import com.hilbert.shared.common.enums.LanguageEnumConverter;
-import com.hilbert.shared.common.enums.LevelEnumConverter;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,17 +27,15 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, name = "TEXT")
+    @Column(nullable = false)
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "language_enum")
-    @Convert(converter = LanguageEnumConverter.class)
+    @Column(nullable = false)
     private Language language;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "level_enum")
-    @Convert(converter = LevelEnumConverter.class)
+    @Column(nullable = false)
     private DifficultyLevel level;
 
     @Column(name = "created_at", nullable = false, updatable = false)

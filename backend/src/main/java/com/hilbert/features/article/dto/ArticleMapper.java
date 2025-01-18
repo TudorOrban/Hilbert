@@ -40,4 +40,6 @@ public interface ArticleMapper {
     @Mapping(target = "language", source = "language")
     @Mapping(target = "level", source = "level")
     Article createArticleDtoToArticle(CreateArticleDto createArticleDto);
+
+
 }

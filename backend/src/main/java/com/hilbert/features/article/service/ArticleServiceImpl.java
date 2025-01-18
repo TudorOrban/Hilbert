@@ -1,5 +1,6 @@
 package com.hilbert.features.article.service;
 
+import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.features.article.dto.*;
 import com.hilbert.features.article.model.Article;
 import com.hilbert.features.article.repository.ArticleRepository;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     public ArticleFullDto getArticleById(Long id) {
@@ -41,6 +44,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ArticleFullDto createArticle(CreateArticleDto articleDto) {
+        if (!userRepository.existsById(articleDto.getUserId())) {
+            throw new ResourceNotFoundException(articleDto.getUserId().toString(), ResourceType.USER, ResourceIdentifierType.ID);
+        }
         if (articleRepository.hasNonUniqueTitle(articleDto.getUserId(), articleDto.getTitle())) {
             throw new ResourceAlreadyExistsException(articleDto.getTitle(), ResourceType.ARTICLE, ResourceIdentifierType.TITLE);
         }
