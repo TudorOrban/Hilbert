@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ArticleSearchDto } from '../../models/Article';
 
 @Component({
   selector: 'app-article-medium-card',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './article-medium-card.component.css'
 })
 export class ArticleMediumCardComponent {
-
+    @Input() article?: ArticleSearchDto;
 }

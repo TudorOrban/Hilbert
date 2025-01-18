@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ArticleMediumCardComponent } from '../article-medium-card/article-medium-card.component';
 import { ArticleService } from '../../services/article.service';
 import { AdvancedSearchPanelComponent } from '../advanced-search-panel/advanced-search-panel.component';
+import { PaginatedResults } from '../../../../shared/search/models/Search';
+import { ArticleSearchDto } from '../../models/Article';
 
 @Component({
   selector: 'app-reading',
@@ -14,6 +16,7 @@ import { AdvancedSearchPanelComponent } from '../advanced-search-panel/advanced-
   styleUrl: './reading.component.css'
 })
 export class ReadingComponent implements OnInit {
+    articles?: PaginatedResults<ArticleSearchDto>;
 
     constructor(
         private articleService: ArticleService
@@ -23,6 +26,7 @@ export class ReadingComponent implements OnInit {
         this.articleService.searchArticles({}).subscribe(
             (data) => {
                 console.log("Articles: ", data);
+                this.articles = data;
             },
             (error) => {
                 console.error("Error searching articles: ", error);
