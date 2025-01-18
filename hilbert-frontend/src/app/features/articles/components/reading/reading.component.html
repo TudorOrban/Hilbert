@@ -2,9 +2,16 @@
     <div class="flex items-center px-8">
         <app-search-input></app-search-input>
 
-        <button>
-            Test
+        <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
+            <fa-icon [icon]="faArrowUpWideShort"></fa-icon>
         </button>
     </div>
 
+    <div class="flex w-full h-full">
+        <div class="flex-grow">
+            Test
+        </div>
+
+        <app-advanced-search-panel></app-advanced-search-panel>
+    </div>
 </div>
