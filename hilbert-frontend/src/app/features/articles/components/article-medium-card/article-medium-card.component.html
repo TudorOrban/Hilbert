@@ -1,23 +1,23 @@
-<div class="flex items-center flex-nowrap h-40 p-4 border border-gray-300 shadow-sm rounded-md">
-    <div class="flex-1">
+<div class="flex p-4 space-y-4 border border-gray-300 shadow-sm rounded-md">
+    <div class="">
         <h1 class="text-xl font-semibold">{{ article?.title }}</h1>
-        <p class="text-wrap">{{ article?.description }}</p>
+        <div class="text-wrap">{{ article?.description }}</div>
 
         <div class="flex items-center space-x-8 pt-4">
             <div class="flex items-center space-x-2">
                 <h1>Language</h1>
-                <p>{{ article?.language }}</p>
+                <div>{{ article?.language }}</div>
             </div>
 
             <div class="flex items-center space-x-2">
                 <h1>Level</h1>
-                <p>{{ article?.level }}</p>
+                <div>{{ article?.level }}</div>
             </div>
         </div>
     <div>
 
-    <div class="flex flex-col items-end">
-        <div class="flex items-center p-2 w-40 bg-gray-50 space-x-2 border border-gray-200 shadow-sm rounded-md">
+    <div class="flex items-center">
+        <div class="flex items-center p-2 w-28 bg-gray-50 space-x-2 border border-gray-200 shadow-sm rounded-md">
             <fa-icon [icon]="faStar"></fa-icon>
             <p>{{ article?.averageRating }}</p>
             <p>( {{ article?.numberOfRatings }} )</p>

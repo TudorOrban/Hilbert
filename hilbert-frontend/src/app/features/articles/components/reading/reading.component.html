@@ -9,7 +9,7 @@
 
     <div class="flex w-full h-full py-4">
         <div class="flex-grow px-4 space-y-4">
-            <div *ngFor="let article of (articles?.results ?? [])">
+            <div *ngFor="let article of (articles?.results ?? [])" class="w-full">
                 <app-article-medium-card
                     [article]="article"
                 ></app-article-medium-card>
