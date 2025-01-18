@@ -41,6 +41,7 @@ public class User {
 
     private String role;
 
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
