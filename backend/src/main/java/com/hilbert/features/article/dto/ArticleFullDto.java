@@ -1,7 +1,7 @@
 package com.hilbert.features.article.dto;
 
-import com.hilbert.features.article.model.DifficultyLevel;
-import com.hilbert.features.article.model.Language;
+import com.hilbert.shared.common.enums.DifficultyLevel;
+import com.hilbert.shared.common.enums.Language;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

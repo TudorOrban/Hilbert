@@ -1,6 +1,8 @@
-package com.hilbert.features.article.model;
+package com.hilbert.shared.common.enums;
 
+import lombok.Getter;
 
+@Getter
 public enum Language {
     NONE("none"),
     ENGLISH("en"),
@@ -17,9 +19,5 @@ public enum Language {
 
     Language(String dbValue) {
         this.dbValue = dbValue;
-    }
-
-    public String getDbValue() {
-        return dbValue;
     }
 }

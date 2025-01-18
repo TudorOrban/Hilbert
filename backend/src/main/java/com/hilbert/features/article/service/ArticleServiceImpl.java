@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ArticleFullDto createArticle(CreateArticleDto articleDto) {
-        if (!articleRepository.hasUniqueTitle(articleDto.getUserId(), articleDto.getTitle())) {
+        if (articleRepository.hasNonUniqueTitle(articleDto.getUserId(), articleDto.getTitle())) {
             throw new ResourceAlreadyExistsException(articleDto.getTitle(), ResourceType.ARTICLE, ResourceIdentifierType.TITLE);
         }
 

@@ -1,5 +1,8 @@
-package com.hilbert.features.article.model;
+package com.hilbert.shared.common.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum DifficultyLevel {
     NONE("none"),
     A1("a1"),
@@ -13,9 +16,5 @@ public enum DifficultyLevel {
 
     DifficultyLevel(String dbValue) {
         this.dbValue = dbValue;
-    }
-
-    public String getDbValue() {
-        return dbValue;
     }
 }
