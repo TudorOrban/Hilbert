@@ -21,7 +21,6 @@ import { RouterModule } from '@angular/router';
 export class SidebarComponent {
 
     faHome = faHome;
-
     sidebarItems: UIItem[] = [
         { label: "Home", value: "home", icon: faHome, link: "/home" },
         { label: "Reading", value: "reading", icon: faBook, link: "/reading" },

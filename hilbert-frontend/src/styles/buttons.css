@@ -1,0 +1,13 @@
+.standard-write-button {
+    padding: 1rem 0.5rem;
+    background-color: var(--secondary-color);
+}
+
+.standard-search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: rgb(40, 40, 40);
+}

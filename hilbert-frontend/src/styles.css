@@ -1,4 +1,5 @@
 @import url('styles/main.css');
+@import url('styles/buttons.css');
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +10,7 @@
     --background-color: #ffffff;
     --text-color: #000000;
     --primary-color: white;
-    --secondary-color: rgb(6, 43, 107);
+    --secondary-color: rgb(17, 82, 147);
     --border-color: #dee2e6;
     --border-color-secondary: #b3b3b3;
     --scrollbar-color: #d4d4d4;
