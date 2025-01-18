@@ -10,9 +10,11 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticleSearchRepositoryImpl implements ArticleSearchRepository {
 
     @PersistenceContext
@@ -55,7 +57,7 @@ public class ArticleSearchRepositoryImpl implements ArticleSearchRepository {
         Predicate conditions = builder.conjunction();
 
         if (searchParams.getUserId() != null) {
-            conditions = builder.and(conditions, builder.equal(root.get("user"), searchParams.getUserId()));
+            conditions = builder.and(conditions, builder.equal(root.get("userId"), searchParams.getUserId()));
         }
         if (searchParams.getLanguage() != null) {
             conditions = builder.and(conditions, builder.equal(root.get("language"), searchParams.getLanguage()));

@@ -32,13 +32,13 @@ public class ArticleController {
 
     @GetMapping("/search")
     public ResponseEntity<PaginatedResults<ArticleSearchDto>> searchArticles(
-            @RequestParam(value = "searchQuery", required = false) String searchQuery,
+            @RequestParam(value = "searchQuery", required = false, defaultValue = "") String searchQuery,
             @RequestParam(value = "userId", required = false) Integer userId,
             @RequestParam(value = "language", required = false) Language language,
-            @RequestParam(value = "difficultyLevel", required = false) DifficultyLevel difficultyLevel,
-            @RequestParam(value = "sortBy", required = false) String sortBy,
-            @RequestParam(value = "isAscending", required = false) Boolean isAscending,
-            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "level", required = false) DifficultyLevel difficultyLevel,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "isAscending", required = false, defaultValue = "true") Boolean isAscending,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "itemsPerPage", defaultValue = "10") Integer itemsPerPage
     ) {
         ArticleSearchParams searchParams = new ArticleSearchParams(
