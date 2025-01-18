@@ -43,3 +43,5 @@ src/main/resources/keycloak.json
 
 ### Data ###
 src/main/resources/static/dictionary
+
+flyway.conf

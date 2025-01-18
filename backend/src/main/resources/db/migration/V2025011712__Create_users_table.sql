@@ -1,4 +1,4 @@
--- V1__Create_users_table.sql
+-- V2o25011712__Create_users_table.sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
