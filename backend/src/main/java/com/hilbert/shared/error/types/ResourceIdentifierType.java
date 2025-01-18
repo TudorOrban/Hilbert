@@ -3,7 +3,8 @@ package com.hilbert.shared.error.types;
 public enum ResourceIdentifierType {
     ID,
     USERNAME,
-    EMAIL;
+    EMAIL,
+    TITLE;
 
     @Override
     public String toString() {
@@ -11,6 +12,7 @@ public enum ResourceIdentifierType {
             case ID -> "ID";
             case USERNAME -> "Username";
             case EMAIL -> "Email";
+            case TITLE -> "Title";
         };
     }
 }

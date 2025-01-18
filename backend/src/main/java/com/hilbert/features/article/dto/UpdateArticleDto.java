@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateArticleDto {
-    private Long userId;
+    private Long id;
     private String title;
     private String content;
     private Language language;
