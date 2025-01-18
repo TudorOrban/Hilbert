@@ -15,6 +15,7 @@ public class ArticleSearchDto {
     private Long id;
     private Long userId;
     private String title;
+    private String description;
     private Language language;
     private DifficultyLevel level;
     private LocalDateTime createdAt;

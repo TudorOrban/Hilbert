@@ -1,3 +1,31 @@
-<div>
-    {{ article?.title }}
+<div class="flex items-center flex-nowrap h-40 p-4 border border-gray-300 shadow-sm rounded-md">
+    <div class="flex-1">
+        <h1 class="text-xl font-semibold">{{ article?.title }}</h1>
+        <p class="text-wrap">{{ article?.description }}</p>
+
+        <div class="flex items-center space-x-8 pt-4">
+            <div class="flex items-center space-x-2">
+                <h1>Language</h1>
+                <p>{{ article?.language }}</p>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <h1>Level</h1>
+                <p>{{ article?.level }}</p>
+            </div>
+        </div>
+    <div>
+
+    <div class="flex flex-col items-end">
+        <div class="flex items-center p-2 w-40 bg-gray-50 space-x-2 border border-gray-200 shadow-sm rounded-md">
+            <fa-icon [icon]="faStar"></fa-icon>
+            <p>{{ article?.averageRating }}</p>
+            <p>( {{ article?.numberOfRatings }} )</p>
+        </div>
+
+        <div>
+            Other
+        </div>
+    </div>
+
 </div>

@@ -8,7 +8,7 @@
     </div>
 
     <div class="flex w-full h-full py-4">
-        <div class="flex-grow">
+        <div class="flex-grow px-4 space-y-4">
             <div *ngFor="let article of (articles?.results ?? [])">
                 <app-article-medium-card
                     [article]="article"

@@ -27,6 +27,9 @@ public class Article {
     @Column(nullable = false)
     private String title;
 
+    @Column
+    private String description;
+
     @Column(nullable = false)
     private String content;
 
@@ -44,6 +47,9 @@ public class Article {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(name = "word_count", nullable = false)
+    private Integer wordCount;
+
     @Column(name = "average_rating")
     private Double averageRating;
 
@@ -56,9 +62,11 @@ public class Article {
     @Column(name = "read_count")
     private Integer readCount;
 
+    @Column(name = "comment_count")
+    private Integer commentCount;
+
     @Column(name = "bookmark_count")
     private Integer bookmarkCount;
-
 
     @PrePersist
     protected void onCreate() {

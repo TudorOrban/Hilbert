@@ -62,6 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
             .orElseThrow(() -> new ResourceNotFoundException(articleDto.getId().toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
 
         existingArticle.setTitle(articleDto.getTitle());
+        existingArticle.setDescription(articleDto.getDescription());
         existingArticle.setContent(articleDto.getContent());
         existingArticle.setLanguage(articleDto.getLanguage());
         existingArticle.setLevel(articleDto.getLevel());

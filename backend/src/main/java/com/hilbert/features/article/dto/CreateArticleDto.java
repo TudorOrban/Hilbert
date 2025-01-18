@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class CreateArticleDto {
     private Long userId;
     private String title;
+    private String description;
     private String content;
     private Language language;
     private DifficultyLevel level;

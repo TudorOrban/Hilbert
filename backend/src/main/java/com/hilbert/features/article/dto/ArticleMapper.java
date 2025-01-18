@@ -12,6 +12,7 @@ public interface ArticleMapper {
     @Mapping(source = "article.id", target = "id")
     @Mapping(source = "article.userId", target = "userId")
     @Mapping(source = "article.title", target = "title")
+    @Mapping(source = "article.description", target = "description")
     @Mapping(source = "article.content", target = "content")
     @Mapping(source = "article.language", target = "language")
     @Mapping(source = "article.level", target = "level")
@@ -25,6 +26,7 @@ public interface ArticleMapper {
 
     @Mapping(source = "article.id", target = "id")
     @Mapping(source = "article.title", target = "title")
+    @Mapping(source = "article.description", target = "description")
     @Mapping(source = "article.language", target = "language")
     @Mapping(source = "article.level", target = "level")
     @Mapping(source = "article.createdAt", target = "createdAt")
@@ -36,6 +38,7 @@ public interface ArticleMapper {
 
     @Mapping(target = "userId", source = "userId")
     @Mapping(target = "title", source = "title")
+    @Mapping(source = "description", target = "description")
     @Mapping(target = "content", source = "content")
     @Mapping(target = "language", source = "language")
     @Mapping(target = "level", source = "level")
