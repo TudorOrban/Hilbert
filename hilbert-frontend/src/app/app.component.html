@@ -1,12 +1,10 @@
 
-<main class="flex overflow-hidden min-h-screen">
-    <div class="flex h-full w-full">
-        <app-sidebar
-            class="h-full max-w-64 h-md overflow-y-auto"
-        ></app-sidebar>
-        <div class="flex-1 overflow-y-auto bg-white">
-            <router-outlet></router-outlet>
-        </div>
+<main class="flex h-full w-full overflow-hidden">
+    <app-sidebar
+        class="h-full max-w-64 overflow-y-auto fixed left-0 top-0"
+    ></app-sidebar>
+    <div class="flex-1 ml-64 overflow-y-auto bg-white">
+        <router-outlet></router-outlet>
     </div>
 </main>
 

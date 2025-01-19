@@ -1,5 +1,9 @@
 <div class="px-12 py-8">
-    <div class="flex items-center px-8 py-4">
+    <div class="p-2 text-2xl font-semibold">
+        Articles
+    </div>
+
+    <div class="flex items-center px-16 py-4">
         <app-search-input></app-search-input>
 
         <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
@@ -8,14 +12,15 @@
     </div>
 
     <div class="flex w-full h-full py-4">
-        <div class="flex-grow px-4 space-y-4">
-            <div *ngFor="let article of (articles?.results ?? [])" class="w-full">
+        <div class="flex-grow space-y-4 overflow-y-auto mr-80">
+            <div *ngFor="let article of (articles?.results ?? [])" class="flex w-full overflow-y-auto">
                 <app-article-medium-card
                     [article]="article"
+                    class="w-full"
                 ></app-article-medium-card>
             </div>
         </div>
 
-        <app-advanced-search-panel></app-advanced-search-panel>
+        <app-advanced-search-panel class="fixed mr-16 right-0"></app-advanced-search-panel> 
     </div>
 </div>
