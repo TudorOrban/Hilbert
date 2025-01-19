@@ -6,7 +6,7 @@ import { Language, LanguageUIItem } from "../models/Language";
     providedIn: 'root'
 })
 export class LanguageOptionsService {
-    selectedLanguage: Language = Language.NONE;
+    selectedLanguage: Language = Language.ENGLISH;
     
     languageOptions: LanguageUIItem[] = [
         { value: Language.NONE, viewValue: 'None', flagCode: '' },

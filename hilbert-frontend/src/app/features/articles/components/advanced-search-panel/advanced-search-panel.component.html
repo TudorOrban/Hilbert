@@ -1,34 +1,12 @@
 <div class="w-64 h-full border-l border-gray-200 p-4 space-y-4">
-    <h1 class="text-lg font-semibold">
+    <h1 class="text-xl font-semibold">
         Filters
     </h1>
 
-    <div class="flex items-center space-x-4">
-        <h1>Language</h1>
+    <div class="flex space-x-4">
+        <h1 class="pt-2 text-lg font-semibold">Language</h1>
 
-        <div class="relative">
-            <ng-select
-                [items]="languageService.getLanguageOptions()"
-                bindLabel="viewValue"
-                bindValue="value"
-                [(ngModel)]="selectedLanguage"
-                class="w-40 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
-            >
-                <ng-template ng-label-tmp let-item="item">
-                    <div *ngIf="item.value !== Language.NONE" class="flex items-center">
-                        <img [src]="'assets/flags/' + item.flagCode + '.svg'" class="w-8 h-8 text-gray-500 mr-2" />
-                        <span>{{ item.viewValue }}</span>
-                    </div>
-                </ng-template>
-                <ng-template ng-option-tmp let-item="item">
-                    <div *ngIf="item.value !== Language.NONE" class="flex items-center p-2 hover:bg-gray-100">
-                        <img [src]="'assets/flags/' + item.flagCode + '.svg'" class="w-8 h-8 text-gray-500 mr-2" />
-                        <span>{{ item.viewValue }}</span>
-                    </div>
-                </ng-template>
-            </ng-select>
-        </div>
-
+        <app-language-selector></app-language-selector>
     </div>
 
     <div class="flex items-center space-x-4">

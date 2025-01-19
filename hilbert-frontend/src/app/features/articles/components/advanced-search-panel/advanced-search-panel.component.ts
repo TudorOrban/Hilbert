@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
+import { LanguageSelectorComponent } from "../../../../shared/common/components/language-selector/language-selector.component";
 
 @Component({
   selector: 'app-advanced-search-panel',
-  imports: [CommonModule, FormsModule, NgSelectModule],
+  imports: [CommonModule, FormsModule, NgSelectModule, LanguageSelectorComponent],
   templateUrl: './advanced-search-panel.component.html',
   styleUrl: './advanced-search-panel.component.css'
 })
