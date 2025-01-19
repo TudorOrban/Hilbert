@@ -1,0 +1,1 @@
+hilbert-frontend/src/assets/flags/*.svg filter=lfs diff=lfs merge=lfs -text
