@@ -6,13 +6,29 @@
     <div class="flex items-center space-x-4">
         <h1>Language</h1>
 
-        <div>
-            <select [(ngModel)]="selectedLanguage" class="border border-gray-200 p-2 rounded-md">
-                <option *ngFor="let option of languageOptions" [value]="option.value">
-                    {{ option.viewValue }}
-                </option>
-            </select>
+        <div class="relative">
+            <ng-select
+                [items]="languageService.getLanguageOptions()"
+                bindLabel="viewValue"
+                bindValue="value"
+                [(ngModel)]="selectedLanguage"
+                class="w-40 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 p-2"
+            >
+                <ng-template ng-label-tmp let-item="item">
+                    <div *ngIf="item.value !== Language.NONE" class="flex items-center">
+                        <img [src]="'assets/flags/' + item.flagCode + '.svg'" class="w-8 h-8 text-gray-500 mr-2" />
+                        <span>{{ item.viewValue }}</span>
+                    </div>
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    <div *ngIf="item.value !== Language.NONE" class="flex items-center p-2 hover:bg-gray-100">
+                        <img [src]="'assets/flags/' + item.flagCode + '.svg'" class="w-8 h-8 text-gray-500 mr-2" />
+                        <span>{{ item.viewValue }}</span>
+                    </div>
+                </ng-template>
+            </ng-select>
         </div>
+
     </div>
 
     <div class="flex items-center space-x-4">
@@ -36,7 +52,7 @@
 
         <div>
             <select [(ngModel)]="selectedLanguage" class="p-2 border border-gray-200 rounded-md">
-                <option *ngFor="let option of languageOptions" [value]="option.value">
+                <option *ngFor="let option of this.languageService.getLanguageOptions()" [value]="option.value">
                     {{ option.viewValue }}
                 </option>
             </select>

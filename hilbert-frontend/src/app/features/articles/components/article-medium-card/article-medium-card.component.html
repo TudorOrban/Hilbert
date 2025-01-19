@@ -4,29 +4,29 @@
         <div class="text-lg font-semibold">{{ article?.title }}</div>
         <div class="text-gray-800">{{ article?.description }}</div>
 
-        <div class="flex items-center space-x-8 pt-8">
-            <div class="flex items-center space-x-2">
-                <div>Language: </div>
-                <div>{{ article?.language }}</div>
+        <div class="flex items-center space-x-16 pt-8">
+            <div class="flex items-center space-x-4">
+                <div class="font-semibold">Language: </div>
+                <img [src]="'assets/flags/' + languageService.getFlagCode(article?.language) + '.svg'" class="w-8 h-8" />
             </div>
 
-            <div class="flex items-center space-x-2">
-                <div>Level: </div>
+            <div class="flex items-center space-x-4">
+                <div class="font-semibold">Level: </div>
                 <div>{{ article?.level }}</div>
             </div>
         </div>
     </div>
 
-    <div class="p-2">
+    <div class="p-2 space-y-4">
         <div class="flex items-center p-2 space-x-2 border border-gray-200 rounded-md">
             <fa-icon [icon]="faStar" class="text-gray-700"></fa-icon>
             <div class="font-semibold">{{ article?.averageRating ?? 0 }}</div>
             <div>({{ article?.numberOfRatings ?? 0 }})</div>
         </div>
 
-        <div>
-            Other
+        <div class="flex items-center p-2 space-x-2 border border-gray-200 rounded-md">
+            <fa-icon [icon]="faEye" class="text-gray-700"></fa-icon>
+            <div class="font-semibold">{{ article?.readCount ?? 0 }}</div>
         </div>
-
     </div>
 </div>

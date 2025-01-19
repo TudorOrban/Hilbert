@@ -1,0 +1,13 @@
+/* advanced-search-panel.component.css */
+.ng-dropdown-panel {
+    background-color: white !important;
+    z-index: 10 !important;
+}
+
+.ng-dropdown-panel-items .ng-option {
+    background-color: white !important;
+}
+
+.ng-dropdown-panel-items .ng-option:hover {
+    background-color: #f0f0f0 !important;
+}

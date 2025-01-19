@@ -2,11 +2,13 @@ import { Component, Input } from '@angular/core';
 import { ArticleSearchDto } from '../../models/Article';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faEye } from '@fortawesome/free-solid-svg-icons';
+import { FormsModule } from '@angular/forms';
+import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
 
 @Component({
   selector: 'app-article-medium-card',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, FormsModule],
   templateUrl: './article-medium-card.component.html',
   styleUrl: './article-medium-card.component.css'
 })
@@ -14,4 +16,13 @@ export class ArticleMediumCardComponent {
     @Input() article?: ArticleSearchDto;
 
     faStar = faStar;
+    faEye = faEye;
+
+    languageService: LanguageOptionsService;
+
+    constructor(
+        languageService: LanguageOptionsService
+    ) {
+        this.languageService = languageService;
+    }
 }

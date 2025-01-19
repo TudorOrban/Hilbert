@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { DifficultyLevel, Language } from '../../models/Article';
+import { DifficultyLevel } from '../../models/Article';
+import { Language } from "../../../../shared/language/models/Language";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
 
 @Component({
   selector: 'app-advanced-search-panel',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgSelectModule],
   templateUrl: './advanced-search-panel.component.html',
   styleUrl: './advanced-search-panel.component.css'
 })
@@ -14,21 +17,16 @@ export class AdvancedSearchPanelComponent {
     Level = DifficultyLevel;
 
     selectedUserId?: number;
-    selectedLanguage: Language = Language.NONE;
-    selectedLevel: DifficultyLevel = DifficultyLevel.NONE;
+    selectedLanguage: Language = Language.ENGLISH;
+    selectedLevel?: DifficultyLevel = DifficultyLevel.NONE;
+    
+    languageService: LanguageOptionsService;
 
-    languageOptions = [
-        { value: Language.NONE, viewValue: 'None' },
-        { value: Language.ENGLISH, viewValue: 'English' },
-        { value: Language.SPANISH, viewValue: 'Spanish' },
-        { value: Language.FRENCH, viewValue: 'French' },
-        { value: Language.GERMAN, viewValue: 'German' },
-        { value: Language.PORTUGUESE, viewValue: 'Portuguese' },
-        { value: Language.ITALIAN, viewValue: 'Italian' },
-        { value: Language.JAPANESE, viewValue: 'Japanese' },
-        { value: Language.CHINESE, viewValue: 'Chinese' },
-        { value: Language.RUSSIAN, viewValue: 'Russian' }
-    ];
+    constructor(
+        languageService: LanguageOptionsService
+    ) {
+        this.languageService = languageService;
+    }
 
     levelOptions = [
         { value: DifficultyLevel.A1, viewValue: 'A1 - Beginner' },

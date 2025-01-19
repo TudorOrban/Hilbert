@@ -1,4 +1,5 @@
-import { DifficultyLevel, Language } from "../../../features/articles/models/Article";
+import { DifficultyLevel } from "../../../features/articles/models/Article";
+import { Language } from "../../language/models/Language";
 
 export interface SearchParams {
     searchQuery?: string;

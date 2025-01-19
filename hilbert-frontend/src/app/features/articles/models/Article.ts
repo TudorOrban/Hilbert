@@ -1,3 +1,5 @@
+import { Language } from "../../../shared/language/models/Language";
+
 export interface ArticleFullDto {
     id: number;
     userId: string;
@@ -46,19 +48,6 @@ export interface UpdateArticleDto {
     language: Language;
     level: DifficultyLevel;
 }
-
-export enum Language {
-    NONE,
-    ENGLISH,
-    SPANISH,
-    FRENCH,
-    GERMAN,
-    PORTUGUESE,
-    ITALIAN,
-    JAPANESE,
-    CHINESE,
-    RUSSIAN
-};
 
 export enum DifficultyLevel {
     NONE,
