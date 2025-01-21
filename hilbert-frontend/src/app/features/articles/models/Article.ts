@@ -8,6 +8,7 @@ export interface ArticleFullDto {
     content: string;
     language: Language;
     level: DifficultyLevel;
+    wordCount?: number;
     createdAt: string;
     updatedAt: string;
     averageRating?: number;
@@ -23,6 +24,7 @@ export interface ArticleSearchDto {
     description?: string;
     language: Language;
     level: DifficultyLevel;
+    wordCount?: number;
     createdAt: string;
     averageRating?: number;
     numberOfRatings?: number;

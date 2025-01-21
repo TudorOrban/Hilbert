@@ -47,7 +47,7 @@ public class Article {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "word_count", nullable = false)
+    @Column(name = "word_count")
     private Integer wordCount;
 
     @Column(name = "average_rating")

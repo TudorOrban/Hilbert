@@ -1,7 +1,7 @@
-<div class="relative w-24 border border-gray-300 shadow-sm">
+<div class="relative w-24 h-10 border border-gray-300 shadow-sm rounded-sm">
     <div
         *ngIf="selectedLanguage !== Language.NONE" 
-        class="flex items-center px-4 py-2 space-x-4 cursor-pointer bg-gray-50 rounded-md"
+        class="flex items-center h-9 px-4 space-x-4 cursor-pointer bg-gray-50 rounded-sm"
         (click)="toggleDropdown()"
     >
         <img [src]="getFlagImage(selectedLanguage)" alt="{{ getLanguageName(selectedLanguage) }}" class="w-9 h-7 border border-gray-300">

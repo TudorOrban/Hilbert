@@ -4,23 +4,33 @@
     </div>
 
     <form class="w-full space-y-4" #articleForm="ngForm" (ngSubmit)="onSubmit(articleForm)">
-        <div>
-            <label class="block text-gray-700 font-semibold mb-2" for="title">
-                Title
-            </label>
-            <input
-                class="shadow appearance-none border rounded w-full max-w-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="title"
-                type="text"
-                [(ngModel)]="article.title"
-                name="title"
-                #title="ngModel"
-                required
-                minlength="3"
-            />
-            <div *ngIf="submitted && title.invalid && (title.dirty || title.touched)" class="text-red-500 text-sm mt-1">
-                <div *ngIf="title.errors?.['required']">Title is required.</div>
-                <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
+        <div class="flex space-x-8">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2" for="title">
+                    Title
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full max-w-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="title"
+                    type="text"
+                    [(ngModel)]="article.title"
+                    name="title"
+                    #title="ngModel"
+                    required
+                    minlength="3"
+                />
+                <div *ngIf="submitted && title.invalid && (title.dirty || title.touched)" class="text-red-500 text-sm mt-1">
+                    <div *ngIf="title.errors?.['required']">Title is required.</div>
+                    <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">
+                    Language
+                </label>
+    
+                <app-language-selector></app-language-selector>
             </div>
         </div>
         <div>

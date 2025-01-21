@@ -18,6 +18,7 @@ public class ArticleSearchDto {
     private String description;
     private Language language;
     private DifficultyLevel level;
+    private Integer wordCount;
     private LocalDateTime createdAt;
     private Double averageRating;
     private Integer numberOfRatings;

@@ -18,6 +18,7 @@ public class ArticleFullDto {
     private String description;
     private String content;
     private Language language;
+    private Integer wordCount;
     private DifficultyLevel level;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
