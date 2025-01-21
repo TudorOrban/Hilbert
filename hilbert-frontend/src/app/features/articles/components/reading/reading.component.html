@@ -3,11 +3,21 @@
         Articles
     </div>
 
-    <div class="flex items-center py-4">
-        <app-search-input></app-search-input>
+    <div class="flex items-center justify-between w-full">
+        <div class="flex items-center py-4">
+            <app-search-input></app-search-input>
+    
+            <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
+                <fa-icon [icon]="faArrowUpWideShort"></fa-icon>
+            </button>
+        </div>
 
-        <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
-            <fa-icon [icon]="faArrowUpWideShort"></fa-icon>
+        <button 
+            (click)="handleAddArticle()"
+            class="standard-write-button flex items-center space-x-2"
+        >
+            <fa-icon [icon]="faPlus"></fa-icon>
+            <span class="font-semibold">Add Article</span>
         </button>
     </div>
 

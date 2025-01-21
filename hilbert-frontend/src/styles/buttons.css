@@ -1,6 +1,9 @@
 .standard-write-button {
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 1rem;
     background-color: var(--secondary-color);
+    color: white;
+    border: 1px solid rgb(40, 40, 40);
+    border-radius: 0.375rem;
 }
 
 .standard-search-button {
