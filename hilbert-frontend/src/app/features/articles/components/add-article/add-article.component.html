@@ -1,7 +1,71 @@
-<div class="flex items-center justify-center w-full px-12 py-8">
-    <div class="text-xl font-semibold">
+<div class="px-12 py-8">
+    <div class="text-2xl font-semibold py-4">
         Add Article
     </div>
 
-
+    <form class="w-full space-y-4" #articleForm="ngForm" (ngSubmit)="onSubmit(articleForm)">
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2" for="title">
+                Title
+            </label>
+            <input
+                class="shadow appearance-none border rounded w-full max-w-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="title"
+                type="text"
+                [(ngModel)]="article.title"
+                name="title"
+                #title="ngModel"
+                required
+                minlength="3"
+            />
+            <div *ngIf="submitted && title.invalid && (title.dirty || title.touched)" class="text-red-500 text-sm mt-1">
+                <div *ngIf="title.errors?.['required']">Title is required.</div>
+                <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2" for="description">
+                Description
+            </label>
+            <textarea
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="description"
+                [(ngModel)]="article.description"
+                name="description"
+                #description="ngModel"
+                rows="4"
+            ></textarea>
+            <div *ngIf="submitted && description.invalid && (description.dirty || description.touched)" class="text-red-500 text-sm mt-1">
+                <div *ngIf="description.errors?.['required']">Description is required.</div>
+                <div *ngIf="description.errors?.['minlength']">Description must be at least 10 characters long.</div>
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2" for="content">
+                Content
+            </label>
+            <textarea
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-64"
+                id="content"
+                [(ngModel)]="article.content"
+                name="content"
+                #content="ngModel"
+                rows="10"
+                required
+                minlength="50"
+            ></textarea>
+            <div *ngIf="submitted && content.invalid && (content.dirty || content.touched)" class="text-red-500 text-sm mt-1">
+                <div *ngIf="content.errors?.['required']">Content is required.</div>
+                <div *ngIf="content.errors?.['minlength']">Content must be at least 50 characters long.</div>
+            </div>
+        </div>
+        <div class="flex items-center justify-end">
+            <button
+                class="standard-write-button"
+                type="submit"
+            >
+                Submit
+            </button>
+        </div>
+    </form>
 </div>

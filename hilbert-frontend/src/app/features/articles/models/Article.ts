@@ -2,7 +2,7 @@ import { Language } from "../../../shared/language/models/Language";
 
 export interface ArticleFullDto {
     id: number;
-    userId: string;
+    userId: number;
     title: string;
     description?: string;
     content: string;
@@ -18,7 +18,7 @@ export interface ArticleFullDto {
 
 export interface ArticleSearchDto {
     id: number;
-    userId: string;
+    userId: number;
     title: string;
     description?: string;
     language: Language;
@@ -31,7 +31,7 @@ export interface ArticleSearchDto {
 }
 
 export interface CreateArticleDto {
-    userId: string;
+    userId: number;
     title: string;
     description?: string;
     content: string;
@@ -41,7 +41,7 @@ export interface CreateArticleDto {
 
 export interface UpdateArticleDto {
     id: number;
-    userId: string;
+    userId: number;
     title: string;
     description?: string;
     content: string;
