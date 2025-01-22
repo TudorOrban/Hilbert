@@ -1,5 +1,6 @@
 package com.hilbert.features.article.dto;
 
+import com.hilbert.shared.common.enums.ArticleStatus;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class ArticleSearchDto {
     private String description;
     private Language language;
     private DifficultyLevel level;
+    private ArticleStatus status;
     private Integer wordCount;
     private LocalDateTime createdAt;
     private Double averageRating;

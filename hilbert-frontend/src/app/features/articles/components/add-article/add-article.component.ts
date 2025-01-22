@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CreateArticleDto, DifficultyLevel } from "../../models/Article";
+import { ArticleStatus, CreateArticleDto, DifficultyLevel } from "../../models/Article";
 import { FormsModule, NgForm } from "@angular/forms";
 import { Language } from "../../../../shared/language/models/Language";
 import { CommonModule } from "@angular/common";
@@ -20,6 +20,7 @@ export class AddArticleComponent {
         content: "",
         language: Language.NONE,
         level: DifficultyLevel.NONE,
+        status: ArticleStatus.DRAFT
     };
     submitted = false;
 

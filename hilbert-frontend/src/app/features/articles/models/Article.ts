@@ -8,6 +8,7 @@ export interface ArticleFullDto {
     content: string;
     language: Language;
     level: DifficultyLevel;
+    status: ArticleStatus;
     wordCount?: number;
     createdAt: string;
     updatedAt: string;
@@ -24,6 +25,7 @@ export interface ArticleSearchDto {
     description?: string;
     language: Language;
     level: DifficultyLevel;
+    status: ArticleStatus;
     wordCount?: number;
     createdAt: string;
     averageRating?: number;
@@ -39,6 +41,7 @@ export interface CreateArticleDto {
     content: string;
     language: Language;
     level: DifficultyLevel;
+    status: ArticleStatus;
 }
 
 export interface UpdateArticleDto {
@@ -49,6 +52,7 @@ export interface UpdateArticleDto {
     content: string;
     language: Language;
     level: DifficultyLevel;
+    status: ArticleStatus;
 }
 
 export enum DifficultyLevel {
@@ -59,4 +63,10 @@ export enum DifficultyLevel {
     B2,
     C1,
     C2
+};
+
+export enum ArticleStatus {
+    PUBLIC,
+    PRIVATE,
+    DRAFT
 };

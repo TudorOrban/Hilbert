@@ -16,6 +16,7 @@ public interface ArticleMapper {
     @Mapping(source = "article.content", target = "content")
     @Mapping(source = "article.language", target = "language")
     @Mapping(source = "article.level", target = "level")
+    @Mapping(source = "article.status", target = "status")
     @Mapping(source = "article.wordCount", target = "wordCount")
     @Mapping(source = "article.createdAt", target = "createdAt")
     @Mapping(source = "article.updatedAt", target = "updatedAt")
@@ -30,6 +31,7 @@ public interface ArticleMapper {
     @Mapping(source = "article.description", target = "description")
     @Mapping(source = "article.language", target = "language")
     @Mapping(source = "article.level", target = "level")
+    @Mapping(source = "article.status", target = "status")
     @Mapping(source = "article.wordCount", target = "wordCount")
     @Mapping(source = "article.createdAt", target = "createdAt")
     @Mapping(source = "article.averageRating", target = "averageRating")
@@ -44,6 +46,7 @@ public interface ArticleMapper {
     @Mapping(target = "content", source = "content")
     @Mapping(target = "language", source = "language")
     @Mapping(target = "level", source = "level")
+    @Mapping(source = "article.status", target = "status")
     Article createArticleDtoToArticle(CreateArticleDto createArticleDto);
 
 

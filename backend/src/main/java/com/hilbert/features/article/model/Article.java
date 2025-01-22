@@ -1,5 +1,6 @@
 package com.hilbert.features.article.model;
 
+import com.hilbert.shared.common.enums.ArticleStatus;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
 
@@ -40,6 +41,10 @@ public class Article {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private DifficultyLevel level;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ArticleStatus status;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
