@@ -5,7 +5,7 @@ import { Button, Text, View } from "react-native";
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
 
 type Props = {
-  navigation: HomeScreenNavigationProp;
+    navigation: HomeScreenNavigationProp;
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
