@@ -23,6 +23,10 @@ export class ArticleService {
         return this.http.get<PaginatedResults<ArticleSearchDto>>(url);
     }
 
+    getArticle(articleId: number): Observable<ArticleFullDto> {
+        return this.http.get<ArticleFullDto>(`${this.apiUrl}/${articleId}`);
+    }
+
     createArticle(articleDto: CreateArticleDto): Observable<ArticleFullDto> {
         return this.http.post<ArticleFullDto>(this.apiUrl, articleDto);
     }
