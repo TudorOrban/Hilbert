@@ -14,12 +14,7 @@ const ReadingScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View>
-            <Text>Reading Screen</Text>
-            <Text>{currentUser?.username}</Text>
-            <Button
-                title="Go to Login"
-                onPress={() => navigation.navigate("Login")}
-            />
+            
         </View>
     );
 }

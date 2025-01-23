@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from '../app/core/user/screens/LoginScreen';
-import HomeScreen from '../app/core/main/screens/HomeScreen';
-import { useCurrentUser } from '../app/core/user/contexts/CurrentUserContext';
+import LoginScreen from '../../user/screens/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
+import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
 import MainTabs from './MainTabs';
 
 

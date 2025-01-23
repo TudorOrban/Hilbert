@@ -1,4 +1,3 @@
-import axios from "axios";
 import { LoginResponseDto, UserDataDto } from "../models/User";
 import axiosInstance from "../../main/config/AxiosInstance";
 
