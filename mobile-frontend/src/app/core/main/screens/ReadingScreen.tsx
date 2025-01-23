@@ -3,18 +3,18 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
 
-type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
+type ReadingScreenNavigationProp = StackNavigationProp<RootStackParamList, "Reading">;
 
 type Props = {
-    navigation: HomeScreenNavigationProp;
+    navigation: ReadingScreenNavigationProp;
 };
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const ReadingScreen: React.FC<Props> = ({ navigation }) => {
     const { currentUser } = useCurrentUser();
 
     return (
         <View>
-            <Text>Home Screen</Text>
+            <Text>Reading Screen</Text>
             <Text>{currentUser?.username}</Text>
             <Button
                 title="Go to Login"
@@ -24,4 +24,4 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     );
 }
 
-export default HomeScreen;
+export default ReadingScreen;

@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from '../app/core/user/screens/LoginScreen';
 import HomeScreen from '../app/core/main/screens/HomeScreen';
 import { useCurrentUser } from '../app/core/user/contexts/CurrentUserContext';
+import MainTabs from './MainTabs';
 
 
 const Stack = createStackNavigator();
@@ -17,8 +18,8 @@ function AppNavigator() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={!!currentUser ? "Home" : "Login"}>
-                <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Navigator initialRouteName={!!currentUser ? "MainTabs" : "Login"}>
+                <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
                 <Stack.Screen name="Login" component={LoginScreen} />
             </Stack.Navigator>
         </NavigationContainer>
