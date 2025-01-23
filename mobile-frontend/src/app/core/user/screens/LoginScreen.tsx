@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AuthService } from '../services/AuthService';
+import { useCurrentUser } from '../contexts/CurrentUserContext';
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, "Login">;
 
@@ -14,11 +15,12 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { login } = useCurrentUser();
 
     const handleLogin = async () => {
         try {
-            const data = await AuthService.login(username, password);
-            await AsyncStorage.setItem("token", data.accessToken);
+            await login(username, password);
+            
             navigation.navigate("Home");
         } catch (loginError) {
             setError("Invalid username or password");
