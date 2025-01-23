@@ -1,7 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
+import ReadingPageHeader from '../../../features/article/components/ReadingPageHeader';
+import ArticlesList from '../../../features/article/components/ArticlesList';
+import AdvancedSearchPanel from '../../../features/article/components/AdvancedSearchPanel';
 
 type ReadingScreenNavigationProp = StackNavigationProp<RootStackParamList, "Reading">;
 
@@ -14,7 +17,12 @@ const ReadingScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View>
-            
+            <ReadingPageHeader />
+
+            <View>
+                <ArticlesList />
+                <AdvancedSearchPanel />
+            </View>
         </View>
     );
 }

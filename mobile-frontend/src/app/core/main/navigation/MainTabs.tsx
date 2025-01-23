@@ -4,7 +4,7 @@ import ReadingScreen from "../screens/ReadingScreen";
 import GrammarScreen from "../screens/GrammarScreen";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import VocabularyScreen from "../screens/Vocabulary";
-import ChatScreen from "../screens/Chat";
+import ChatScreen from "../screens/ChatScreen";
 
 const Tab = createBottomTabNavigator();
 
