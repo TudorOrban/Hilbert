@@ -1,10 +1,14 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
 import ReadingPageHeader from '../../../features/article/components/ReadingPageHeader';
 import ArticlesList from '../../../features/article/components/ArticlesList';
 import AdvancedSearchPanel from '../../../features/article/components/AdvancedSearchPanel';
+import { ArticleSearchDto, ArticleStatus, DifficultyLevel } from '../../../features/article/models/Article';
+import { ArticleSearchParams, PaginatedResults } from '../../../shared/search/models/Search';
+import { Language } from '../../../shared/language/models/Language';
+import { ArticleService } from '../../../features/article/services/ArticleService';
 
 type ReadingScreenNavigationProp = StackNavigationProp<RootStackParamList, "Reading">;
 
@@ -15,14 +19,29 @@ type Props = {
 const ReadingScreen: React.FC<Props> = ({ navigation }) => {
     const { currentUser } = useCurrentUser();
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const [searchResults, setSearchResults] = useState<PaginatedResults<ArticleSearchDto>>();
+
+    useEffect(() => {
+        searchArticles();
+    }, []);
+
+    const searchArticles = async () => {
+        const searchParams: ArticleSearchParams = {
+            searchQuery: searchQuery,
+        };
+
+        const results = await ArticleService.searchArticles(searchParams);
+        setSearchResults(results);
+    }
+    
     return (
         <View>
-            <ReadingPageHeader />
+            <ReadingPageHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={searchArticles} />
+            <AdvancedSearchPanel />
 
-            <View>
-                <ArticlesList />
-                <AdvancedSearchPanel />
-            </View>
+            <ArticlesList searchResults={searchResults} />
         </View>
     );
 }
