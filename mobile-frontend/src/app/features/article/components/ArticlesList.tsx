@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { PaginatedResults } from "../../../shared/search/models/Search";
 import { ArticleSearchDto } from "../models/Article";
 import ArticleMediumCard from "./ArticleMediumCard";
+import { useTailwind } from "tailwind-rn";
 
 interface ArticlesListProps {
     searchResults?: PaginatedResults<ArticleSearchDto>;
@@ -10,13 +11,12 @@ interface ArticlesListProps {
 const ArticlesList: React.FC<ArticlesListProps> = ({
     searchResults
 }) => {
+    const tailwind = useTailwind();
 
     return (
-        <View>
+        <View style={tailwind("px-4")}>
             {searchResults?.results.map((article) => (
-                <View>
-                    <ArticleMediumCard article={article} />
-                </View>
+                <ArticleMediumCard article={article} />
             ))}
         </View>
     );

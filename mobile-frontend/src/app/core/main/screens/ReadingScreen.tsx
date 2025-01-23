@@ -7,7 +7,6 @@ import ArticlesList from '../../../features/article/components/ArticlesList';
 import AdvancedSearchPanel from '../../../features/article/components/AdvancedSearchPanel';
 import { ArticleSearchDto, ArticleStatus, DifficultyLevel } from '../../../features/article/models/Article';
 import { ArticleSearchParams, PaginatedResults } from '../../../shared/search/models/Search';
-import { Language } from '../../../shared/language/models/Language';
 import { ArticleService } from '../../../features/article/services/ArticleService';
 
 type ReadingScreenNavigationProp = StackNavigationProp<RootStackParamList, "Reading">;
