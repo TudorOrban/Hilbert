@@ -23,7 +23,7 @@ const ReadingPageHeader: React.FC<ReadingPageHeaderProps> = ({
             </Text>
 
             <View style={tailwind("flex flex-row items-center justify-between px-4 pb-4")}>
-                <View style={tailwind("flex flex-row items-center space-x-2")}>
+                <View style={tailwind("flex flex-row items-center")}>
                     <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
                 </View>
 
