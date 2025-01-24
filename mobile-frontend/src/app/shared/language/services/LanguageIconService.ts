@@ -4,7 +4,11 @@ import { Language } from "../models/Language"
 
 export const LanguageIconService = {
 
-    getIconByLanguage(language: Language): ImageSourcePropType | undefined {
+    getIconByLanguage(language?: Language): ImageSourcePropType | undefined {
+        if (!language) {
+            return undefined;
+        }
+        
         // Manual switch as Image name in require has to be known statically
         switch (language) {
             case Language.ENGLISH:

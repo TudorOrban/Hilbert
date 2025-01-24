@@ -1,9 +1,10 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { ArticleSearchDto } from "../models/Article";
 import { useTailwind } from "tailwind-rn";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { LanguageOptionsService } from "../../../shared/language/services/LanguageOptionsService";
 import { LanguageIconService } from "../../../shared/language/services/LanguageIconService";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 interface ArticleMediumCardProps {
     article: ArticleSearchDto;
@@ -13,11 +14,16 @@ const ArticleMediumCard: React.FC<ArticleMediumCardProps> = ({
     article,
 }) => {
     const tailwind = useTailwind();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList, "Reading">>();
 
     const languageIcon = LanguageIconService.getIconByLanguage(article.language);
 
+    const navigateToArticle = () => {
+        navigation.navigate("Article", { itemId: article.id });
+    }
+
     return (
-        <View style={tailwind("flex flex-row items-center my-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-md")}>
+        <TouchableOpacity onPress={navigateToArticle} style={tailwind("flex flex-row items-center my-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-md")}>
             <View style={tailwind("flex-grow flex-shrink mr-4")}>
                 <Text style={tailwind("text-lg font-semibold")}>{article?.title}</Text>
                 <Text style={tailwind("text-gray-800")}>{article?.description ?? ""}</Text>
@@ -31,17 +37,17 @@ const ArticleMediumCard: React.FC<ArticleMediumCardProps> = ({
                 </View>
             </View>
             <View>
-                <View style={tailwind("flex flex-row items-center w-24 px-2 py-1 mb-2 border border-gray-100 rounded-md")}>
+                <View style={tailwind("flex flex-row items-center w-24 px-2 py-1 mb-2 border border-gray-300 rounded-md")}>
                     <Ionicons name="star" />
                     <Text style={tailwind("mx-1 text-gray-800 font-semibold")}>{article.averageRating ?? 0}</Text>
                     <Text>({article?.numberOfRatings ?? 0})</Text>
                 </View>
-                <View style={tailwind("flex flex-row items-center w-24 px-2 py-1 border border-gray-100 rounded-md")}>
+                <View style={tailwind("flex flex-row items-center w-24 px-2 py-1 border border-gray-300 rounded-md")}>
                     <Ionicons name="eye" />
                     <Text style={tailwind("mx-1 text-gray-800 font-semibold")}>{article?.readCount ?? 0}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

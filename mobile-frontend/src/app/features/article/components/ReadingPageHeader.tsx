@@ -37,7 +37,7 @@ const ReadingPageHeader: React.FC<ReadingPageHeaderProps> = ({
                 </View>
 
                 <TouchableOpacity
-                    style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-200 rounded-md")}
+                    style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-300 rounded-md")}
                     onPress={navigateToCreateArticle}
                 >
                     <Ionicons name="add-outline" size={20} color={"white"}/>
