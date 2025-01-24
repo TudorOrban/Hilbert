@@ -3,10 +3,14 @@ type RootStackParamList = {
 
     Reading: undefined;
     CreateArticle: undefined;
+    Article: { itemId: number };
 
     Grammar: undefined;
+
     Vocabulary: undefined;
+
     Chat: undefined;
+
     Login: undefined;
     Register: undefined;
 };

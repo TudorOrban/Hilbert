@@ -6,16 +6,9 @@ import { useTailwind } from "tailwind-rn";
 import { Language } from "../../../shared/language/models/Language";
 import { Picker } from "@react-native-picker/picker";
 import { UITextService } from "../../../shared/common/utils/services/UITextService";
-import { ArticleStatus, DifficultyLevel } from "../models/Article";
-
-interface IFormInput {
-    title: string;
-    description?: string;
-    content: string;
-    language: Language;
-    level: DifficultyLevel;
-    status: ArticleStatus;
-}
+import { ArticleStatus, CreateArticleDto, DifficultyLevel } from "../models/Article";
+import { ArticleService } from "../services/ArticleService";
+import { useCurrentUser } from "../../../core/user/contexts/CurrentUserContext";
 
 type CreateArticleScreenNavigationProp = StackNavigationProp<RootStackParamList, "CreateArticle">;
 
@@ -26,11 +19,13 @@ type Props = {
 const CreateArticleScreen: React.FC<Props> = ({ navigation }) => {
     const tailwind = useTailwind();
 
+    const { currentUser } = useCurrentUser();
+
     const {
         control,
         handleSubmit,
         formState: { errors }
-    } = useForm<IFormInput>({
+    } = useForm<CreateArticleDto>({
         defaultValues: {
             title: "",
             description: "",
@@ -41,8 +36,23 @@ const CreateArticleScreen: React.FC<Props> = ({ navigation }) => {
         },
     });
 
-    const onSubmit = (data: IFormInput) => {
-        console.log("Data: ", data);
+    const onSubmit = async (data: CreateArticleDto) => {
+        if (!currentUser?.id) {
+            console.error("User not logged in");
+            navigation.navigate("Login");
+            return;
+        }
+        data.userId = currentUser.id;
+
+        try {
+            const response = await ArticleService.createArticle(data);
+            navigation.navigate("Article", {
+                itemId: response.id,
+            });
+        } catch (error) {
+            console.error("An error occured trying to create the article: ", error);
+            throw error;
+        }
     }
 
     return (
