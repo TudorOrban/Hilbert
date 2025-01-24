@@ -37,7 +37,7 @@ describe("ArticleService.searchArticles", () => {
         // Act
         const response = await ArticleService.searchArticles(searchParams);
 
-        // Assert
+        // Assert   
         expect(axiosInstance.get).toHaveBeenCalledWith(
             `/articles/search${expectedUrl}`,
         );

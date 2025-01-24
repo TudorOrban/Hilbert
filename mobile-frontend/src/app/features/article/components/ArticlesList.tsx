@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { PaginatedResults } from "../../../shared/search/models/Search";
 import { ArticleSearchDto } from "../models/Article";
 import ArticleMediumCard from "./ArticleMediumCard";
@@ -14,11 +14,11 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
     const tailwind = useTailwind();
 
     return (
-        <View style={tailwind("px-4")}>
+        <ScrollView style={tailwind("px-4")}>
             {searchResults?.results.map((article) => (
-                <ArticleMediumCard article={article} />
+                <ArticleMediumCard key={article.id} article={article} />
             ))}
-        </View>
+        </ScrollView>
     );
 }
 

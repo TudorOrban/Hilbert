@@ -27,7 +27,7 @@ const ReadingPageHeader: React.FC<ReadingPageHeaderProps> = ({
                     <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
                 </View>
 
-                <TouchableOpacity style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-200 rounded-md shadow-sm")}>
+                <TouchableOpacity style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-200 rounded-md")}>
                     <Ionicons name="add-outline" size={20} color={"white"}/>
                     <Text style={tailwind("font-semibold text-white ml-2")}>Add Article</Text>
                 </TouchableOpacity>
