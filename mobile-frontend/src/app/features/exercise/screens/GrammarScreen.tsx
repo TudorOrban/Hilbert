@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Button, Text, View } from 'react-native';
-import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
+import { useCurrentUser } from '../../../core/user/contexts/CurrentUserContext';
 
 type GrammarScreenNavigationProp = StackNavigationProp<RootStackParamList, "Grammar">;
 

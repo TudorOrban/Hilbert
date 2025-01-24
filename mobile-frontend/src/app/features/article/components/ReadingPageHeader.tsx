@@ -2,19 +2,28 @@ import { Text, TouchableOpacity, View } from "react-native";
 import SearchInput from "../../../shared/search/components/SearchInput";
 import { useTailwind } from "tailwind-rn";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StackNavigationProp } from "@react-navigation/stack";
+
+type ReadingPageHeaderNavigationProp = StackNavigationProp<RootStackParamList, 'Reading'>;
 
 interface ReadingPageHeaderProps {
+    navigation: ReadingPageHeaderNavigationProp;
     searchQuery: string;
     setSearchQuery: (text: string) => void;
     handleSearch: () => void;
 }
 
 const ReadingPageHeader: React.FC<ReadingPageHeaderProps> = ({
+    navigation,
     searchQuery,
     setSearchQuery,
     handleSearch,
 }) => {
     const tailwind = useTailwind();
+
+    const navigateToCreateArticle = () => {
+        navigation.navigate("CreateArticle");
+    }
 
     return (
         <View>
@@ -27,7 +36,10 @@ const ReadingPageHeader: React.FC<ReadingPageHeaderProps> = ({
                     <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={handleSearch} />
                 </View>
 
-                <TouchableOpacity style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-200 rounded-md")}>
+                <TouchableOpacity
+                    style={tailwind("flex flex-row items-center px-2 h-8 bg-blue-600 text-white border border-gray-200 rounded-md")}
+                    onPress={navigateToCreateArticle}
+                >
                     <Ionicons name="add-outline" size={20} color={"white"}/>
                     <Text style={tailwind("font-semibold text-white ml-2")}>Add Article</Text>
                 </TouchableOpacity>

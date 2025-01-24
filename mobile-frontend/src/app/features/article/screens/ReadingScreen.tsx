@@ -1,13 +1,13 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { useCurrentUser } from '../../user/contexts/CurrentUserContext';
-import ReadingPageHeader from '../../../features/article/components/ReadingPageHeader';
-import ArticlesList from '../../../features/article/components/ArticlesList';
-import AdvancedSearchPanel from '../../../features/article/components/AdvancedSearchPanel';
-import { ArticleSearchDto, ArticleStatus, DifficultyLevel } from '../../../features/article/models/Article';
+import { useCurrentUser } from '../../../core/user/contexts/CurrentUserContext';
+import ReadingPageHeader from '../components/ReadingPageHeader';
+import ArticlesList from '../components/ArticlesList';
+import AdvancedSearchPanel from '../components/AdvancedSearchPanel';
+import { ArticleSearchDto, ArticleStatus, DifficultyLevel } from '../models/Article';
 import { ArticleSearchParams, PaginatedResults } from '../../../shared/search/models/Search';
-import { ArticleService } from '../../../features/article/services/ArticleService';
+import { ArticleService } from '../services/ArticleService';
 import { useTailwind } from 'tailwind-rn';
 import LoadingFallback from '../../../shared/search/components/LoadingFallback';
 
@@ -46,7 +46,7 @@ const ReadingScreen: React.FC<Props> = ({ navigation }) => {
     
     return (
         <View style={tailwind("h-full")}>
-            <ReadingPageHeader searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={searchArticles} />
+            <ReadingPageHeader navigation={navigation} searchQuery={searchQuery} setSearchQuery={setSearchQuery} handleSearch={searchArticles} />
             <AdvancedSearchPanel />
 
             {!isLoading ? (

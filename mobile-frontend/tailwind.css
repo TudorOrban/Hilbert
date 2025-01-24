@@ -16,12 +16,20 @@
   margin-left: 0.5rem
 }
 
+.ml-8 {
+  margin-left: 2rem
+}
+
 .mr-2 {
   margin-right: 0.5rem
 }
 
 .mr-4 {
   margin-right: 1rem
+}
+
+.ml-1 {
+  margin-left: 0.25rem
 }
 
 .flex {
@@ -94,6 +102,11 @@
   border-width: 1px
 }
 
+.border-gray-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1))
+}
+
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity, 1))
@@ -109,9 +122,9 @@
   background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1))
 }
 
-.bg-gray-100 {
+.bg-gray-50 {
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1))
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1))
 }
 
 .bg-gray-800 {

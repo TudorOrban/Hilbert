@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
-import ReadingScreen from "../screens/ReadingScreen";
-import GrammarScreen from "../screens/GrammarScreen";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import VocabularyScreen from "../screens/Vocabulary";
-import ChatScreen from "../screens/ChatScreen";
+import HomeScreen from "../screens/HomeScreen";
+import GrammarScreen from "../../../features/exercise/screens/GrammarScreen";
+import VocabularyScreen from "../../../features/vocabulary/screens/Vocabulary";
+import ChatScreen from "../../../features/chat/screens/ChatScreen";
+import ReadingStackNavigator from "./ReadingStackNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const MainTabs = () => {
             })}
         >
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Reading" component={ReadingScreen} />
+            <Tab.Screen name="Reading" component={ReadingStackNavigator} />
             <Tab.Screen name="Vocabulary" component={VocabularyScreen} />
             <Tab.Screen name="Exercises" component={GrammarScreen} />
             <Tab.Screen name="Chat" component={ChatScreen} />            
