@@ -1,5 +1,4 @@
-import { Keyboard, StyleSheet, TouchableOpacity, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { Keyboard, TextInput, TouchableOpacity, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

@@ -1,7 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Text, View } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { Button, ScrollView, Text, TextInput, View } from "react-native";
 import { useTailwind } from "tailwind-rn";
 import { Language } from "../../../shared/language/models/Language";
 import { Picker } from "@react-native-picker/picker";

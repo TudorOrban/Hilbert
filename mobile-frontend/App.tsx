@@ -1,7 +1,7 @@
 import React from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppNavigator from './src/app/core/main/navigation/AppNavigator';
-import {Providers} from './src/app/core/main/providers/Providers';
+import { Providers } from './src/app/core/main/providers/Providers';
 
 const App = () => {
     return (
