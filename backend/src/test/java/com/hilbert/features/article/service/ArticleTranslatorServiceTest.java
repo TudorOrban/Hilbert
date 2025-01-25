@@ -7,7 +7,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -24,19 +27,17 @@ public class ArticleTranslatorServiceTest {
         Language destLanguage = Language.ENGLISH;
         String content = "Bonjour, je suis heureux";
 
-        HashMap<String, String> expectedTranslation = new HashMap<>();
-        expectedTranslation.put("Bonjour", "Hello");
-        expectedTranslation.put("je", "I");
-        expectedTranslation.put("suis", "am");
-        expectedTranslation.put("heureux", "happy");
-
-        TranslatedContent expectedTranslatedContent = new TranslatedContent(expectedTranslation, srcLanguage, destLanguage);
+        HashMap<String, List<String>> expectedTranslationMap = new HashMap<>();
+        expectedTranslationMap.put("Bonjour", new ArrayList<String>(List.of("Hello")));
+        expectedTranslationMap.put("je", new ArrayList<String>(List.of("I")));
+        expectedTranslationMap.put("suis", new ArrayList<String>(List.of("am")));
+        expectedTranslationMap.put("heureux", new ArrayList<String>(List.of("heureux")));
 
         // Act
         TranslatedContent resultContent = articleTranslatorService.translateContent(content, srcLanguage, destLanguage);
 
         // Assert
         assertThat(resultContent).isNotNull();
-        assertThat(resultContent.getTranslationMap()).isEqualTo(expectedTranslatedContent.getTranslationMap());
+        assertThat(resultContent.getTranslationMap()).isEqualTo(expectedTranslationMap);
     }
 }
