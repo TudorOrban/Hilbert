@@ -1,9 +1,12 @@
 package com.hilbert.features.article.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hilbert.shared.common.enums.ArticleStatus;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
 
+import com.hilbert.shared.error.types.ValidationException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -72,6 +75,38 @@ public class Article {
 
     @Column(name = "bookmark_count")
     private Integer bookmarkCount;
+
+    // Manual (de)serialization and caching of JSON column
+    @Column(name = "translated_content", columnDefinition = "jsonb")
+    private String translatedContentJson;
+
+    @Transient
+    private TranslatedContent translatedContent;
+
+    public TranslatedContent getTranslatedContent() {
+        if (this.translatedContent != null || this.translatedContentJson == null) {
+            return this.translatedContent;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            this.translatedContent = mapper.readValue(this.translatedContentJson, TranslatedContent.class);
+        } catch (JsonProcessingException e) {
+            throw new ValidationException("Invalid Translated Content Data found: " + e.getMessage());
+        }
+        return this.translatedContent;
+    }
+
+    public void setTranslatedContent(TranslatedContent content) {
+        this.translatedContent = content;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            this.translatedContentJson = objectMapper.writeValueAsString(translatedContent);
+        } catch (JsonProcessingException e) {
+            throw new ValidationException("Invalid Translated Content Data received: " + e.getMessage());
+        }
+    }
+
 
     @PrePersist
     protected void onCreate() {

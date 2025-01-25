@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { ArticleFullDto } from "../models/Article";
 import { useTailwind } from "tailwind-rn";
 import { createRef, useRef, useState } from "react";
@@ -15,6 +15,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
     const [translation, setTranslation] = useState<string | null>(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
     const wordRefs = useRef<{ [key: string]: React.RefObject<Text> }>({});
+    const screenWidth = Dimensions.get("window").width;
 
     const handleWordPress = (word: string) => {
         const translatedWord = getTranslation(word);
@@ -22,12 +23,21 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
         setTranslation(translatedWord);
 
         const ref = wordRefs.current[word];
-        if (ref && ref.current) {
-            ref.current.measure((fx: number, fy: number, width: number, height: number, px: number, py: number) => {
-                const HEADER_Y_ADJUSTMENT = 300;
-                setTooltipPosition({ x: px, y: py + height - HEADER_Y_ADJUSTMENT });
-            });
+        if (!ref?.current) {
+            return;
         }
+
+        const HEADER_Y_ADJUSTMENT = 300;
+        const TOOLTIP_WIDTH = 240;
+
+        ref.current.measure((fx: number, fy: number, width: number, height: number, px: number, py: number) => {
+            let adjustedX = px;
+            if (px + TOOLTIP_WIDTH > screenWidth) {
+                adjustedX = screenWidth - TOOLTIP_WIDTH;
+            }
+
+            setTooltipPosition({ x: adjustedX, y: py + height - HEADER_Y_ADJUSTMENT });
+        });
     };
 
     const getTranslation = (word: string): string => {
@@ -45,7 +55,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                         <TouchableOpacity
                             key={index}
                             onPress={() => handleWordPress(word)}
-                            style={tailwind('')}
+                            style={tailwind("")}
                         >
                             <Text ref={wordRefs.current[word]}>{word} </Text>
                         </TouchableOpacity>
@@ -60,6 +70,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                             left: tooltipPosition.x,
                             top: tooltipPosition.y,
                         },
+                        tailwind("absolute p-2 max-w-60 z-30 border border-gray-300 rounded-md ")
                     ]}
                 >
                     <Text>{translation}</Text>
