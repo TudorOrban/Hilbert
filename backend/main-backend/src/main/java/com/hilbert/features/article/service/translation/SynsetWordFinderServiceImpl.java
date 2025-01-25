@@ -80,7 +80,6 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
         HashMap<String, Set<String>> wordTranslationsMap = new HashMap<>();
         String currentLexicalEntryId = null;
         String currentWord = null;
-        System.out.println("Third before");
 
         while (reader.hasNext()) {
             XMLEvent nextEvent = reader.nextEvent();
