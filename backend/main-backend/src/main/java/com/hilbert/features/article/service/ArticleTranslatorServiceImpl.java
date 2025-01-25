@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /*
  * Service that transforms a text into a map (word) -> wordTranslationsArray using the OMW database.
@@ -43,7 +44,7 @@ public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
 
         HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService.identifySynsetILIs(contentWords, srcLanguage);
 
-        HashMap<String, List<String>> translationMap = this.synsetWordFinderService.identifyTranslationsByILIs(wordSynsetILIs, destLanguage);
+        HashMap<String, Set<String>> translationMap = this.synsetWordFinderService.identifyTranslationsByILIs(wordSynsetILIs, destLanguage);
 
         return new TranslatedContent(translationMap, srcLanguage, destLanguage);
     }

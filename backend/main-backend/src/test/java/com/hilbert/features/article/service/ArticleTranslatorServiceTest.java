@@ -28,10 +28,10 @@ public class ArticleTranslatorServiceTest {
         String content = "Bonjour, je suis heureux";
 
         HashMap<String, List<String>> expectedTranslationMap = new HashMap<>();
-        expectedTranslationMap.put("Bonjour", new ArrayList<String>(List.of("Hello")));
-        expectedTranslationMap.put("je", new ArrayList<String>(List.of("I")));
-        expectedTranslationMap.put("suis", new ArrayList<String>(List.of("am")));
-        expectedTranslationMap.put("heureux", new ArrayList<String>(List.of("heureux")));
+        expectedTranslationMap.put("Bonjour", new ArrayList<>(List.of("Hello")));
+        expectedTranslationMap.put("je", new ArrayList<>(List.of("I")));
+        expectedTranslationMap.put("suis", new ArrayList<>(List.of("am")));
+        expectedTranslationMap.put("heureux", new ArrayList<>(List.of("heureux")));
 
         // Act
         TranslatedContent resultContent = articleTranslatorService.translateContent(content, srcLanguage, destLanguage);

@@ -27,7 +27,7 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
         this.resourceLoader = resourceLoader;
     }
 
-    public HashMap<String, List<String>> identifyTranslationsByILIs(HashMap<String, List<String>> wordSynsetILIs, Language language) {
+    public HashMap<String, Set<String>> identifyTranslationsByILIs(HashMap<String, List<String>> wordSynsetILIs, Language language) {
         String filePath = OMWFileFinderUtil.getFilePathByLanguage(language);
 
         try {
@@ -76,8 +76,8 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
         return wordSynsetIds;
     }
 
-    private HashMap<String, List<String>> findTranslatedWords(HashMap<String, List<String>> wordDestSynsetIds, XMLEventReader reader) throws XMLStreamException {
-        HashMap<String, List<String>> wordTranslationsMap = new HashMap<>();
+    private HashMap<String, Set<String>> findTranslatedWords(HashMap<String, List<String>> wordDestSynsetIds, XMLEventReader reader) throws XMLStreamException {
+        HashMap<String, Set<String>> wordTranslationsMap = new HashMap<>();
         String currentLexicalEntryId = null;
         String currentWord = null;
         System.out.println("Third before");
@@ -114,7 +114,7 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
 
                     for (Map.Entry<String, List<String>> entry : wordDestSynsetIds.entrySet()) {
                         if (entry.getValue().contains(senseSynsetId)) {
-                            wordTranslationsMap.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(currentWord);
+                            wordTranslationsMap.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).add(currentWord);
                             break;
                         }
                     }

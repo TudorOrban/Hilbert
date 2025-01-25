@@ -6,14 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TranslatedContent {
 
-    private HashMap<String, List<String>> translationMap;
+    private HashMap<String, Set<String>> translationMap;
     private Language srcLanguage;
     private Language destLanguage;
 }
