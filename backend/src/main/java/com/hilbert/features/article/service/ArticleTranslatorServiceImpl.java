@@ -15,11 +15,13 @@ import java.util.List;
 
 /*
  * Service that transforms a text into a map (word) -> wordTranslationsArray using the OMW database.
- * The algorithm follows these steps:
+ * The algorithm for a single word is:
  *  1. For a given word, go through srcLanguage XML file to find LexicalEntry with Lemma.writtenForm = word
  *  2. Use that LexicalEntry's Sense.synsets to find the corresponding Synset's ILIs
  *  3. Go through destLanguage XML file to find Synsets with that ILI
  *  4. For each found Synset, find corresponding LexicalEntries and extract their Lemma.writtenForm
+ *
+ * The actual algorithm below only traverses the XML file once and checks against all the given words.
  */
 @Service
 public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
@@ -39,7 +41,7 @@ public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
     public TranslatedContent translateContent(String content, Language srcLanguage, Language destLanguage) {
         List<String> contentWords = getContentWords(content);
 
-        HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService.identifySynsetILIs(contentWords);
+        HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService.identifySynsetILIs(contentWords, srcLanguage);
 
         HashMap<String, List<String>> translationMap = this.synsetWordFinderService.findTranslationsByILIs(wordSynsetILIs);
 
@@ -50,27 +52,14 @@ public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
         String[] preWords = content.split(" ");
 
         List<String> words = new ArrayList<>();
-
         for (String preWord : preWords) {
             String word = preWord.replaceAll("[.,?!;:'\"]*", "");
-            words.add(word);
+
+            if (!words.contains(word)) {
+                words.add(word);
+            }
         }
 
         return words;
     }
 }
-
-/*
-
-    <LexicalEntry id="omw-fr-6_août-n">
-      <Lemma writtenForm="6 août" partOfSpeech="n" />
-      <Sense id="omw-fr-6_août-15299367-n" synset="omw-fr-15299367-n" />
-    </LexicalEntry>
-    <LexicalEntry id="omw-fr-11_septembre-n">
-      <Lemma writtenForm="11 septembre" partOfSpeech="n" />
-      <Sense id="omw-fr-11_septembre-15300051-n" synset="omw-fr-15300051-n" />
-    </LexicalEntry>
-    <Synset id="omw-fr-00001740-a" ili="i1" partOfSpeech="a" members="omw-fr-comptable-00001740-a" />
-    <Synset id="omw-fr-00001740-n" ili="i35545" partOfSpeech="n" members="omw-fr-entité-00001740-n" />
-
- */
