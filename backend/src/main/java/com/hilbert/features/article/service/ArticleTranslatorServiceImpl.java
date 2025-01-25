@@ -43,7 +43,7 @@ public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
 
         HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService.identifySynsetILIs(contentWords, srcLanguage);
 
-        HashMap<String, List<String>> translationMap = this.synsetWordFinderService.findTranslationsByILIs(wordSynsetILIs);
+        HashMap<String, List<String>> translationMap = this.synsetWordFinderService.identifyTranslationsByILIs(wordSynsetILIs, destLanguage);
 
         return new TranslatedContent(translationMap, srcLanguage, destLanguage);
     }

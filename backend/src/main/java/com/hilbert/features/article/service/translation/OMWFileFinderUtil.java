@@ -20,6 +20,6 @@ public class OMWFileFinderUtil {
             throw new ValidationException("Language not supported yet.");
         }
 
-        return "static/dictionary/omw-1.4/omw-" + fileCode;
+        return "static/dictionary/omw-1.4/omw-" + fileCode + "/omw-" + fileCode + ".xml";
     }
 }

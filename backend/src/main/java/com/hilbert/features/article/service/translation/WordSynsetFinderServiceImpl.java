@@ -1,6 +1,9 @@
 package com.hilbert.features.article.service.translation;
 
 import com.hilbert.shared.common.enums.Language;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import javax.xml.namespace.QName;
@@ -10,8 +13,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,20 +23,29 @@ import java.util.Map;
 @Service
 public class WordSynsetFinderServiceImpl implements WordSynsetFinderService {
 
+    private final ResourceLoader resourceLoader;
+
+    @Autowired
+    public WordSynsetFinderServiceImpl(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
     public HashMap<String, List<String>> identifySynsetILIs(List<String> contentWords, Language language) {
         String filePath = OMWFileFinderUtil.getFilePathByLanguage(language);
 
         try {
+            Resource resource = resourceLoader.getResource("classpath:" + filePath);
+            InputStream inputStream = resource.getInputStream();
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
+            XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 
-            return traverseXMLFile(contentWords, reader);
-        } catch (XMLStreamException | FileNotFoundException e) {
+            return findWordSynsetILIs(contentWords, reader);
+        } catch (XMLStreamException | IOException e) {
             throw new RuntimeException("Error processing XML file: ", e);
         }
     }
 
-    private HashMap<String, List<String>> traverseXMLFile(List<String> contentWords, XMLEventReader reader) throws XMLStreamException {
+    private HashMap<String, List<String>> findWordSynsetILIs(List<String> contentWords, XMLEventReader reader) throws XMLStreamException {
         HashMap<String, List<String>> wordSynsetIds = new HashMap<>();
         HashMap<String, List<String>> wordSynsetILIs = new HashMap<>();
         String currentLexicalEntryId = null;
@@ -73,17 +85,17 @@ public class WordSynsetFinderServiceImpl implements WordSynsetFinderService {
                         break;
                     }
 
-                    String synsetId = startElement.getAttributeByName(new QName("synset")).getValue();
+                    String senseSynsetId = startElement.getAttributeByName(new QName("synset")).getValue();
 
-                    wordSynsetIds.computeIfAbsent(currentMatchedWord, k -> new ArrayList<>()).add(synsetId);
+                    wordSynsetIds.computeIfAbsent(currentMatchedWord, k -> new ArrayList<>()).add(senseSynsetId);
                     break;
                 // Synset case can be handled in the same traversal as Synset elements are always after all the LexicalEntries
                 case "Synset":
-                    String elementSynsetId = startElement.getAttributeByName(new QName("id")).getValue();
+                    String synsetId = startElement.getAttributeByName(new QName("id")).getValue();
                     String synsetILI = startElement.getAttributeByName(new QName("ili")).getValue();
 
                     for (Map.Entry<String, List<String>> entry : wordSynsetIds.entrySet()) {
-                        if (entry.getValue().contains(elementSynsetId)) {
+                        if (entry.getValue().contains(synsetId)) {
                             wordSynsetILIs.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(synsetILI);
                             break;
                         }
