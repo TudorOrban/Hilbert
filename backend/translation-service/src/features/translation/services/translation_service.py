@@ -17,10 +17,11 @@ class TranslationService:
         self.load_model(translation_request.src_language, translation_request.dest_language)
         
         words = re.findall(r'\b\w+\b', translation_request.content)
-        
+        unique_words = list(set(words))
+
         translation_map = {}
 
-        for word in words:
+        for word in unique_words:
             inputs = self.tokenizer(word, return_tensors="pt")
             outputs = self.model.generate(**inputs)
             translation = self.tokenizer.decode(outputs[0], skip_special_tokens=True)

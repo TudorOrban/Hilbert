@@ -31,3 +31,6 @@ class TestTranslationServiceIntegration(unittest.TestCase):
         self.assertEqual(result.translation["friend"], "ami")
         self.assertEqual(result.translation["book"], "livre")
         self.assertEqual(result.translation["dog"], "chien")
+
+if __name__ == '__main__':
+    unittest.main()
