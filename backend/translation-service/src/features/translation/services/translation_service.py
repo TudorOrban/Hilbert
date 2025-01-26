@@ -1,4 +1,5 @@
 import os
+import re
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 from src.features.translation.dtos.translation_dtos import TranslationRequestDto, TranslationResponseDto
@@ -12,8 +13,24 @@ class TranslationService:
         self.tokenizer = None
         self.preload_models()
 
+    def translate(self, translation_request: TranslationRequestDto) -> TranslationResponseDto:
+        self.load_model(translation_request.src_language, translation_request.dest_language)
+        
+        words = re.findall(r'\b\w+\b', translation_request.content)
+        
+        translation_map = {}
+
+        for word in words:
+            inputs = self.tokenizer(word, return_tensors="pt")
+            outputs = self.model.generate(**inputs)
+            translations = [self.tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+            translation_map[word] = translations
+        
+        return TranslationResponseDto(translation_map, translation_request.src_language, translation_request.dest_language)
+
+
     """
-    Function to preload the MarianMT models for all the supported language pairs
+    Function to preload the OpusMT models for all the supported language pairs
     Can be activated by creating a .env file in the root with PRELOAD_MODELS=True
     """
     def preload_models(self):
@@ -27,16 +44,6 @@ class TranslationService:
                     return
                 self.load_model(src_language, dest_language)
     
-
-    def translate(self, translation_request: TranslationRequestDto) -> TranslationResponseDto:
-        self.load_model(translation_request.src_language, translation_request.dest_language)
-        inputs = self.tokenizer(translation_request.content, return_tensors="pt")
-        outputs = self.model.generate(**inputs)
-        
-        translation = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
-        return TranslationResponseDto(translation, translation_request.src_language, translation_request.dest_language)
-
     def load_model(self, src_language: Language, dest_language: Language):
         model_name = self.language_code_service.get_model_name(src_language, dest_language)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)

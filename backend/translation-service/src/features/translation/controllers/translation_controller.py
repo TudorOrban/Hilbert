@@ -19,7 +19,6 @@ def translate() -> tuple[TranslationResponseDto, int]:
         )
 
         response_dto = translation_service.translate(dto)
-        
         response_json = json.dumps(response_dto.__dict__, cls=CustomJSONEncoder)
         return response_json, 200
     except Exception as e: 

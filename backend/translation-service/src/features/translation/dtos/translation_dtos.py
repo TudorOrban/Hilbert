@@ -12,6 +12,6 @@ class TranslationRequestDto:
 
 @dataclass
 class TranslationResponseDto:
-    translation: str
+    translation: dict[str, str]
     src_language: Language
     dest_language: Language
