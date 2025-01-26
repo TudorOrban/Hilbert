@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import os
 import re
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 from src.features.translation.dtos.translation_dtos import TranslationRequestDto, TranslationResponseDto
@@ -24,7 +24,7 @@ class TranslationService:
         words = re.findall(r'\b\w+\b', translation_request.content)
         unique_words = list(set(words))
 
-        translation_map: Dict[str, str] = {}
+        translation_map: Dict[str, List[str]] = {}
 
         for word in unique_words:
             # Look in the cache
@@ -39,7 +39,7 @@ class TranslationService:
             inputs = self.tokenizer(word, return_tensors="pt")
             outputs = self.model.generate(**inputs)
             translation = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            translation_map[word] = translation
+            translation_map[word] = [translation]
 
             # Cache result
             self.cache[cache_key] = {

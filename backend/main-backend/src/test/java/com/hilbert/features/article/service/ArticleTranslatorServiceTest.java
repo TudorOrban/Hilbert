@@ -1,5 +1,7 @@
 package com.hilbert.features.article.service;
 
+import com.hilbert.features.article.dto.TranslationRequestDto;
+import com.hilbert.features.article.dto.TranslationResponseDto;
 import com.hilbert.features.article.model.TranslatedContent;
 import com.hilbert.shared.common.enums.Language;
 import org.junit.jupiter.api.Test;
@@ -8,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class ArticleTranslatorServiceTest {
 
     @InjectMocks
-    private ArticleTranslatorServiceImpl articleTranslatorService;
+    private ArticleTranslatorServiceOldImpl articleTranslatorService;
 
     @Test
     public void whenReceivedContent_thenCorrectTranslationShouldBeReturned() {
@@ -34,10 +35,10 @@ public class ArticleTranslatorServiceTest {
         expectedTranslationMap.put("heureux", new ArrayList<>(List.of("heureux")));
 
         // Act
-        TranslatedContent resultContent = articleTranslatorService.translateContent(content, srcLanguage, destLanguage);
+        TranslationResponseDto resultContent = articleTranslatorService.translateContent(new TranslationRequestDto(content, srcLanguage, destLanguage));
 
         // Assert
         assertThat(resultContent).isNotNull();
-        assertThat(resultContent.getTranslationMap()).isEqualTo(expectedTranslationMap);
+        assertThat(resultContent.getTranslation()).isEqualTo(expectedTranslationMap);
     }
 }

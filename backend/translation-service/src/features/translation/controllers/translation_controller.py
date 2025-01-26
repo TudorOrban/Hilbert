@@ -11,7 +11,7 @@ translation_service = TranslationService();
 security_service = SecurityService();
 
 @translation_bp.route('/translate', methods=['POST'])
-def translate() -> tuple[TranslationResponseDto, int]:
+def translate() -> tuple[dict, int]:
     try:
         if security_service.can_access_translate_route(request) == False:
             return jsonify({"error": "Unauthorized"}), 401
@@ -24,15 +24,14 @@ def translate() -> tuple[TranslationResponseDto, int]:
         )
 
         response_dto = translation_service.translate(dto)
-        response_json = json.dumps(response_dto.__dict__, cls=CustomJSONEncoder)
+
+        response_json = json.dumps(response_dto.to_dict(), cls=CustomJSONEncoder)
         return response_json, 200
     except Exception as e: 
         return str(e), 500
     
 
-# Register Custom JSON Ecnoder
 @translation_bp.after_request
 def apply_caching(response):
     response.content_type = "application/json"
-    response.data = json.dumps(json.loads(response.data), cls=CustomJSONEncoder)
     return response

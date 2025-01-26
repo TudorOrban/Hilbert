@@ -1,7 +1,7 @@
 package com.hilbert.features.article.controller;
 
 import com.hilbert.features.article.dto.TranslationRequestDto;
-import com.hilbert.features.article.model.TranslatedContent;
+import com.hilbert.features.article.dto.TranslationResponseDto;
 import com.hilbert.features.article.service.ArticleTranslatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class TemporaryController {
     }
 
     @GetMapping
-    public ResponseEntity<TranslatedContent> translateContent(@RequestBody TranslationRequestDto translateDto) {
-        TranslatedContent translatedContent = articleTranslatorService.translateContent(translateDto.getContent(), translateDto.getSrcLanguage(), translateDto.getDestLanguage());
+    public ResponseEntity<TranslationResponseDto> translateContent(@RequestBody TranslationRequestDto translateDto) {
+        TranslationResponseDto translatedContent = articleTranslatorService.translateContent(translateDto);
 
         return ResponseEntity.ok(translatedContent);
     }

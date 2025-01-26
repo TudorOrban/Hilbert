@@ -8,3 +8,4 @@ class CustomJSONEncoder(json.JSONEncoder):
         if isinstance(obj, Enum):
             return obj.name
         return super().default(obj)
+    
