@@ -1,5 +1,6 @@
 import json
 from flask import Blueprint, jsonify, request
+from src.core.security.security_service import SecurityService
 from src.shared.common.util.json_encoder import CustomJSONEncoder
 from src.features.translation.dtos.translation_dtos import TranslationRequestDto, TranslationResponseDto
 from src.features.translation.services.translation_service import TranslationService
@@ -7,10 +8,14 @@ from src.shared.language.models.language import Language
 
 translation_bp = Blueprint("translation", __name__)
 translation_service = TranslationService();
+security_service = SecurityService();
 
 @translation_bp.route('/translate', methods=['POST'])
 def translate() -> tuple[TranslationResponseDto, int]:
     try:
+        if security_service.can_access_translate_route(request) == False:
+            return jsonify({"error": "Unauthorized"}), 401
+
         data = request.get_json() 
         dto = TranslationRequestDto(
             content=data.get("content", ""),
