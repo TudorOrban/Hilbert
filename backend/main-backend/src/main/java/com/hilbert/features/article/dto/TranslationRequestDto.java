@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TemporaryTranslateDto {
+public class TranslationRequestDto {
     String content;
     Language srcLanguage;
     Language destLanguage;

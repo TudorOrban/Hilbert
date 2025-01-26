@@ -9,3 +9,9 @@ class TranslationRequestDto:
     content: str
     src_language: Language
     dest_language: Language
+
+@dataclass
+class TranslationResponseDto:
+    translation: str
+    src_language: Language
+    dest_language: Language
