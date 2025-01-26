@@ -23,9 +23,9 @@ class TranslationService:
         for word in words:
             inputs = self.tokenizer(word, return_tensors="pt")
             outputs = self.model.generate(**inputs)
-            translations = [self.tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-            translation_map[word] = translations
-        
+            translation = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+            translation_map[word] = translation
+
         return TranslationResponseDto(translation_map, translation_request.src_language, translation_request.dest_language)
 
 
