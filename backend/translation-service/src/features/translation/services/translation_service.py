@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 import os
 import re
+from typing import Dict, Tuple
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 from src.features.translation.dtos.translation_dtos import TranslationRequestDto, TranslationResponseDto
@@ -12,20 +14,38 @@ class TranslationService:
         self.model = None
         self.tokenizer = None
         self.preload_models()
+        self.cache: Dict[str, Tuple[str, str]] = {}
+        self.cache_ttl = timedelta(hours=4)
 
     def translate(self, translation_request: TranslationRequestDto) -> TranslationResponseDto:
         self.load_model(translation_request.src_language, translation_request.dest_language)
         
+        # Break text into unique words to be translated
         words = re.findall(r'\b\w+\b', translation_request.content)
         unique_words = list(set(words))
 
-        translation_map = {}
+        translation_map: Dict[str, str] = {}
 
         for word in unique_words:
+            # Look in the cache
+            cache_key = (translation_request.src_language, translation_request.dest_language, word)
+            if cache_key in self.cache:
+                cached_entry = self.cache[cache_key]
+                if datetime.now() - cached_entry["timestamp"] < self.cache_ttl:
+                    translation_map[word] = cached_entry["translation"]
+                    continue
+
+            # Run inference
             inputs = self.tokenizer(word, return_tensors="pt")
             outputs = self.model.generate(**inputs)
             translation = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
             translation_map[word] = translation
+
+            # Cache result
+            self.cache[cache_key] = {
+                "translation": translation,
+                "timestamp": datetime.now()
+            }
 
         return TranslationResponseDto(translation_map, translation_request.src_language, translation_request.dest_language)
 

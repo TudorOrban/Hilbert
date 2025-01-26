@@ -8,11 +8,12 @@ from src.features.translation.services.translation_service import TranslationSer
 from src.shared.language.models.language import Language
 
 """
-Class to test how the translate function scales with time. Results:
+Class to test how the translate function scales with time. Results (without caching):
 - 10 words: 8.36 s
 - 50 words: 13.23 s
 - 150 words: 28.59 s
 - 300 words: 58.44 s
+The results show a superlinear growth that requires future investigation.
 """
 class TestTranslationServicePerformance(unittest.TestCase):
 
