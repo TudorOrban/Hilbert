@@ -38,7 +38,8 @@ export class AuthService {
         const username = this.getUsernameFromToken();
         if (!username) {
             console.error("Invalid token");
-            this.router.navigate(['/home']);
+            this.cookieService.delete('jwtToken');
+            this.router.navigate(['/login']);
             return;
         }
 
@@ -56,7 +57,6 @@ export class AuthService {
     }
 
     fetchAndSetCurrentUser(username: string): void {
-        console.log("username", username);
         this.userService.getUserByUsername(username).subscribe(
             (user) => {
                 console.log("User: ", user);

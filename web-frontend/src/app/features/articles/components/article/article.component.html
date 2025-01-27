@@ -1,6 +1,7 @@
+<!-- Header -->
 <div class="flex w-full space-x-4 p-6 border border-gray-300 shadow-sm rounded-md">
 
-    <div class="flex-grow w-full space-y-2">
+    <div class="flex-grow space-y-2">
         <div class="text-lg font-semibold">{{ article?.title }}</div>
         <div class="text-gray-800">{{ article?.description }}</div>
 
@@ -30,3 +31,6 @@
         </div>
     </div>
 </div>
+
+<!-- Content -->
+ <app-overlayed-text [article]="article" class="h-full"></app-overlayed-text>

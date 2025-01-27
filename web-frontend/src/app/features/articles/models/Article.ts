@@ -6,6 +6,7 @@ export interface ArticleFullDto {
     title: string;
     description?: string;
     content: string;
+    translatedContent: TranslatedContent;
     language: Language;
     level: DifficultyLevel;
     status: ArticleStatus;
@@ -70,3 +71,9 @@ export enum ArticleStatus {
     PRIVATE,
     DRAFT
 };
+
+export interface TranslatedContent {
+    translationMap: Record<string, string[]>;
+    srcLanguage: Language;
+    destLanguage: Language;
+}

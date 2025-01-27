@@ -11,7 +11,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReadWords {
+public class VocabularyData {
 
     private HashMap<String, List<LocalDateTime>> wordsReadDates;
+    private List<Long> readArticles;
 }

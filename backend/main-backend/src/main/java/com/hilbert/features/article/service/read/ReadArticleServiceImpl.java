@@ -4,7 +4,7 @@ import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.features.article.dto.ReadArticleDto;
 import com.hilbert.features.article.model.Article;
 import com.hilbert.features.article.repository.ArticleRepository;
-import com.hilbert.features.vocabulary.model.ReadWords;
+import com.hilbert.features.vocabulary.model.VocabularyData;
 import com.hilbert.features.vocabulary.model.Vocabulary;
 import com.hilbert.features.vocabulary.service.VocabularyService;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
@@ -49,24 +49,32 @@ public class ReadArticleServiceImpl implements ReadArticleService {
 
         Vocabulary vocabulary = vocabularyService.findOrCreateVocabulary(userId, article.getLanguage());
 
-        ReadWords readWords = this.determineUpdatedReadWords(vocabulary, article);
+        VocabularyData vocabularyData = this.determineUpdatedVocabularyData(vocabulary, article);
 
-        Vocabulary savedVocabulary = vocabularyService.updateReadWords(vocabulary.getId(), readWords);
+        Vocabulary savedVocabulary = vocabularyService.updateVocabularyData(vocabulary.getId(), vocabularyData);
 
-        // TODO: Mark article as read for user
+        // TODO: Register article as read in future User Learning data as well
 
         return savedVocabulary;
     }
 
-    private ReadWords determineUpdatedReadWords(Vocabulary vocabulary, Article article) {
+    private VocabularyData determineUpdatedVocabularyData(Vocabulary vocabulary, Article article) {
         List<String> words = textWordsManager.getTextWords(article.getContent(), true);
-        ReadWords readWords = vocabulary.getReadWords();
+        VocabularyData vocabularyData = vocabulary.getVocabularyData();
         LocalDateTime now = LocalDateTime.now();
 
+        // Add newly read words to vocabulary
         for (String word : words) {
-            readWords.getWordsReadDates().computeIfAbsent(word, k -> new ArrayList<>()).add(now);
+            vocabularyData.getWordsReadDates().computeIfAbsent(word, k -> new ArrayList<>()).add(now);
         }
 
-        return readWords;
+        // Register article as read
+        if (vocabularyData.getReadArticles().isEmpty()) {
+            vocabularyData.setReadArticles(new ArrayList<>(List.of(article.getId())));
+        } else {
+            vocabularyData.getReadArticles().add(article.getId());
+        }
+
+        return vocabularyData;
     }
 }

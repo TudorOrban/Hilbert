@@ -1,6 +1,6 @@
 package com.hilbert.features.vocabulary.service;
 
-import com.hilbert.features.vocabulary.model.ReadWords;
+import com.hilbert.features.vocabulary.model.VocabularyData;
 import com.hilbert.features.vocabulary.model.Vocabulary;
 import com.hilbert.features.vocabulary.repository.VocabularyRepository;
 import com.hilbert.shared.common.enums.Language;
@@ -41,11 +41,11 @@ public class VocabularyServiceImpl implements VocabularyService {
         return foundVocabulary;
     }
 
-    public Vocabulary updateReadWords(Long vocabularyId, ReadWords readWords) {
+    public Vocabulary updateVocabularyData(Long vocabularyId, VocabularyData vocabularyData) {
         Vocabulary vocabulary = vocabularyRepository.findById(vocabularyId)
                 .orElseThrow(() -> new ResourceNotFoundException(vocabularyId.toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
 
-        vocabulary.setReadWords(readWords);
+        vocabulary.setVocabularyData(vocabularyData);
 
         return vocabularyRepository.save(vocabulary);
     }
@@ -54,7 +54,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.setUserId(userId);
         vocabulary.setLanguage(language);
-        vocabulary.setReadWords(new ReadWords(new HashMap<>()));
+        vocabulary.setVocabularyData(new VocabularyData());
 
         return vocabularyRepository.save(vocabulary);
     }

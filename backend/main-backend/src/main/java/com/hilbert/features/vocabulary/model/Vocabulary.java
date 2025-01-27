@@ -37,35 +37,35 @@ public class Vocabulary {
     private LocalDateTime updatedAt;
 
     // Manual (de)serialization and caching of JSON column
-    @Column(name = "read_words", columnDefinition = "TEXT")
-    private String readWordsJson;
+    @Column(name = "vocabulary_data", columnDefinition = "TEXT")
+    private String vocabularyDataJson;
 
     @Transient
-    private ReadWords readWords;
+    private VocabularyData vocabularyData;
 
-    public ReadWords getReadWords() {
-        if (this.readWords != null || this.readWordsJson == null) {
-            return this.readWords;
+    public VocabularyData getVocabularyData() {
+        if (this.vocabularyData != null || this.vocabularyDataJson == null) {
+            return this.vocabularyData;
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         try {
-            this.readWords = objectMapper.readValue(this.readWordsJson, ReadWords.class);
+            this.vocabularyData = objectMapper.readValue(this.vocabularyDataJson, VocabularyData.class);
         } catch (JsonProcessingException e) {
             throw new ValidationException("Invalid Read Words found: " + e.getMessage());
         }
-        return this.readWords;
+        return this.vocabularyData;
     }
 
-    public void setReadWords(ReadWords readWords) {
-        this.readWords = readWords;
+    public void setVocabularyData(VocabularyData vocabularyData) {
+        this.vocabularyData = vocabularyData;
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
         try {
-            this.readWordsJson = objectMapper.writeValueAsString(readWords);
+            this.vocabularyDataJson = objectMapper.writeValueAsString(vocabularyData);
         } catch (JsonProcessingException e) {
             throw new ValidationException("Invalid Read Words received: " + e.getMessage());
         }

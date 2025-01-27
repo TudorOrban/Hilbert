@@ -77,7 +77,7 @@ public class Article {
     private Integer bookmarkCount;
 
 
-    // Manual (de)serialization and caching of JSON column
+    // Manual (de)serialization and caching of JSON columns
     @Column(name = "translated_content", columnDefinition = "TEXT")
     private String translatedContentJson;
 

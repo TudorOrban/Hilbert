@@ -1,0 +1,6 @@
+<div class="p-8 relative h-full overflow-y-auto">
+    <span *ngFor="let word of words" class="inline mr-1 text-gray-800 cursor-pointer" (click)="showPopover($event, word)">
+        {{ word }}
+    </span>
+    <app-popover [text]="translation" [visible]="popoverVisible" [position]="popoverPosition"></app-popover>
+</div>
