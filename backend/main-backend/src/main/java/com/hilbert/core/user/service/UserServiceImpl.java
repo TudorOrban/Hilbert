@@ -10,6 +10,7 @@ import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
+import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoderUtil passwordEncoderUtil;
+    private final EntitySanitizerService entitySanitizerService;
 
     @Autowired
     public UserServiceImpl(
         UserRepository userRepository,
-        PasswordEncoderUtil passwordEncoderUtil
+        PasswordEncoderUtil passwordEncoderUtil,
+        EntitySanitizerService entitySanitizerService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoderUtil = passwordEncoderUtil;
+        this.entitySanitizerService = entitySanitizerService;
     }
 
     public UserDataDto getByUsername(String username) {
@@ -37,15 +41,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDataDto createUser(CreateUserDto userDto) {
-        if (userRepository.existsByUsername(userDto.getUsername())) {
-            throw new ResourceAlreadyExistsException(userDto.getUsername(), ResourceType.USER, ResourceIdentifierType.USERNAME);
+        CreateUserDto sanitizedUserDto = entitySanitizerService.sanitizeCreateUserDto(userDto);
+
+        if (userRepository.existsByUsername(sanitizedUserDto.getUsername())) {
+            throw new ResourceAlreadyExistsException(sanitizedUserDto.getUsername(), ResourceType.USER, ResourceIdentifierType.USERNAME);
         }
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new ResourceAlreadyExistsException(userDto.getUsername(), ResourceType.USER, ResourceIdentifierType.EMAIL);
+        if (userRepository.existsByEmail(sanitizedUserDto.getEmail())) {
+            throw new ResourceAlreadyExistsException(sanitizedUserDto.getUsername(), ResourceType.USER, ResourceIdentifierType.EMAIL);
         }
 
-        User user = UserMapper.INSTANCE.createUserDtoToUser(userDto);
-        user.setPasswordHash(passwordEncoderUtil.encode(userDto.getPassword()));
+        User user = UserMapper.INSTANCE.createUserDtoToUser(sanitizedUserDto);
+        user.setPasswordHash(passwordEncoderUtil.encode(sanitizedUserDto.getPassword()));
 
         User savedUser = this.userRepository.save(user);
 
@@ -53,11 +59,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDataDto updateUser(UpdateUserDto userDto) {
-        User existingUser = this.userRepository.findById(userDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(userDto.getId().toString(), ResourceType.USER, ResourceIdentifierType.ID));
+        UpdateUserDto sanitizedUserDto = entitySanitizerService.sanitizeUpdateUserDto(userDto);
 
-        existingUser.setUsername(userDto.getUsername());
-        existingUser.setEmail(userDto.getEmail());
+        User existingUser = this.userRepository.findById(sanitizedUserDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(sanitizedUserDto.getId().toString(), ResourceType.USER, ResourceIdentifierType.ID));
+
+        existingUser.setUsername(sanitizedUserDto.getUsername());
+        existingUser.setEmail(sanitizedUserDto.getEmail());
 
         User updatedUser = this.userRepository.save(existingUser);
 

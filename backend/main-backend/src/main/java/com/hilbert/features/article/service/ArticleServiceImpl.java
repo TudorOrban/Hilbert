@@ -8,6 +8,7 @@ import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
+import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.search.models.ArticleSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,17 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
+    private final EntitySanitizerService sanitizationService;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleServiceImpl(
+        ArticleRepository articleRepository,
+        UserRepository userRepository,
+        EntitySanitizerService sanitizationService
+    ) {
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
+        this.sanitizationService = sanitizationService;
     }
 
     public ArticleFullDto getArticleById(Long id) {
@@ -44,28 +51,32 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ArticleFullDto createArticle(CreateArticleDto articleDto) {
-        if (!userRepository.existsById(articleDto.getUserId())) {
-            throw new ResourceNotFoundException(articleDto.getUserId().toString(), ResourceType.USER, ResourceIdentifierType.ID);
+        CreateArticleDto sanitizedArticleDto = sanitizationService.sanitizeCreateArticleDto(articleDto);
+
+        if (!userRepository.existsById(sanitizedArticleDto.getUserId())) {
+            throw new ResourceNotFoundException(sanitizedArticleDto.getUserId().toString(), ResourceType.USER, ResourceIdentifierType.ID);
         }
-        if (articleRepository.hasNonUniqueTitle(articleDto.getUserId(), articleDto.getTitle())) {
-            throw new ResourceAlreadyExistsException(articleDto.getTitle(), ResourceType.ARTICLE, ResourceIdentifierType.TITLE);
+        if (articleRepository.hasNonUniqueTitle(sanitizedArticleDto.getUserId(), sanitizedArticleDto.getTitle())) {
+            throw new ResourceAlreadyExistsException(sanitizedArticleDto.getTitle(), ResourceType.ARTICLE, ResourceIdentifierType.TITLE);
         }
 
-        Article article = this.mapCreateArticleDtoToArticle(articleDto);
+        Article article = this.mapCreateArticleDtoToArticle(sanitizedArticleDto);
         Article savedArticle = articleRepository.save(article);
 
         return this.mapArticleToArticleFullDto(savedArticle);
     }
 
     public ArticleFullDto updateArticle(UpdateArticleDto articleDto) {
-        Article existingArticle = articleRepository.findById(articleDto.getId())
-            .orElseThrow(() -> new ResourceNotFoundException(articleDto.getId().toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
+        UpdateArticleDto sanitizedArticleDto = sanitizationService.sanitizeUpdateArticleDto(articleDto);
 
-        existingArticle.setTitle(articleDto.getTitle());
-        existingArticle.setDescription(articleDto.getDescription());
-        existingArticle.setContent(articleDto.getContent());
-        existingArticle.setLanguage(articleDto.getLanguage());
-        existingArticle.setLevel(articleDto.getLevel());
+        Article existingArticle = articleRepository.findById(sanitizedArticleDto.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(sanitizedArticleDto.getId().toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
+
+        existingArticle.setTitle(sanitizedArticleDto.getTitle());
+        existingArticle.setDescription(sanitizedArticleDto.getDescription());
+        existingArticle.setContent(sanitizedArticleDto.getContent());
+        existingArticle.setLanguage(sanitizedArticleDto.getLanguage());
+        existingArticle.setLevel(sanitizedArticleDto.getLevel());
 
         Article updatedArticle = articleRepository.save(existingArticle);
 

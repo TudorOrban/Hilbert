@@ -14,7 +14,7 @@ class TranslationService:
         self.model = None
         self.tokenizer = None
         self.preload_models()
-        self.cache: Dict[str, Tuple[str, str]] = {}
+        self.cache: Dict[str, Tuple[List[str], str]] = {}
         self.cache_ttl = timedelta(hours=4)
 
     def translate(self, translation_request: TranslationRequestDto) -> TranslationResponseDto:
@@ -43,7 +43,7 @@ class TranslationService:
 
             # Cache result
             self.cache[cache_key] = {
-                "translation": translation,
+                "translation": [translation],
                 "timestamp": datetime.now()
             }
 
