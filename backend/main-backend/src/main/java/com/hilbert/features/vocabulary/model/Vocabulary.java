@@ -2,6 +2,7 @@ package com.hilbert.features.vocabulary.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hilbert.shared.common.enums.Language;
 import com.hilbert.shared.error.types.ValidationException;
 import jakarta.persistence.*;
@@ -48,6 +49,8 @@ public class Vocabulary {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
         try {
             this.readWords = objectMapper.readValue(this.readWordsJson, ReadWords.class);
         } catch (JsonProcessingException e) {
@@ -59,6 +62,8 @@ public class Vocabulary {
     public void setReadWords(ReadWords readWords) {
         this.readWords = readWords;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
         try {
             this.readWordsJson = objectMapper.writeValueAsString(readWords);
         } catch (JsonProcessingException e) {

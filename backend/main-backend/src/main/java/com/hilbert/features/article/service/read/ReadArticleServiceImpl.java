@@ -1,6 +1,7 @@
 package com.hilbert.features.article.service.read;
 
 import com.hilbert.core.user.repository.UserRepository;
+import com.hilbert.features.article.dto.ReadArticleDto;
 import com.hilbert.features.article.model.Article;
 import com.hilbert.features.article.repository.ArticleRepository;
 import com.hilbert.features.vocabulary.model.ReadWords;
@@ -11,6 +12,10 @@ import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReadArticleServiceImpl implements ReadArticleService {
@@ -33,13 +38,14 @@ public class ReadArticleServiceImpl implements ReadArticleService {
         this.textWordsManager = textWordsManager;
     }
 
-    public void readArticle(Long userId, Long articleId) {
+    public Vocabulary readArticle(ReadArticleDto readArticleDto) {
+        Long userId = readArticleDto.getUserId();
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException(userId.toString(), ResourceType.USER, ResourceIdentifierType.ID);
         }
 
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(() -> new ResourceNotFoundException(articleId.toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
+        Article article = articleRepository.findById(readArticleDto.getArticleId())
+                .orElseThrow(() -> new ResourceNotFoundException(readArticleDto.getArticleId().toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
 
         Vocabulary vocabulary = vocabularyService.findOrCreateVocabulary(userId, article.getLanguage());
 
@@ -48,9 +54,19 @@ public class ReadArticleServiceImpl implements ReadArticleService {
         Vocabulary savedVocabulary = vocabularyService.updateReadWords(vocabulary.getId(), readWords);
 
         // TODO: Mark article as read for user
+
+        return savedVocabulary;
     }
 
     private ReadWords determineUpdatedReadWords(Vocabulary vocabulary, Article article) {
-        return null;
+        List<String> words = textWordsManager.getTextWords(article.getContent(), true);
+        ReadWords readWords = vocabulary.getReadWords();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (String word : words) {
+            readWords.getWordsReadDates().computeIfAbsent(word, k -> new ArrayList<>()).add(now);
+        }
+
+        return readWords;
     }
 }

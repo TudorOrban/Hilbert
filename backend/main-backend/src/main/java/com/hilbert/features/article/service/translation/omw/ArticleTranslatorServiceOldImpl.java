@@ -44,7 +44,7 @@ public class ArticleTranslatorServiceOldImpl implements ArticleTranslatorService
     }
 
     public TranslationResponseDto translateContent(TranslationRequestDto translationRequestDto) {
-        List<String> contentWords = textWordsManager.getTextWords(translationRequestDto.getContent());
+        List<String> contentWords = textWordsManager.getTextWords(translationRequestDto.getContent(), false);
 
         HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService
                 .identifySynsetILIs(contentWords, translationRequestDto.getSrcLanguage());

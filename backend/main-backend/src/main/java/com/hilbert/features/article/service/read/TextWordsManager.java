@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface TextWordsManager {
 
-    List<String> getTextWords(String text);
+    List<String> getTextWords(String text, Boolean allowDuplicates);
 }

@@ -1,6 +1,9 @@
 package com.hilbert.features.article.service.read;
 
+import com.hilbert.features.article.dto.ReadArticleDto;
+import com.hilbert.features.vocabulary.model.Vocabulary;
+
 public interface ReadArticleService {
 
-    void readArticle(Long userId, Long articleId);
+    Vocabulary readArticle(ReadArticleDto readArticleDto);
 }

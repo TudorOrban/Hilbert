@@ -1,9 +1,8 @@
 package com.hilbert.features.article.controller;
 
-import com.hilbert.features.article.dto.ArticleFullDto;
-import com.hilbert.features.article.dto.ArticleSearchDto;
-import com.hilbert.features.article.dto.CreateArticleDto;
-import com.hilbert.features.article.dto.UpdateArticleDto;
+import com.hilbert.features.article.dto.*;
+import com.hilbert.features.article.service.read.ReadArticleService;
+import com.hilbert.features.vocabulary.model.Vocabulary;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
 import com.hilbert.features.article.service.ArticleService;
@@ -18,10 +17,15 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReadArticleService readArticleService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(
+        ArticleService articleService,
+        ReadArticleService readArticleService
+    ) {
         this.articleService = articleService;
+        this.readArticleService = readArticleService;
     }
 
     @GetMapping("/{id}")
@@ -53,6 +57,12 @@ public class ArticleController {
     public ResponseEntity<ArticleFullDto> createArticle(@RequestBody CreateArticleDto articleDto) {
         ArticleFullDto createdArticle = articleService.createArticle(articleDto);
         return ResponseEntity.ok(createdArticle);
+    }
+
+    @PostMapping("/read")
+    public ResponseEntity<Vocabulary> readArticle(@RequestBody ReadArticleDto readArticleDto) {
+        Vocabulary vocabulary = readArticleService.readArticle(readArticleDto);
+        return ResponseEntity.ok(vocabulary);
     }
 
     @PutMapping
