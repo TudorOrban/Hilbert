@@ -1,11 +1,7 @@
-package com.hilbert.features.article.service;
+package com.hilbert.features.article.service.translation.omw;
 
 import com.hilbert.features.article.dto.TranslationRequestDto;
 import com.hilbert.features.article.dto.TranslationResponseDto;
-import com.hilbert.features.article.service.translation.SynsetWordFinderService;
-import com.hilbert.features.article.service.translation.SynsetWordFinderServiceImpl;
-import com.hilbert.features.article.service.translation.WordSynsetFinderService;
-import com.hilbert.features.article.service.translation.WordSynsetFinderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.hilbert.features.article.service.translation;
+package com.hilbert.features.article.service.translation.omw;
 
 import com.hilbert.shared.common.enums.Language;
 

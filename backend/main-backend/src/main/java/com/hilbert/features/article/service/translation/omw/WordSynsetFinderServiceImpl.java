@@ -1,4 +1,4 @@
-package com.hilbert.features.article.service.translation;
+package com.hilbert.features.article.service.translation.omw;
 
 import com.hilbert.shared.common.enums.Language;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +15,22 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
+public class WordSynsetFinderServiceImpl implements WordSynsetFinderService {
 
     private final ResourceLoader resourceLoader;
 
     @Autowired
-    public SynsetWordFinderServiceImpl(ResourceLoader resourceLoader) {
+    public WordSynsetFinderServiceImpl(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
-    public HashMap<String, Set<String>> identifyTranslationsByILIs(HashMap<String, List<String>> wordSynsetILIs, Language language) {
+    public HashMap<String, List<String>> identifySynsetILIs(List<String> contentWords, Language language) {
         String filePath = OMWFileFinderUtil.getFilePathByLanguage(language);
 
         try {
@@ -36,50 +39,17 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
             XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(inputStream);
 
-            HashMap<String, List<String>> wordDestSynsetIds = findWordDestSynsetIds(wordSynsetILIs, reader);
-
-            // Create a new reader for the second traversal
-            inputStream = resource.getInputStream();
-            reader = xmlInputFactory.createXMLEventReader(inputStream);
-
-            return findTranslatedWords(wordDestSynsetIds, reader);
+            return findWordSynsetILIs(contentWords, reader);
         } catch (XMLStreamException | IOException e) {
             throw new RuntimeException("Error processing XML file: ", e);
         }
     }
 
-    private HashMap<String, List<String>> findWordDestSynsetIds(HashMap<String, List<String>> wordSynsetILIs, XMLEventReader reader) throws XMLStreamException {
+    private HashMap<String, List<String>> findWordSynsetILIs(List<String> contentWords, XMLEventReader reader) throws XMLStreamException {
         HashMap<String, List<String>> wordSynsetIds = new HashMap<>();
-
-        while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
-            if (!nextEvent.isStartElement()) {
-                continue;
-            }
-            StartElement startElement = nextEvent.asStartElement();
-
-            String localPart = startElement.getName().getLocalPart();
-            if (!Objects.equals(localPart, "Synset")) {
-                continue;
-            }
-
-            String synsetId = startElement.getAttributeByName(new QName("id")).getValue();
-            String synsetILI = startElement.getAttributeByName(new QName("ili")).getValue();
-
-            for (Map.Entry<String, List<String>> entry : wordSynsetILIs.entrySet()) {
-                if (entry.getValue().contains(synsetILI)) {
-                    wordSynsetIds.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(synsetId);
-                }
-            }
-        }
-
-        return wordSynsetIds;
-    }
-
-    private HashMap<String, Set<String>> findTranslatedWords(HashMap<String, List<String>> wordDestSynsetIds, XMLEventReader reader) throws XMLStreamException {
-        HashMap<String, Set<String>> wordTranslationsMap = new HashMap<>();
+        HashMap<String, List<String>> wordSynsetILIs = new HashMap<>();
         String currentLexicalEntryId = null;
-        String currentWord = null;
+        String currentMatchedWord = null;
 
         while (reader.hasNext()) {
             XMLEvent nextEvent = reader.nextEvent();
@@ -88,7 +58,7 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
                 EndElement endElement = nextEvent.asEndElement();
                 if (endElement.getName().getLocalPart().equals("LexicalEntry")) {
                     currentLexicalEntryId = null;
-                    currentWord = null;
+                    currentMatchedWord = null;
                 }
             }
 
@@ -102,25 +72,39 @@ public class SynsetWordFinderServiceImpl implements SynsetWordFinderService {
                     currentLexicalEntryId = startElement.getAttributeByName(new QName("id")).getValue();
                     break;
                 case "Lemma":
-                    currentWord = startElement.getAttributeByName(new QName("writtenForm")).getValue();
+                    String word = startElement.getAttributeByName(new QName("writtenForm")).getValue();
+
+                    if (contentWords.contains(word)) {
+                        currentMatchedWord = word;
+                    } else {
+                        currentMatchedWord = null;
+                    }
                     break;
                 case "Sense":
-                    if (currentLexicalEntryId == null || currentWord == null) {
+                    if (currentLexicalEntryId == null || currentMatchedWord == null) {
                         break;
                     }
 
                     String senseSynsetId = startElement.getAttributeByName(new QName("synset")).getValue();
 
-                    for (Map.Entry<String, List<String>> entry : wordDestSynsetIds.entrySet()) {
-                        if (entry.getValue().contains(senseSynsetId)) {
-                            wordTranslationsMap.computeIfAbsent(entry.getKey(), k -> new HashSet<>()).add(currentWord);
+                    wordSynsetIds.computeIfAbsent(currentMatchedWord, k -> new ArrayList<>()).add(senseSynsetId);
+                    break;
+                // Synset case can be handled in the same traversal as Synset elements are always after all the LexicalEntries
+                case "Synset":
+                    String synsetId = startElement.getAttributeByName(new QName("id")).getValue();
+                    String synsetILI = startElement.getAttributeByName(new QName("ili")).getValue();
+
+                    for (Map.Entry<String, List<String>> entry : wordSynsetIds.entrySet()) {
+                        if (entry.getValue().contains(synsetId)) {
+                            wordSynsetILIs.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(synsetILI);
                             break;
                         }
                     }
+                    break;
             }
         }
 
-        return wordTranslationsMap;
+        return wordSynsetILIs;
     }
 }
 

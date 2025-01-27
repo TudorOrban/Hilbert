@@ -2,7 +2,7 @@ package com.hilbert.features.article.controller;
 
 import com.hilbert.features.article.dto.TranslationRequestDto;
 import com.hilbert.features.article.dto.TranslationResponseDto;
-import com.hilbert.features.article.service.ArticleTranslatorService;
+import com.hilbert.features.article.service.translation.omw.ArticleTranslatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

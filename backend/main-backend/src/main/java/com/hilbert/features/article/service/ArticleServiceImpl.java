@@ -3,7 +3,10 @@ package com.hilbert.features.article.service;
 import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.features.article.dto.*;
 import com.hilbert.features.article.model.Article;
+import com.hilbert.features.article.model.TranslatedContent;
 import com.hilbert.features.article.repository.ArticleRepository;
+import com.hilbert.features.article.service.translation.omw.ArticleTranslatorService;
+import com.hilbert.shared.common.enums.Language;
 import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
@@ -18,16 +21,19 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleTranslatorService articleTranslatorService;
     private final UserRepository userRepository;
     private final EntitySanitizerService sanitizationService;
 
     @Autowired
     public ArticleServiceImpl(
         ArticleRepository articleRepository,
+        ArticleTranslatorService articleTranslatorService,
         UserRepository userRepository,
         EntitySanitizerService sanitizationService
     ) {
         this.articleRepository = articleRepository;
+        this.articleTranslatorService = articleTranslatorService;
         this.userRepository = userRepository;
         this.sanitizationService = sanitizationService;
     }
@@ -61,6 +67,12 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Article article = this.mapCreateArticleDtoToArticle(sanitizedArticleDto);
+
+        TranslationResponseDto translationResponseDto = articleTranslatorService.translateContent(
+                new TranslationRequestDto(article.getContent(), article.getLanguage(), Language.ENGLISH)); // TODO: Get destLanguage from user instead of ENGLISH
+        TranslatedContent translatedContent = this.mapTranslationResponseDtoToTranslatedContent(translationResponseDto);
+        article.setTranslatedContent(translatedContent);
+
         Article savedArticle = articleRepository.save(article);
 
         return this.mapArticleToArticleFullDto(savedArticle);
@@ -100,5 +112,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     private Article mapCreateArticleDtoToArticle(CreateArticleDto articleDto) {
         return ArticleMapper.INSTANCE.createArticleDtoToArticle(articleDto);
+    }
+
+    private TranslatedContent mapTranslationResponseDtoToTranslatedContent(TranslationResponseDto translationDto) {
+        return ArticleMapper.INSTANCE.translationResponseDtoToTranslatedContent(translationDto);
     }
 }

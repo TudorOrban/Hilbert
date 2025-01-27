@@ -1,6 +1,7 @@
 package com.hilbert.features.article.dto;
 
 import com.hilbert.features.article.model.Article;
+import com.hilbert.features.article.model.TranslatedContent;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -40,14 +41,18 @@ public interface ArticleMapper {
     @Mapping(source = "article.bookmarkCount", target = "bookmarkCount")
     ArticleSearchDto articleToArticleSearchDto(Article article);
 
-    @Mapping(target = "userId", source = "userId")
-    @Mapping(target = "title", source = "title")
+    @Mapping(source = "userId", target = "userId")
+    @Mapping(source = "title", target = "title")
     @Mapping(source = "description", target = "description")
-    @Mapping(target = "content", source = "content")
-    @Mapping(target = "language", source = "language")
-    @Mapping(target = "level", source = "level")
+    @Mapping(source = "content", target = "content")
+    @Mapping(source = "language", target = "language")
+    @Mapping(source = "level", target = "level")
     @Mapping(source = "status", target = "status")
     Article createArticleDtoToArticle(CreateArticleDto createArticleDto);
 
+    @Mapping(source = "translation", target = "translationMap")
+    @Mapping(source = "srcLanguage", target = "srcLanguage")
+    @Mapping(source = "destLanguage", target = "destLanguage")
+    TranslatedContent translationResponseDtoToTranslatedContent(TranslationResponseDto translationDto);
 
 }
