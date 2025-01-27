@@ -35,7 +35,8 @@ public class Vocabulary {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "read_words")
+    // Manual (de)serialization and caching of JSON column
+    @Column(name = "read_words", columnDefinition = "TEXT")
     private String readWordsJson;
 
     @Transient

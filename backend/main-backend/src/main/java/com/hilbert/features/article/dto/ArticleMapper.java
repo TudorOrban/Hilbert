@@ -15,6 +15,7 @@ public interface ArticleMapper {
     @Mapping(source = "article.title", target = "title")
     @Mapping(source = "article.description", target = "description")
     @Mapping(source = "article.content", target = "content")
+    @Mapping(source = "article.translatedContent", target = "translatedContent")
     @Mapping(source = "article.language", target = "language")
     @Mapping(source = "article.level", target = "level")
     @Mapping(source = "article.status", target = "status")

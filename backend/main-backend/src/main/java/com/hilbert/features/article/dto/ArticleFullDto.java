@@ -1,5 +1,6 @@
 package com.hilbert.features.article.dto;
 
+import com.hilbert.features.article.model.TranslatedContent;
 import com.hilbert.shared.common.enums.ArticleStatus;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
@@ -18,6 +19,7 @@ public class ArticleFullDto {
     private String title;
     private String description;
     private String content;
+    private TranslatedContent translatedContent;
     private Language language;
     private DifficultyLevel level;
     private ArticleStatus status;

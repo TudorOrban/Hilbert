@@ -2,6 +2,7 @@ package com.hilbert.features.article.service.translation.omw;
 
 import com.hilbert.features.article.dto.TranslationRequestDto;
 import com.hilbert.features.article.dto.TranslationResponseDto;
+import com.hilbert.features.article.service.read.TextWordsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,21 @@ public class ArticleTranslatorServiceOldImpl implements ArticleTranslatorService
 
     private final WordSynsetFinderService wordSynsetFinderService;
     private final SynsetWordFinderService synsetWordFinderService;
+    private final TextWordsManager textWordsManager;
 
     @Autowired
     public ArticleTranslatorServiceOldImpl(
             WordSynsetFinderServiceImpl wordSynsetFinderService,
-            SynsetWordFinderServiceImpl synsetWordFinderService
+            SynsetWordFinderServiceImpl synsetWordFinderService,
+            TextWordsManager textWordsManager
     ) {
         this.wordSynsetFinderService = wordSynsetFinderService;
         this.synsetWordFinderService = synsetWordFinderService;
+        this.textWordsManager = textWordsManager;
     }
 
     public TranslationResponseDto translateContent(TranslationRequestDto translationRequestDto) {
-        List<String> contentWords = getContentWords(translationRequestDto.getContent());
+        List<String> contentWords = textWordsManager.getTextWords(translationRequestDto.getContent());
 
         HashMap<String, List<String>> wordSynsetILIs = this.wordSynsetFinderService
                 .identifySynsetILIs(contentWords, translationRequestDto.getSrcLanguage());
@@ -49,20 +53,5 @@ public class ArticleTranslatorServiceOldImpl implements ArticleTranslatorService
                 .identifyTranslationsByILIs(wordSynsetILIs, translationRequestDto.getDestLanguage());
 
         return new TranslationResponseDto(translationMap, translationRequestDto.getSrcLanguage(), translationRequestDto.getDestLanguage());
-    }
-
-    private List<String> getContentWords(String content) {
-        String[] preWords = content.split(" ");
-
-        List<String> words = new ArrayList<>();
-        for (String preWord : preWords) {
-            String word = preWord.replaceAll("[.,?!;:'\"]*", "");
-
-            if (!words.contains(word)) {
-                words.add(word);
-            }
-        }
-
-        return words;
     }
 }
