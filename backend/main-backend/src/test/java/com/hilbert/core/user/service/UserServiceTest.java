@@ -7,6 +7,7 @@ import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
+import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,8 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoderUtil passwordEncoderUtil;
+    @Mock
+    private EntitySanitizerService entitySanitizerService;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -76,6 +79,7 @@ public class UserServiceTest {
         savedUser.setEmail(email);
         savedUser.setPasswordHash(hashedPassword);
 
+        when(entitySanitizerService.sanitizeCreateUserDto(any(CreateUserDto.class))).thenReturn(userDto);
         when(passwordEncoderUtil.encode(rawPassword)).thenReturn(hashedPassword);
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
@@ -93,6 +97,7 @@ public class UserServiceTest {
         // Arrange
         String username = "testuser";
         CreateUserDto userDto = new CreateUserDto(username, "test@example.com", "password");
+        when(entitySanitizerService.sanitizeCreateUserDto(any(CreateUserDto.class))).thenReturn(userDto);
         when(userRepository.existsByUsername(username)).thenReturn(true);
 
         // Act & Assert
@@ -115,6 +120,7 @@ public class UserServiceTest {
         existingUser.setUsername("beforeupdate");
         existingUser.setEmail("beforeupdate@example.com");
 
+        when(entitySanitizerService.sanitizeUpdateUserDto(any(UpdateUserDto.class))).thenReturn(userDto);
         when(userRepository.findById(id)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
 
@@ -135,6 +141,7 @@ public class UserServiceTest {
         String email = "test@example.com";
         UpdateUserDto userDto = new UpdateUserDto(id, username, email);
 
+        when(entitySanitizerService.sanitizeUpdateUserDto(any(UpdateUserDto.class))).thenReturn(userDto);
         when(userRepository.findById(id)).thenReturn(Optional.empty());
 
         // Act & Assert

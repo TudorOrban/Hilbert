@@ -170,6 +170,11 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<testFailureIgnore>true</testFailureIgnore>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
