@@ -13,7 +13,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 })
 export class LanguageSelectorComponent {
     languageOptions: LanguageUIItem[] = [];
-    selectedLanguage: Language = Language.ENGLISH;
+    selectedLanguage: Language = Language.FRENCH;
     isDropdownOpen = false;
 
     constructor(private languageService: LanguageOptionsService) {
