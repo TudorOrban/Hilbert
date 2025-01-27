@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ArticleFullDto } from '../../models/Article';
 import { CommonModule } from '@angular/common';
 import { PopoverComponent } from "../../../../shared/common/components/popover/popover.component";
@@ -18,6 +18,8 @@ export class OverlayedTextComponent implements OnChanges {
     popoverVisible: boolean = false;
     popoverPosition: { top: number, left: number } = { top: 0, left: 0 };
 
+    @ViewChild('contentContainer') contentContainer!: ElementRef;
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes["article"] && this.article?.content) {
             this.words = this.article?.content.split(/\s+/);
@@ -25,20 +27,32 @@ export class OverlayedTextComponent implements OnChanges {
     }
 
     showPopover(event: MouseEvent, word: string): void {
-        this.selectedWord = word;
-        this.translation = this.translate(word);
-        console.log("Translation: ", this.translation);
-        this.popoverVisible = true;
-        const sidebarOffset = 335;
-        const headerOffset = 240;
-        this.popoverPosition = { top: event.clientY - headerOffset, left: event.clientX - sidebarOffset };
-    }
+      const target = event.target as HTMLElement;
+      if (!target) {
+        return;
+      }
+
+      this.selectedWord = word;
+      this.translation = this.translate(word);
+      this.popoverVisible = true;
+      
+      const leftOffset = 30;
+      const topOffset = 60;
+      const rect = target.getBoundingClientRect();
+      const containerRect = this.contentContainer.nativeElement.getBoundingClientRect();
+      const containerScrollTop = this.contentContainer.nativeElement.scrollTop;
+
+      this.popoverPosition = {
+          top: rect.top - containerRect.top + containerScrollTop + rect.height / 2 - topOffset,
+          left: rect.left - containerRect.left + rect.width / 2 - leftOffset
+      };
+  }
 
     hidePopover(): void {
         this.popoverVisible = false;
     }
 
     translate(word: string): string {
-        return "Translation of " + word;
+        return this.article?.translatedContent.translationMap[word]?.[0] ?? "";
     }
 }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
 import { ArticleFullDto } from "../../models/Article";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faEye, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faEye, faSquareCheck, faStar } from "@fortawesome/free-solid-svg-icons";
 import { LanguageOptionsService } from "../../../../shared/language/services/language-options.service";
 import { OverlayedTextComponent } from "../overlayed-text/overlayed-text.component";
 
@@ -52,4 +52,6 @@ export class ArticleComponent implements OnInit {
 
     faStar = faStar;
     faEye = faEye;
+    faSquareCheck = faSquareCheck;
+    faEllipsisVertical = faEllipsisVertical;
 }
