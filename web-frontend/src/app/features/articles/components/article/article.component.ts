@@ -1,16 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
 import { ArticleFullDto } from "../../models/Article";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faAngleRight, faCheck, faEllipsisVertical, faEye, faSquareCheck, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faCheck, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { LanguageOptionsService } from "../../../../shared/language/services/language-options.service";
 import { OverlayedTextComponent } from "../overlayed-text/overlayed-text.component";
 import { AuthService } from "../../../../core/user/services/auth.service";
+import { ArticleHeaderComponent } from "../article-header/article-header.component";
 
 @Component({
     selector: "app-article",
-    imports: [FontAwesomeModule, OverlayedTextComponent],
+    imports: [FontAwesomeModule, OverlayedTextComponent, ArticleHeaderComponent],
     templateUrl: "./article.component.html",
     styleUrl: "./article.component.css",
 })
@@ -23,9 +24,10 @@ export class ArticleComponent implements OnInit {
 
     constructor(
         languageService: LanguageOptionsService,
-        private readonly route: ActivatedRoute,
         private readonly articleService: ArticleService,
         private readonly authService: AuthService,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
     ) {
         this.languageService = languageService;
     }
@@ -64,10 +66,15 @@ export class ArticleComponent implements OnInit {
         if (!this.articleId) {
             return;
         }
-        console.log("Test");
+        
         this.articleService.readArticle(this.articleId, this.userId).subscribe(
             (data) => {
-                console.log("Data: ", data);
+                this.router.navigate([`/reading/${this.articleId}/read`], {
+                    state: { 
+                        summary: data,
+                        article: this.article,
+                    }
+                });
             },
             (error) => {
                 console.error("Failed to Mark as Read: ", error);
@@ -75,8 +82,6 @@ export class ArticleComponent implements OnInit {
         );        
     }
 
-    faStar = faStar;
-    faEye = faEye;
     faEllipsisVertical = faEllipsisVertical;
     faCheck = faCheck;
     faAngleRight = faAngleRight;

@@ -9,6 +9,7 @@ import { ChatComponent } from './features/chats/components/chat/chat.component';
 import { GrammarComponent } from './features/exercises/components/grammar/grammar.component';
 import { AddArticleComponent } from './features/articles/components/add-article/add-article.component';
 import { ArticleComponent } from './features/articles/components/article/article.component';
+import { ReadArticleSummaryComponent } from './features/articles/components/read-article-summary/read-article-summary.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'reading', component: ReadingComponent, canActivate: [AuthGuard] },
     { path: 'reading/add-article', component: AddArticleComponent, canActivate: [AuthGuard] },
     { path: 'reading/:articleId', component: ArticleComponent, canActivate: [AuthGuard] },
+    { path: 'reading/:articleId/read', component: ReadArticleSummaryComponent, canActivate: [AuthGuard] },
     { path: 'vocabulary', component: VocabularyComponent, canActivate: [AuthGuard] },
     { path: 'grammar', component: GrammarComponent, canActivate: [AuthGuard] },
     { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },

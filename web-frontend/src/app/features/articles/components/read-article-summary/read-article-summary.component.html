@@ -1,0 +1,13 @@
+<div class="px-12 py-8">
+    <div class="text-xl font-semibold">
+        Article Read: {{ article?.title }}
+    </div>
+
+    <div *ngIf="summary">
+        <ul>
+            <li *ngFor="let word of summary?.newWords | keyvalue">
+                {{ word.key }}: {{ word.value }}
+            </li>
+        </ul>
+    </div>
+</div>
