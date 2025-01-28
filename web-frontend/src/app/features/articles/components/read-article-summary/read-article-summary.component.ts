@@ -3,14 +3,16 @@ import { ArticleFullDto, ReadArticleSummaryDto } from '../../models/Article';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCaretDown, faCaretUp, faStar, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faPlus, faStar, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ArticleCommentService } from '../../services/article-comment.service';
 import { CommentSearchParams, PaginatedResults } from '../../../../shared/search/models/Search';
-import { ArticleCommentDto } from '../../models/ArticleComment';
+import { ArticleCommentDto, CreateCommentDto } from '../../models/ArticleComment';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../../core/user/services/auth.service';
 
 @Component({
   selector: 'app-read-article-summary',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, FormsModule],
   templateUrl: './read-article-summary.component.html',
   styleUrl: './read-article-summary.component.css'
 })
@@ -18,6 +20,7 @@ export class ReadArticleSummaryComponent implements OnInit {
     summary?: ReadArticleSummaryDto;
     article?: ArticleFullDto;
     comments?: PaginatedResults<ArticleCommentDto>;
+    userId?: number;
 
     pageNumber: number = 0;
 
@@ -28,10 +31,14 @@ export class ReadArticleSummaryComponent implements OnInit {
     isNewWordsExpanded: boolean = false;
     isReadNextExpanded: boolean = false;
     isCommentsExpanded: boolean = false;
+    
+    isAddCommentOn: boolean = false;
+    addCommentContent: string = "";
 
     constructor(
         private readonly route: ActivatedRoute,
         private readonly commentService: ArticleCommentService,
+        private readonly authService: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -39,6 +46,7 @@ export class ReadArticleSummaryComponent implements OnInit {
         this.article = history.state.article;
 
         this.loadMoreComments();
+        this.getCurrentUserId();
     }
 
     loadMoreComments(): void {
@@ -64,7 +72,38 @@ export class ReadArticleSummaryComponent implements OnInit {
             }
         );
     }
+
+    getCurrentUserId(): void {
+        this.authService.getCurrentUser().subscribe(
+            (user) => {
+                this.userId = user?.id;
+            }
+        );
+    }
+
+    toggleAddCommentMode(): void {
+        this.isAddCommentOn = !this.isAddCommentOn;
+    }
     
+    createComment(): void {
+        if (!this.userId) {
+            console.error("You are not logged in.");
+            return;
+        }
+        if (!this.article?.id) {
+            return;
+        }
+        const commentDto: CreateCommentDto = { userId: this.userId, articleId: this.article.id, content: this.addCommentContent };
+        
+        this.commentService.createComment(commentDto).subscribe(
+            (comment) => {
+                console.log("Comment: ", comment);
+            },
+            (error) => {
+                console.error("Error creating comment: ", error);
+            }
+        );
+    }
 
     setRating(rating: number): void {
         this.rating = rating;
@@ -105,4 +144,5 @@ export class ReadArticleSummaryComponent implements OnInit {
     faStar = faStar;
     faCaretUp = faCaretUp;
     faCaretDown = faCaretDown;
+    faPlus = faPlus;
 }

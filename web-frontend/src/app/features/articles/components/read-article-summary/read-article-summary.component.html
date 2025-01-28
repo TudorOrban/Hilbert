@@ -24,7 +24,7 @@
             (click)="submitRating()"
             [disabled]="submittedRating"
             [ngClass]="{
-                'bg-blue-600 hover:bg-blue-700': !submittedRating,
+                'standard-write-button': !submittedRating,
                 'bg-gray-400 cursor-not-allowed': submittedRating
             }"
             class="px-4 py-2 text-white rounded-md shadow-sm transition-colors duration-200">
@@ -75,7 +75,18 @@
             <button (click)="toggleCommentsExpanded()">
                 <fa-icon [icon]="getCommentsCaretIcon()" class=""></fa-icon>
             </button>
+            <button (click)="toggleAddCommentMode()" class="standard-write-button">
+                <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
         </div>
+
+        <div *ngIf="isAddCommentOn" class="flex items-center space-x-2 px-4 py-2">
+            <input type="text" [(ngModel)]="addCommentContent" name="content" class="w-80 h-10 px-2 py-1 border border-gray-300" />
+            <button class="standard-write-button" (click)="createComment()">
+                Post
+            </button>
+        </div>
+        
         <div *ngIf="isCommentsExpanded" class="flex flex-col">
             <div *ngFor="let comment of comments?.results" class="px-4 py-2 border-b border-gray-300">
                 <div class="text-lg font-semibold">
