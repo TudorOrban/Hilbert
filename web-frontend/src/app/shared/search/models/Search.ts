@@ -15,6 +15,10 @@ export interface ArticleSearchParams extends SearchParams {
     level?: DifficultyLevel;
 }
 
+export interface CommentSearchParams extends SearchParams {
+    articleId?: number;
+}
+
 export interface PaginatedResults<T> {
     results: T[];
     totalCount: number;

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { SearchParams, PaginatedResults } from "../../../shared/search/models/Search";
+import { SearchParams, PaginatedResults, CommentSearchParams } from "../../../shared/search/models/Search";
 import { Observable } from "rxjs";
 import { ArticleCommentDto, CreateCommentDto } from "../models/ArticleComment";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
@@ -16,7 +16,7 @@ export class ArticleCommentService {
         private urlBuilderService: SearchUrlBuilderService,
     ) {}
 
-    searchComments(searchParams: SearchParams): Observable<PaginatedResults<ArticleCommentDto>> {
+    searchComments(searchParams: CommentSearchParams): Observable<PaginatedResults<ArticleCommentDto>> {
         const url = this.urlBuilderService.buildSearchUrl(this.apiUrl + "/search", searchParams);
 
         return this.http.get<PaginatedResults<ArticleCommentDto>>(url);

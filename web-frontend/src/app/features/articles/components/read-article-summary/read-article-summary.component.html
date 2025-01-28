@@ -32,17 +32,17 @@
         </button>
     </div>
 
-
+    <!-- Sections -->
     <div class="space-y-4">
         <div class="flex items-center space-x-4">
             <div class="text-lg font-semibold">
                 Learned Words:
             </div>
-            <button (click)="toggleNewWordsListExpanded()">
+            <button (click)="toggleNewWordsExpanded()">
                 <fa-icon [icon]="getNewWordsCaretIcon()" class=""></fa-icon>
             </button>
         </div>
-        <div *ngIf="summary && isNewWordsListExpanded" class="flex items-center flex-wrap">
+        <div *ngIf="summary && isNewWordsExpanded" class="flex items-center flex-wrap">
             <div *ngFor="let word of summary?.newWords | keyvalue" class="mx-2 my-1 px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm flex items-center">
                 <span class="mr-4">{{ word.key }}</span>
                 <span class="text-blue-500 font-semibold">{{ word.value }}</span>
@@ -56,14 +56,39 @@
             <div class="text-lg font-semibold">
                 Read Next:
             </div>
-            <button (click)="toggleReadNextListExpanded()">
+            <button (click)="toggleReadNextExpanded()">
                 <fa-icon [icon]="getReadNextCaretIcon()" class=""></fa-icon>
             </button>
         </div>
-        <div *ngIf="isReadNextListExpanded" class="flex items-center flex-wrap">
+        <div *ngIf="isReadNextExpanded" class="flex items-center flex-wrap">
             <div>
                 Test
             </div>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <div class="flex items-center space-x-4">
+            <div class="text-lg font-semibold">
+                Comments ({{ comments?.totalCount }}):
+            </div>
+            <button (click)="toggleCommentsExpanded()">
+                <fa-icon [icon]="getCommentsCaretIcon()" class=""></fa-icon>
+            </button>
+        </div>
+        <div *ngIf="isCommentsExpanded" class="flex flex-col">
+            <div *ngFor="let comment of comments?.results" class="px-4 py-2 border-b border-gray-300">
+                <div class="text-lg font-semibold">
+                    {{ comment?.username ?? "Unknown" }}
+                </div>
+                <div class="text-gray-800">
+                    {{ comment?.content }}
+                </div>
+            </div>
+
+            <button class="justify-center my-4 font-semibold" (click)="loadMoreComments()">
+                Load More
+            </button>
         </div>
     </div>
 </div>
