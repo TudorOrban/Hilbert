@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  hilbert-main:
+    build: ./main-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/hilbert_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: example-password
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - hilbert-ml
+
+  hilbert-ml:
+    build: ./translation-service
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
