@@ -11,30 +11,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "chats")
-public class Chat {
+@Table(name = "chat_messages")
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_user_id", nullable = false)
-    private Long firstUserId;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(name = "second_user_id", nullable = false)
-    private Long secondUserId;
+    @Column(name = "chat_id", nullable = false)
+    private Long chatId;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Column(name = "last_message_user_id")
-    private Long lastMessageUserId;
-    
-    @Column(name = "last_message_content")
-    private String lastMessageContent;
 
     @PrePersist
     protected void onCreate() {
