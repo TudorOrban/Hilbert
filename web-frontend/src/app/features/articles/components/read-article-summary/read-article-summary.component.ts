@@ -16,6 +16,8 @@ export class ReadArticleSummaryComponent implements OnInit {
     article?: ArticleFullDto;
     rating: number = 0;
     maxRating: number = 5;
+    submittedRating: boolean = false;
+
     isNewWordsListExpanded: boolean = false;
     isReadNextListExpanded: boolean = false;
 
@@ -34,6 +36,7 @@ export class ReadArticleSummaryComponent implements OnInit {
 
     submitRating(): void {
         console.log("Rating submitted: ", this.rating);
+        this.submittedRating = true;
         // Rating submission
     }
 

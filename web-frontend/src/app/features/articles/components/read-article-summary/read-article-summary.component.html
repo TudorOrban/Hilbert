@@ -20,8 +20,15 @@
         <div>
             {{ " " }}
         </div>
-        <button (click)="submitRating()" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-sm">
-            Submit
+        <button
+            (click)="submitRating()"
+            [disabled]="submittedRating"
+            [ngClass]="{
+                'bg-blue-600 hover:bg-blue-700': !submittedRating,
+                'bg-gray-400 cursor-not-allowed': submittedRating
+            }"
+            class="px-4 py-2 text-white rounded-md shadow-sm transition-colors duration-200">
+            {{ submittedRating ? "Submitted" : "Submit"}}
         </button>
     </div>
 

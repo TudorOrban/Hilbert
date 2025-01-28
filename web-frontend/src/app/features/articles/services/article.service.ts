@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { ArticleSearchParams, PaginatedResults } from "../../../shared/search/models/Search";
 import { ArticleFullDto, ArticleSearchDto, CreateArticleDto, ReadArticleSummaryDto, UpdateArticleDto } from "../models/Article";
 import { Observable } from "rxjs";
+import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
 
 @Injectable({
     providedIn: 'root'
@@ -10,15 +11,13 @@ import { Observable } from "rxjs";
 export class ArticleService {
     private apiUrl = "http://localhost:8080/api/v1/articles";
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private urlBuilderService: SearchUrlBuilderService
+    ) {}
 
     searchArticles(searchParams: ArticleSearchParams): Observable<PaginatedResults<ArticleSearchDto>> {
-        const url = this.apiUrl +
-            "/search?searchQuery=" + (searchParams.searchQuery ?? "") +
-            "&sortBy=" + (searchParams.sortBy ?? "createdAt") +
-            "&isAscending=" + (searchParams.isAscending ?? true) +
-            "&page=" + (searchParams.page ?? 1) +
-            "&itemsPerPage=" + (searchParams.itemsPerPage ?? 20);
+        const url = this.urlBuilderService.buildSearchUrl(this.apiUrl + "/search", searchParams);
 
         return this.http.get<PaginatedResults<ArticleSearchDto>>(url);
     }
