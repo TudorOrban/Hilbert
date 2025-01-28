@@ -6,9 +6,8 @@ CREATE TABLE chat_messages (
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (first_user_id) REFERENCES users(id),
-    FOREIGN KEY (second_user_id) REFERENCES users(id),
-    CONSTRAINT unique_chat UNIQUE (first_user_id, second_user_id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (chat_id) REFERENCES chats(id)
 );
 
 CREATE INDEX idx_chat_id ON chat_messages(id);

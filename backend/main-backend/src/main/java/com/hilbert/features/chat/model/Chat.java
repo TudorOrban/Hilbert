@@ -32,7 +32,7 @@ public class Chat {
 
     @Column(name = "last_message_user_id")
     private Long lastMessageUserId;
-    
+
     @Column(name = "last_message_content")
     private String lastMessageContent;
 

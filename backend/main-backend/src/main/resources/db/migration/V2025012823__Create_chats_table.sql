@@ -9,7 +9,7 @@ CREATE TABLE chats (
     last_message_content TEXT,
     FOREIGN KEY (first_user_id) REFERENCES users(id),
     FOREIGN KEY (second_user_id) REFERENCES users(id),
-    CONSTRAINT unique_chat UNIQUE (first_user_id, second_user_id),
+    CONSTRAINT unique_chat UNIQUE (first_user_id, second_user_id)
 );
 
 CREATE INDEX idx_first_user_id ON chats(first_user_id);
