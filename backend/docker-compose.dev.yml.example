@@ -7,6 +7,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/hilbert_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: example-password
+      TRANSLATION_API_KEY: example
     ports:
       - "8080:8080"
     networks:
@@ -16,6 +17,8 @@ services:
 
   hilbert-ml:
     build: ./translation-service
+    environment:
+      - API_KEY=example
     ports:
       - "5000:5000"
     networks:
