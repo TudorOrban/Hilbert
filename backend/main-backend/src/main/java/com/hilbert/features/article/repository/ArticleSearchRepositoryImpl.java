@@ -20,7 +20,6 @@ public class ArticleSearchRepositoryImpl implements ArticleSearchRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
     public PaginatedResults<Article> searchArticles(ArticleSearchParams searchParams) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Article> query = builder.createQuery(Article.class);
