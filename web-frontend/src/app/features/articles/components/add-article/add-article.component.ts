@@ -25,8 +25,10 @@ export class AddArticleComponent {
         status: ArticleStatus.DRAFT
     };
     submitted = false;
+
     isProgressDialogOpen = false;
     progressPercentage = 0;
+    estimatedTime = 0;
 
     constructor(
         private authService: AuthService,
@@ -57,18 +59,7 @@ export class AddArticleComponent {
             return;
         }
         
-        this.isProgressDialogOpen = true;
-        this.progressPercentage = 0;
-
-        const estimatedTime = 10;
-        const updateInterval = 1;
-
-        const interval = setInterval(() => {
-            this.progressPercentage += estimatedTime / updateInterval;
-            if (this.progressPercentage >= 100) {
-                clearInterval(interval);
-            }
-        }, updateInterval);
+        this.showProgressBar();
 
         this.articleService.createArticle(this.article).subscribe(
             (data) => {
@@ -80,5 +71,38 @@ export class AddArticleComponent {
                 console.error("An error occured while trying to create the Article: ", error?.messsage);
             }
         );
+    }
+
+    showProgressBar(): void {
+        this.isProgressDialogOpen = true;
+        this.progressPercentage = 0;
+
+        this.estimatedTime = this.calculateEstimatedTime(this.article.content);
+        const updateInterval = 1000;
+        const increment = 100 / this.estimatedTime;
+
+        const interval = setInterval(() => {
+            this.progressPercentage = Math.floor(this.progressPercentage + increment);
+            if (this.progressPercentage >= 100) {
+                this.progressPercentage = 100;
+                clearInterval(interval);
+            }
+        }, updateInterval);
+    }
+
+    calculateEstimatedTime(content: string): number {
+        if (!content) {
+            return 3;
+        }
+      
+        // Split content into words
+        const words = content.trim().split(/\s+/);
+      
+        // Calculate estimated time: 1/5 second per word, as indicated by performance tests
+        const performanceSlope = 1 / 6;
+        const wordCount = words.length;
+        const estimatedTime = performanceSlope * wordCount;
+        
+        return Math.max(estimatedTime, 3);
     }
 }

@@ -13,6 +13,9 @@
       ></div>
     </div>
   
-    <!-- Percentage Text -->
-    <div class="text-right text-gray-600">{{ progressPercentage }}%</div>
+    <!-- Percentage and ETA -->
+    <div class="flex justify-between text-gray-600">
+        <span>{{ progressPercentage }}%</span>
+        <span>ETA: {{ eta }}</span>
+      </div>
 </div>
