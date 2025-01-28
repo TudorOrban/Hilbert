@@ -60,9 +60,9 @@ public class ArticleController {
     }
 
     @PostMapping("/read")
-    public ResponseEntity<Vocabulary> readArticle(@RequestBody ReadArticleDto readArticleDto) {
-        Vocabulary vocabulary = readArticleService.readArticle(readArticleDto);
-        return ResponseEntity.ok(vocabulary);
+    public ResponseEntity<ReadArticleSummaryDto> readArticle(@RequestBody ReadArticleDto readArticleDto) {
+        ReadArticleSummaryDto summaryDto = readArticleService.readArticle(readArticleDto);
+        return ResponseEntity.ok(summaryDto);
     }
 
     @PutMapping

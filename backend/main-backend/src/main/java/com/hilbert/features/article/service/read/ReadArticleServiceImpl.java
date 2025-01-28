@@ -2,6 +2,7 @@ package com.hilbert.features.article.service.read;
 
 import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.features.article.dto.ReadArticleDto;
+import com.hilbert.features.article.dto.ReadArticleSummaryDto;
 import com.hilbert.features.article.model.Article;
 import com.hilbert.features.article.repository.ArticleRepository;
 import com.hilbert.features.vocabulary.model.VocabularyData;
@@ -11,10 +12,12 @@ import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -38,7 +41,7 @@ public class ReadArticleServiceImpl implements ReadArticleService {
         this.textWordsManager = textWordsManager;
     }
 
-    public Vocabulary readArticle(ReadArticleDto readArticleDto) {
+    public ReadArticleSummaryDto readArticle(ReadArticleDto readArticleDto) {
         Long userId = readArticleDto.getUserId();
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException(userId.toString(), ResourceType.USER, ResourceIdentifierType.ID);
@@ -49,23 +52,28 @@ public class ReadArticleServiceImpl implements ReadArticleService {
 
         Vocabulary vocabulary = vocabularyService.findOrCreateVocabulary(userId, article.getLanguage());
 
-        VocabularyData vocabularyData = this.determineUpdatedVocabularyData(vocabulary, article);
+        Pair<VocabularyData, ReadArticleSummaryDto> result = this.determineUpdatedVocabularyData(vocabulary, article);
 
-        Vocabulary savedVocabulary = vocabularyService.updateVocabularyData(vocabulary.getId(), vocabularyData);
+        vocabularyService.updateVocabularyData(vocabulary.getId(), result.getFirst());
 
         // TODO: Register article as read in future User Learning data as well
 
-        return savedVocabulary;
+        return result.getSecond();
     }
 
-    private VocabularyData determineUpdatedVocabularyData(Vocabulary vocabulary, Article article) {
+    private Pair<VocabularyData, ReadArticleSummaryDto> determineUpdatedVocabularyData(Vocabulary vocabulary, Article article) {
         List<String> words = textWordsManager.getTextWords(article.getContent(), true);
         VocabularyData vocabularyData = vocabulary.getVocabularyData();
+        if (vocabularyData == null || vocabularyData.getWordsReadDates() == null) {
+            vocabularyData = new VocabularyData(new HashMap<>(), new ArrayList<>());
+        }
+        ReadArticleSummaryDto readArticleSummary = new ReadArticleSummaryDto(new HashMap<>());
         LocalDateTime now = LocalDateTime.now();
 
-        // Add newly read words to vocabulary
+        // Add newly read words to vocabulary and summary
         for (String word : words) {
             vocabularyData.getWordsReadDates().computeIfAbsent(word, k -> new ArrayList<>()).add(now);
+            readArticleSummary.getNewWords().merge(word, 1, Integer::sum);
         }
 
         // Register article as read
@@ -75,6 +83,6 @@ public class ReadArticleServiceImpl implements ReadArticleService {
             vocabularyData.getReadArticles().add(article.getId());
         }
 
-        return vocabularyData;
+        return Pair.of(vocabularyData, readArticleSummary);
     }
 }

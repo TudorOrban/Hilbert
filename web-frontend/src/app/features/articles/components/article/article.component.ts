@@ -3,9 +3,10 @@ import { ActivatedRoute } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
 import { ArticleFullDto } from "../../models/Article";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faEllipsisVertical, faEye, faSquareCheck, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight, faCheck, faEllipsisVertical, faEye, faSquareCheck, faStar } from "@fortawesome/free-solid-svg-icons";
 import { LanguageOptionsService } from "../../../../shared/language/services/language-options.service";
 import { OverlayedTextComponent } from "../overlayed-text/overlayed-text.component";
+import { AuthService } from "../../../../core/user/services/auth.service";
 
 @Component({
     selector: "app-article",
@@ -16,13 +17,15 @@ import { OverlayedTextComponent } from "../overlayed-text/overlayed-text.compone
 export class ArticleComponent implements OnInit {
     articleId?: number;
     article?: ArticleFullDto;
+    userId?: number;
 
     languageService: LanguageOptionsService;
 
     constructor(
+        languageService: LanguageOptionsService,
         private readonly route: ActivatedRoute,
         private readonly articleService: ArticleService,
-        languageService: LanguageOptionsService
+        private readonly authService: AuthService,
     ) {
         this.languageService = languageService;
     }
@@ -32,6 +35,9 @@ export class ArticleComponent implements OnInit {
             this.articleId = Number(params.get("articleId"));
 
             this.loadArticle();
+        });
+        this.authService.getCurrentUser().subscribe((user) => {
+            this.userId = user?.id;
         });
     }
 
@@ -50,8 +56,28 @@ export class ArticleComponent implements OnInit {
         );
     }
 
+    markArticleAsRead() {
+        if (!this.userId) {
+            console.error("You are not logged in");
+            return;
+        }
+        if (!this.articleId) {
+            return;
+        }
+        console.log("Test");
+        this.articleService.readArticle(this.articleId, this.userId).subscribe(
+            (data) => {
+                console.log("Data: ", data);
+            },
+            (error) => {
+                console.error("Failed to Mark as Read: ", error);
+            }
+        );        
+    }
+
     faStar = faStar;
     faEye = faEye;
-    faSquareCheck = faSquareCheck;
     faEllipsisVertical = faEllipsisVertical;
+    faCheck = faCheck;
+    faAngleRight = faAngleRight;
 }

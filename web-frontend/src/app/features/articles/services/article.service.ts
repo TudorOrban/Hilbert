@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ArticleSearchParams, PaginatedResults } from "../../../shared/search/models/Search";
-import { ArticleFullDto, ArticleSearchDto, CreateArticleDto, UpdateArticleDto } from "../models/Article";
+import { ArticleFullDto, ArticleSearchDto, CreateArticleDto, ReadArticleSummaryDto, UpdateArticleDto } from "../models/Article";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -25,6 +25,10 @@ export class ArticleService {
 
     getArticle(articleId: number): Observable<ArticleFullDto> {
         return this.http.get<ArticleFullDto>(`${this.apiUrl}/${articleId}`);
+    }
+
+    readArticle(articleId: number, userId: number): Observable<ReadArticleSummaryDto> {
+        return this.http.post<ReadArticleSummaryDto>(`${this.apiUrl}/read`, { articleId, userId });
     }
 
     createArticle(articleDto: CreateArticleDto): Observable<ArticleFullDto> {

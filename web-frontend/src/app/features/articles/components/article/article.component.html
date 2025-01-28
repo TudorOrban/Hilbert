@@ -41,13 +41,14 @@
     <!-- Bottom Bar -->
     <div class="flex items-center justify-between w-full px-16 h-20 p-4 border-t border-gray-300 shadow-sm">
         <button class="flex items-center space-x-4 hover:text-blue-700">
-            <fa-icon [icon]="faSquareCheck"></fa-icon>
-            <span class="font-semibold">Mark as Read</span>
-        </button>
-
-        <button class="flex items-center space-x-4 hover:text-blue-700">
             <fa-icon [icon]="faEllipsisVertical"></fa-icon>
             <span class="font-semibold">Options</span>
+        </button>
+
+        <button class="flex items-center space-x-2 hover:text-blue-700" (click)="markArticleAsRead()">
+            <fa-icon [icon]="faCheck"></fa-icon>
+            <span class="font-semibold">Mark as Read</span>
+            <fa-icon [icon]="faAngleRight"></fa-icon>
         </button>
     </div>
 </div>

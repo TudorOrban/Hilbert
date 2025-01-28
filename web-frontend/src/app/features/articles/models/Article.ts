@@ -56,6 +56,10 @@ export interface UpdateArticleDto {
     status: ArticleStatus;
 }
 
+export interface ReadArticleSummaryDto {
+    newWords: Record<string, number>;
+}
+
 export enum DifficultyLevel {
     NONE,
     A1,
