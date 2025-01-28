@@ -3,7 +3,8 @@ package com.hilbert.shared.error.types;
 public enum ResourceType {
     USER,
     ARTICLE,
-    VOCABULARY;
+    VOCABULARY,
+    COMMENT;
 
     @Override
     public String toString() {
@@ -11,6 +12,7 @@ public enum ResourceType {
             case USER -> "User";
             case ARTICLE -> "Article";
             case VOCABULARY -> "Vocabulary";
+            case COMMENT -> "Comment";
         };
     }
 }
