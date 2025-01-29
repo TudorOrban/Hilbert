@@ -23,8 +23,8 @@ export class ChatService {
         return this.http.get<PaginatedResults<ChatSearchDto>>(`${url}&includeUsers=${includeUsers ?? false}`);
     }
 
-    getChat(chatId: number, includeMessages?: boolean): Observable<ChatFullDto> {
-        return this.http.get<ChatFullDto>(`${this.apiUrl}/${chatId}?includeMessages=${includeMessages ?? false}`);
+    getChat(chatId: number, includeUsers?: boolean, includeMessages?: boolean): Observable<ChatFullDto> {
+        return this.http.get<ChatFullDto>(`${this.apiUrl}/${chatId}?includeUsers=${includeUsers ?? false}&includeMessages=${includeMessages ?? false}`);
     }
 
     createChat(chatDto: CreateChatDto): Observable<ChatFullDto> {

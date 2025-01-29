@@ -24,9 +24,10 @@ public class ChatController {
     @GetMapping("/{id}")
     public ResponseEntity<ChatFullDto> getChatFullDto(
             @PathVariable Long id,
+            @RequestParam(value = "includeUsers", required = false, defaultValue = "false") Boolean includeUsers,
             @RequestParam(value = "includeMessages", required = false, defaultValue = "false") Boolean includeMessages
     ) {
-        ChatFullDto chatDto = chatService.getChatFullDto(id, includeMessages);
+        ChatFullDto chatDto = chatService.getChatFullDto(id, includeUsers, includeMessages);
         return ResponseEntity.ok(chatDto);
     }
 

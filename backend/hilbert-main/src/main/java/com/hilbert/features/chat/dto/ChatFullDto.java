@@ -1,5 +1,6 @@
 package com.hilbert.features.chat.dto;
 
+import com.hilbert.core.user.dto.UserSmallDto;
 import com.hilbert.shared.search.models.PaginatedResults;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class ChatFullDto {
     private Long lastMessageUserId;
     private String lastMessageContent;
     private PaginatedResults<MessageSearchDto> messages;
+
+    private UserSmallDto firstUser;
+    private UserSmallDto secondUser;
 }

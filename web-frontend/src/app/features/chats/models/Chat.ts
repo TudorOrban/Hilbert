@@ -11,7 +11,12 @@ export interface ChatFullDto {
     updatedAt: string;
     lastMessageUserId: number;
     lastMessageContent: number;
+    lastMessageDate?: string;
+    lastMessageSeen?: string;
     messages?: PaginatedResults<MessageSearchDto>;
+
+    firstUser?: UserSmallDto;
+    secondUser?: UserSmallDto;
 }
 
 export interface ChatSearchDto {

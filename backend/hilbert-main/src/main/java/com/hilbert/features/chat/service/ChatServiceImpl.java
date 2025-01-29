@@ -41,24 +41,18 @@ public class ChatServiceImpl implements ChatService {
         this.sanitizationService = sanitizationService;
     }
 
-    public ChatFullDto getChatFullDto(Long chatId, Boolean includeMessages) {
+    public ChatFullDto getChatFullDto(Long chatId, Boolean includeUsers, Boolean includeMessages) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResourceNotFoundException(chatId.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
         ChatFullDto chatFullDto = this.mapChatToChatFullDto(chat);
-        if (!includeMessages) {
-            return chatFullDto;
+
+        if (includeUsers) {
+            this.findAndAttachUsersToFullDto(chatFullDto);
+        }
+        if (includeMessages) {
+            this.findAndAttachMessagesToFullDto(chatFullDto);
         }
 
-        Integer numberOfMessages = 30;
-        ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatId, "", "createdAt", true, 1, numberOfMessages);
-
-        PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
-        PaginatedResults<MessageSearchDto> dtoResults = new PaginatedResults<>(
-                results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
-                results.getTotalCount()
-        );
-
-        chatFullDto.setMessages(dtoResults);
         return chatFullDto;
     }
 
@@ -72,7 +66,7 @@ public class ChatServiceImpl implements ChatService {
         );
 
         if (includeUsers) {
-            findAndAttachUsers(resultDtos, searchParams.getUserId());
+            findAndAttachUsersToSearchDto(resultDtos, searchParams.getUserId());
         }
 
         return resultDtos;
@@ -106,7 +100,27 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.delete(chat);
     }
 
-    private void findAndAttachUsers(PaginatedResults<ChatSearchDto> resultDtos, Long requestUserId) {
+    private void findAndAttachMessagesToFullDto(ChatFullDto chatFullDto) {
+        Integer numberOfMessages = 30;
+        ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatFullDto.getId(), "", "createdAt", true, 1, numberOfMessages);
+
+        PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
+        PaginatedResults<MessageSearchDto> dtoResults = new PaginatedResults<>(
+                results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
+                results.getTotalCount()
+        );
+
+        chatFullDto.setMessages(dtoResults);
+    }
+    private void findAndAttachUsersToFullDto(ChatFullDto chatFullDto) {
+        List<UserSmallDto> users = userService.getByIds(new ArrayList<>(Arrays.asList(chatFullDto.getFirstUserId(), chatFullDto.getSecondUserId())));
+        Optional<UserSmallDto> firstUserOpt = users.stream().filter(u -> Objects.equals(u.getId(), chatFullDto.getFirstUserId())).findFirst();
+        firstUserOpt.ifPresent(chatFullDto::setFirstUser);
+        Optional<UserSmallDto> secondUserOpt = users.stream().filter(u -> Objects.equals(u.getId(), chatFullDto.getSecondUserId())).findFirst();
+        secondUserOpt.ifPresent(chatFullDto::setFirstUser);
+    }
+
+    private void findAndAttachUsersToSearchDto(PaginatedResults<ChatSearchDto> resultDtos, Long requestUserId) {
         Set<Long> userIds = resultDtos.getResults().stream().map(ChatSearchDto::getFirstUserId).collect(Collectors.toSet());
         userIds.addAll(resultDtos.getResults().stream().map(ChatSearchDto::getSecondUserId).toList());
 
