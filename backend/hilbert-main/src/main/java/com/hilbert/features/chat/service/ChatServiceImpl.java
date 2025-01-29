@@ -9,6 +9,7 @@ import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.sanitization.service.EntitySanitizerService;
+import com.hilbert.shared.search.models.ChatMessageSearchParams;
 import com.hilbert.shared.search.models.ChatSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,27 @@ public class ChatServiceImpl implements ChatService {
         this.sanitizationService = sanitizationService;
     }
 
+    public ChatFullDto getChatFullDto(Long chatId, Boolean includeMessages) {
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResourceNotFoundException(chatId.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
+        ChatFullDto chatFullDto = this.mapChatToChatFullDto(chat);
+        if (!includeMessages) {
+            return chatFullDto;
+        }
+
+        Integer numberOfMessages = 30;
+        ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatId, "", "createdAt", true, 1, numberOfMessages);
+
+        PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
+        PaginatedResults<MessageSearchDto> dtoResults = new PaginatedResults<>(
+                results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
+                results.getTotalCount()
+        );
+
+        chatFullDto.setMessages(dtoResults);
+        return chatFullDto;
+    }
+
     public PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams) {
         PaginatedResults<Chat> results = chatRepository.searchChats(searchParams);
 
@@ -45,13 +67,6 @@ public class ChatServiceImpl implements ChatService {
                 results.getTotalCount()
         );
     }
-
-//    public ChatFullDto getChatWithMessages(Long chatId) {
-//        Chat chat = chatRepository.findById(chatId)
-//                .orElseThrow(() -> new ResourceNotFoundException(chatId.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
-//
-//        PaginatedResults<ChatMessage> results = chatRepository
-//    }
 
     public ChatFullDto createChat(CreateChatDto chatDto) {
         CreateChatDto sanitizedDto = sanitizationService.sanitizeCreateChatDto(chatDto);
@@ -69,7 +84,7 @@ public class ChatServiceImpl implements ChatService {
         ChatMessage savedMessage = this.chatMessageRepository.save(message);
         MessageSearchDto messageDto = this.mapMessageToMessageSearchDto(savedMessage);
 
-        chatFullDto.setMessages(new ArrayList<>(Collections.singleton(messageDto)));
+        chatFullDto.setMessages(new PaginatedResults<>(new ArrayList<>(Collections.singleton(messageDto)), 1L));
 
         return chatFullDto;
     }

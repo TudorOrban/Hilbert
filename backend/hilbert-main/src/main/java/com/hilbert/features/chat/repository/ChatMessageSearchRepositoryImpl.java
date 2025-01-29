@@ -1,7 +1,7 @@
 package com.hilbert.features.chat.repository;
 
-import com.hilbert.features.chat.model.Chat;
-import com.hilbert.shared.search.models.ChatSearchParams;
+import com.hilbert.features.chat.model.ChatMessage;
+import com.hilbert.shared.search.models.ChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ChatSearchRepositoryImpl implements ChatSearchRepository {
+public class ChatMessageSearchRepositoryImpl implements ChatMessageSearchRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public PaginatedResults<Chat> searchChats(ChatSearchParams searchParams) {
+    public PaginatedResults<ChatMessage> searchChatMessages(ChatMessageSearchParams searchParams) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Chat> query = builder.createQuery(Chat.class);
-        Root<Chat> root = query.from(Chat.class);
+        CriteriaQuery<ChatMessage> query = builder.createQuery(ChatMessage.class);
+        Root<ChatMessage> root = query.from(ChatMessage.class);
 
         Predicate conditions = getConditions(builder, root, searchParams);
         query.where(conditions);
@@ -33,7 +33,7 @@ public class ChatSearchRepositoryImpl implements ChatSearchRepository {
             query.orderBy(builder.desc(root.get(searchParams.getSortBy())));
         }
 
-        List<Chat> chats = entityManager.createQuery(query)
+        List<ChatMessage> chatMessages = entityManager.createQuery(query)
                 .setFirstResult((searchParams.getPage() - 1) * searchParams.getItemsPerPage())
                 .setMaxResults(searchParams.getItemsPerPage())
                 .getResultList();
@@ -41,24 +41,21 @@ public class ChatSearchRepositoryImpl implements ChatSearchRepository {
         // Query total count
         CriteriaBuilder countBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> countQuery = countBuilder.createQuery(Long.class);
-        Root<Chat> countRoot = countQuery.from(Chat.class);
+        Root<ChatMessage> countRoot = countQuery.from(ChatMessage.class);
         Predicate countConditions = getConditions(countBuilder, countRoot, searchParams);
         countQuery.select(countBuilder.count(countRoot));
         countQuery.where(countConditions);
 
         long totalCount = entityManager.createQuery(countQuery).getSingleResult();
 
-        return new PaginatedResults<>(chats, totalCount);
+        return new PaginatedResults<>(chatMessages, totalCount);
     }
 
-    private Predicate getConditions(CriteriaBuilder builder, Root<Chat> root, ChatSearchParams searchParams) {
+    private Predicate getConditions(CriteriaBuilder builder, Root<ChatMessage> root, ChatMessageSearchParams searchParams) {
         Predicate conditions = builder.conjunction();
 
-        if (searchParams.getUserId() != null) {
-            conditions = builder.and(conditions, builder.or(
-                    builder.equal(root.get("firstUserId"), searchParams.getUserId()),
-                    builder.equal(root.get("secondUserId"), searchParams.getUserId())
-            ));
+        if (searchParams.getChatId() != null) {
+            conditions = builder.and(conditions, builder.equal(root.get("chatId"), searchParams.getChatId()));
         }
 
         return conditions;

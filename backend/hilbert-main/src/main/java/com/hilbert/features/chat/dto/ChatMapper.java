@@ -30,6 +30,8 @@ public interface ChatMapper {
 
     @Mapping(source = "firstUserId", target = "firstUserId")
     @Mapping(source = "secondUserId", target = "secondUserId")
+    @Mapping(source = "creatorUserId", target = "lastMessageUserId")
+    @Mapping(source = "messageContent", target = "lastMessageContent")
     Chat createChatDtoToChat(CreateChatDto chatDto);
 
     @Mapping(source = "message.id", target = "id")

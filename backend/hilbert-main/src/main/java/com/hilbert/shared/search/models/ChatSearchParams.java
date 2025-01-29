@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ChatSearchParams extends SearchParams {
-    private Integer userId;
+    private Long userId;
 
-    public ChatSearchParams(Integer userId,
+    public ChatSearchParams(Long userId,
                                String searchQuery, String sortBy, Boolean isAscending,
                                Integer page, Integer itemsPerPage) {
         super(searchQuery, sortBy, isAscending, page, itemsPerPage);
