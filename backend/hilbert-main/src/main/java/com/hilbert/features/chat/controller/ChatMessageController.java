@@ -38,7 +38,7 @@ public class ChatMessageController {
     }
 
     @PostMapping
-    public ResponseEntity<MessageSearchDto> createChat(@RequestBody CreateMessageDto messageDto) {
+    public ResponseEntity<MessageSearchDto> createMessage(@RequestBody CreateMessageDto messageDto) {
         MessageSearchDto message = chatMessageService.createMessage(messageDto);
         return ResponseEntity.ok(message);
     }
