@@ -27,7 +27,7 @@ public class ChatSecurityServiceImpl implements ChatSecurityService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Long userId = Long.parseLong(auth.getName());
 
-        Chat chat = chatRepository.findById(chatId)
+        Chat chat = chatRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(chatId.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
 
         boolean isAllowed = Objects.equals(chat.getFirstUserId(), userId) ||
