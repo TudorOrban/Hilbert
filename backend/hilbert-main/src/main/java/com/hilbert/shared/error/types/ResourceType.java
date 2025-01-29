@@ -5,7 +5,8 @@ public enum ResourceType {
     ARTICLE,
     COMMENT,
     VOCABULARY,
-    CHAT;
+    CHAT,
+    MESSAGE;
 
     @Override
     public String toString() {
@@ -15,6 +16,7 @@ public enum ResourceType {
             case COMMENT -> "Comment";
             case VOCABULARY -> "Vocabulary";
             case CHAT -> "Chat";
+            case MESSAGE -> "Message";
         };
     }
 }

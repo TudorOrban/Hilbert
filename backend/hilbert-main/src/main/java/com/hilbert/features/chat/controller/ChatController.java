@@ -32,8 +32,8 @@ public class ChatController {
 
     @GetMapping("/search")
     public ResponseEntity<PaginatedResults<ChatSearchDto>> searchChats(
-            @RequestParam(value = "searchQuery", required = false, defaultValue = "") String searchQuery,
             @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "searchQuery", required = false, defaultValue = "") String searchQuery,
             @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") String sortBy,
             @RequestParam(value = "isAscending", required = false, defaultValue = "true") Boolean isAscending,
             @RequestParam(value = "page", defaultValue = "1") Integer page,

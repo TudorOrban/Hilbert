@@ -6,6 +6,7 @@ import com.hilbert.features.article.dto.CreateArticleCommentDto;
 import com.hilbert.features.article.dto.CreateArticleDto;
 import com.hilbert.features.article.dto.UpdateArticleDto;
 import com.hilbert.features.chat.dto.CreateChatDto;
+import com.hilbert.features.chat.dto.CreateMessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +61,11 @@ public class EntitySanitizerServiceImpl implements EntitySanitizerService {
         chatDto.setMessageContent(sanitizationService.sanitize(chatDto.getMessageContent()));
 
         return chatDto;
+    }
+
+    public CreateMessageDto sanitizeCreateMessageDto(CreateMessageDto messageDto) {
+        messageDto.setContent(sanitizationService.sanitize(messageDto.getContent()));
+
+        return messageDto;
     }
 }

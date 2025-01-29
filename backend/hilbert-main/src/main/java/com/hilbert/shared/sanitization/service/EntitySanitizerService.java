@@ -6,6 +6,7 @@ import com.hilbert.features.article.dto.CreateArticleCommentDto;
 import com.hilbert.features.article.dto.CreateArticleDto;
 import com.hilbert.features.article.dto.UpdateArticleDto;
 import com.hilbert.features.chat.dto.CreateChatDto;
+import com.hilbert.features.chat.dto.CreateMessageDto;
 
 public interface EntitySanitizerService {
 
@@ -19,4 +20,6 @@ public interface EntitySanitizerService {
     CreateArticleCommentDto sanitizeCreateArticleCommentDto(CreateArticleCommentDto commentDto);
 
     CreateChatDto sanitizeCreateChatDto(CreateChatDto chatDto);
+
+    CreateMessageDto sanitizeCreateMessageDto(CreateMessageDto messageDto);
 }
