@@ -8,7 +8,7 @@ import com.hilbert.shared.search.models.PaginatedResults;
 
 public interface ChatService {
 
-//    PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams);
-//    ChatFullDto createChat(CreateChatDto chatDto);
-//    void deleteChat(Long chatId);
+    PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams);
+    ChatFullDto createChat(CreateChatDto chatDto);
+    void deleteChat(Long chatId);
 }

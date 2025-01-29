@@ -1,6 +1,7 @@
 package com.hilbert.features.chat.dto;
 
 import com.hilbert.features.chat.model.Chat;
+import com.hilbert.features.chat.model.ChatMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -30,4 +31,11 @@ public interface ChatMapper {
     @Mapping(source = "firstUserId", target = "firstUserId")
     @Mapping(source = "secondUserId", target = "secondUserId")
     Chat createChatDtoToChat(CreateChatDto chatDto);
+
+    @Mapping(source = "message.id", target = "id")
+    @Mapping(source = "message.userId", target = "userId")
+    @Mapping(source = "message.chatId", target = "chatId")
+    @Mapping(source = "message.content", target = "content")
+    @Mapping(source = "message.createdAt", target = "createdAt")
+    MessageSearchDto messageToMessageSearchDto(ChatMessage message);
 }

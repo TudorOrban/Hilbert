@@ -11,5 +11,6 @@ public class CreateChatDto {
     private Long firstUserId;
     private Long secondUserId;
     private Long creatorUserId;
+    private String messageContent;
 }
 
