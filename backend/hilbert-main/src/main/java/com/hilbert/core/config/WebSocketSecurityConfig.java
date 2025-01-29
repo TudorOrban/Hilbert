@@ -18,10 +18,11 @@ public class WebSocketSecurityConfig implements WebSocketMessageBrokerConfigurer
     @Autowired
     public WebSocketSecurityConfig(ChatSecurityService chatSecurityService) {
         this.chatSecurityService = chatSecurityService;
+        System.out.println("Test");
     }
 
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new AuthChannelInterceptor(chatSecurityService));
-    }
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.interceptors(new AuthChannelInterceptor(chatSecurityService));
+//    }
 }

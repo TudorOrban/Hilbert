@@ -1,6 +1,8 @@
 package com.hilbert.core.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -14,6 +16,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
@@ -25,10 +28,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("http://localhost:4200")
-                .setAllowedOriginPatterns("http://localhost:4200")
-                .withSockJS();
-    }
+                .setAllowedOrigins("http://localhost:4200");    }
 
 //    @Override
 //    public void configureClientInboundChannel(ChannelRegistration registration) {
