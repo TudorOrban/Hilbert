@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { SearchInputComponent } from "../../../../shared/common/components/search-input/search-input.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chats',
@@ -22,7 +23,8 @@ export class ChatsComponent implements OnInit {
     constructor (
         private readonly chatService: ChatService,
         private readonly authService: AuthService,
-        private readonly uiUtilService: UiUtilService
+        private readonly uiUtilService: UiUtilService,
+        private readonly router: Router
     ) {}
 
     ngOnInit(): void {
@@ -53,6 +55,15 @@ export class ChatsComponent implements OnInit {
 
     formatDate(dateString?: string): string {
         return this.uiUtilService.formatDate(dateString);
+    }
+
+    navigateToChat(chatId?: number) {
+        if (!chatId) {
+            console.error("Chat ID unavailable: ", chatId);
+            return;
+        }
+
+        this.router.navigate([`/chat/${chatId}`]);
     }
 
     handleAddChat(): void {
