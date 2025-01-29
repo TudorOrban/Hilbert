@@ -23,8 +23,25 @@
     </div>
 
     <!-- Content -->
-    <div class="w-full h-full overflow-y-auto flex-grow py-4">
-        <div *ngFor="let message of messages" class="px-8 py-1 text-sm">
+    <div #messagesContainer class="w-full h-full overflow-y-auto flex-grow py-4 bg-gray-100">
+        <div *ngIf="(totalCount ?? 0) > messages.length" class="flex items-center justify-center w-full py-2">
+            <button 
+                (click)="loadMoreMessages()"
+                class="px-4 py-1 bg-white border border-gray-300 rounded-md shadow-sm text-sm hover:bg-gray-50"
+            >
+                Load More
+            </button>
+        </div>
+        <div *ngFor="let message of messages; let i = index" class="px-8 py-1 text-sm">
+            <div *ngIf="shouldShowData(i)" class="flex items-center justify-center w-full py-2">
+                <button 
+                    (click)="loadMoreMessages()"
+                    class="px-4 py-1 bg-white border border-gray-300 rounded-md shadow-sm text-sm hover:bg-gray-50"
+                >
+                    {{ getDate(message?.createdAt) }}
+                </button>
+            </div>
+            
             <div *ngIf="message.userId == userId" class="flex justify-end w-full">
                 <div class="flex items-end space-x-2">
                     <div class="text-gray-700 pb-1">
@@ -52,7 +69,12 @@
 
     <!-- Text Input bar-->
     <div class="flex items-center w-full h-20 space-x-4 px-12 bg-gray-50 border-t border-gray-300">
-        <input type="text" [(ngModel)]="messageToSendContent" class="w-full h-18 border border-gray-300 rounded-l-md"/>
+        <input 
+            type="text" 
+            [(ngModel)]="messageToSendContent" 
+            (keydown)="onKeydown($event)"
+            class="w-full h-18 border border-gray-300 rounded-l-md"
+        />
         
         <button (click)="sendMessage()">
             <fa-icon [icon]="faPaperPlane" class="text-gray-700 hover:text-gray-900"></fa-icon>

@@ -101,8 +101,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private void findAndAttachMessagesToFullDto(ChatFullDto chatFullDto) {
-        Integer numberOfMessages = 30;
-        ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatFullDto.getId(), "", "createdAt", true, 1, numberOfMessages);
+        Integer numberOfMessages = 10;
+        ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatFullDto.getId(), "", "createdAt", false, 1, numberOfMessages);
 
         PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
         PaginatedResults<MessageSearchDto> dtoResults = new PaginatedResults<>(

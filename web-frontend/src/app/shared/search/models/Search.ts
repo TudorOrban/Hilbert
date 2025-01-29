@@ -23,6 +23,10 @@ export interface ChatSearchParams extends SearchParams {
     userId?: number;
 }
 
+export interface ChatMessageSearchParams extends SearchParams {
+    chatId?: number;
+}
+
 export interface PaginatedResults<T> {
     results: T[];
     totalCount: number;
