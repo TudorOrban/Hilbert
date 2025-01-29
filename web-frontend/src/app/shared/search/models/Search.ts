@@ -19,6 +19,10 @@ export interface CommentSearchParams extends SearchParams {
     articleId?: number;
 }
 
+export interface ChatSearchParams extends SearchParams {
+    userId?: number;
+}
+
 export interface PaginatedResults<T> {
     results: T[];
     totalCount: number;

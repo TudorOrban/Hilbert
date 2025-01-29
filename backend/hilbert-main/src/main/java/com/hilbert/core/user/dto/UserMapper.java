@@ -16,4 +16,9 @@ public interface UserMapper {
     @Mapping(source = "userDto.username", target = "username")
     @Mapping(source = "userDto.email", target = "email")
     User createUserDtoToUser(CreateUserDto userDto);
+
+    @Mapping(source = "user.id", target = "id")
+    @Mapping(source = "user.username", target = "username")
+    @Mapping(source = "user.email", target = "email")
+    UserSmallDto userToUserSmallDto(User user);
 }

@@ -1,5 +1,6 @@
 package com.hilbert.features.chat.dto;
 
+import com.hilbert.core.user.dto.UserSmallDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,7 @@ public class ChatSearchDto {
     private LocalDateTime updatedAt;
     private Long lastMessageUserId;
     private String lastMessageContent;
+
+    private UserSmallDto firstUser;
+    private UserSmallDto secondUser;
 }

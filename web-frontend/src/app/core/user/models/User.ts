@@ -10,6 +10,13 @@ export interface UserDataDto {
     role?: string;
 }
 
+export interface UserSmallDto {
+    id: number;
+    username: string;
+    email: string;
+    avatarUrl?: string;
+}
+
 export interface LoginDto {
     username: string;
     password: string;

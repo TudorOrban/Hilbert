@@ -5,9 +5,9 @@ import { ArticleFullDto } from "../../models/Article";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faAngleRight, faCheck, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { LanguageOptionsService } from "../../../../shared/language/services/language-options.service";
-import { OverlayedTextComponent } from "../overlayed-text/overlayed-text.component";
+import { OverlayedTextComponent } from "./overlayed-text/overlayed-text.component";
 import { AuthService } from "../../../../core/user/services/auth.service";
-import { ArticleHeaderComponent } from "../article-header/article-header.component";
+import { ArticleHeaderComponent } from "./article-header/article-header.component";
 
 @Component({
     selector: "app-article",

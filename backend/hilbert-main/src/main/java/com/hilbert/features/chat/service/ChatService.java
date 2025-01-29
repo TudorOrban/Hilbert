@@ -9,7 +9,7 @@ import com.hilbert.shared.search.models.PaginatedResults;
 public interface ChatService {
 
     ChatFullDto getChatFullDto(Long chatId, Boolean includeMessages);
-    PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams);
+    PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams, Boolean includeUsers);
     ChatFullDto createChat(CreateChatDto chatDto);
     void deleteChat(Long chatId);
 }

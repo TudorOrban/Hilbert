@@ -1,5 +1,7 @@
 package com.hilbert.features.chat.service;
 
+import com.hilbert.core.user.dto.UserSmallDto;
+import com.hilbert.core.user.service.UserService;
 import com.hilbert.features.chat.dto.*;
 import com.hilbert.features.chat.model.Chat;
 import com.hilbert.features.chat.model.ChatMessage;
@@ -15,24 +17,27 @@ import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final UserService userService;
     private final EntitySanitizerService sanitizationService;
 
     @Autowired
     public ChatServiceImpl(
             ChatRepository chatRepository,
             ChatMessageRepository chatMessageRepository,
+            UserService userService,
             EntitySanitizerService sanitizationService
     ) {
         this.chatRepository = chatRepository;
         this.chatMessageRepository = chatMessageRepository;
+        this.userService = userService;
         this.sanitizationService = sanitizationService;
     }
 
@@ -57,15 +62,20 @@ public class ChatServiceImpl implements ChatService {
         return chatFullDto;
     }
 
-    public PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams) {
+    public PaginatedResults<ChatSearchDto> searchChats(ChatSearchParams searchParams, Boolean includeUsers) {
         PaginatedResults<Chat> results = chatRepository.searchChats(searchParams);
-
-        return new PaginatedResults<>(
+        PaginatedResults<ChatSearchDto> resultDtos = new PaginatedResults<>(
                 results.getResults().stream()
                         .map(this::mapChatToChatSearchDto)
                         .toList(),
                 results.getTotalCount()
         );
+
+        if (includeUsers) {
+            findAndAttachUsers(resultDtos, searchParams.getUserId());
+        }
+
+        return resultDtos;
     }
 
     public ChatFullDto createChat(CreateChatDto chatDto) {
@@ -94,6 +104,24 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new ResourceNotFoundException(chatId.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
 
         chatRepository.delete(chat);
+    }
+
+    private void findAndAttachUsers(PaginatedResults<ChatSearchDto> resultDtos, Long requestUserId) {
+        Set<Long> userIds = resultDtos.getResults().stream().map(ChatSearchDto::getFirstUserId).collect(Collectors.toSet());
+        userIds.addAll(resultDtos.getResults().stream().map(ChatSearchDto::getSecondUserId).toList());
+
+        List<UserSmallDto> users = userService.getByIds(userIds.stream().toList());
+
+        resultDtos.getResults().forEach(r -> {
+            Optional<UserSmallDto> firstUserOpt = users.stream()
+                    .filter(u -> Objects.equals(u.getId(), r.getFirstUserId()) &&
+                            !Objects.equals(u.getId(), requestUserId)).findFirst(); // Prevent attaching for request user (not necessary)
+            firstUserOpt.ifPresent(r::setFirstUser);
+            Optional<UserSmallDto> secondUserOpt = users.stream()
+                    .filter(u -> Objects.equals(u.getId(), r.getFirstUserId()) &&
+                            !Objects.equals(u.getId(), requestUserId)).findFirst();
+            secondUserOpt.ifPresent(r::setSecondUser);
+        });
     }
 
     private ChatSearchDto mapChatToChatSearchDto(Chat chat) {

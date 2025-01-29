@@ -1,9 +1,6 @@
 package com.hilbert.core.user.service;
 
-import com.hilbert.core.user.dto.CreateUserDto;
-import com.hilbert.core.user.dto.UpdateUserDto;
-import com.hilbert.core.user.dto.UserDataDto;
-import com.hilbert.core.user.dto.UserMapper;
+import com.hilbert.core.user.dto.*;
 import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
@@ -14,6 +11,8 @@ import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,10 +33,16 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDataDto getByUsername(String username) {
-        User foundUser = this.userRepository.findByUsername(username)
+        User foundUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(username, ResourceType.USER, ResourceIdentifierType.USERNAME));
 
         return this.mapUserToUserDataDto(foundUser);
+    }
+
+    public List<UserSmallDto> getByIds(List<Long> ids) {
+        List<User> users = userRepository.findByIds(ids);
+
+        return users.stream().map(this::mapUserToUserSmallDto).toList();
     }
 
     public UserDataDto createUser(CreateUserDto userDto) {
@@ -81,5 +86,9 @@ public class UserServiceImpl implements UserService {
 
     private UserDataDto mapUserToUserDataDto(User user) {
         return UserMapper.INSTANCE.userToUserDataDto(user);
+    }
+
+    private UserSmallDto mapUserToUserSmallDto(User user) {
+        return UserMapper.INSTANCE.userToUserSmallDto(user);
     }
 }

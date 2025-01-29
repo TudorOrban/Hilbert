@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
-import { ArticleFullDto } from '../../models/Article';
+import { LanguageOptionsService } from '../../../../../shared/language/services/language-options.service';
+import { ArticleFullDto } from '../../../models/Article';
 import { faEye, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 

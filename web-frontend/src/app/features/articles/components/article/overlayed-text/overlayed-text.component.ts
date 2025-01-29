@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { ArticleFullDto } from '../../models/Article';
+import { ArticleFullDto } from '../../../models/Article';
 import { CommonModule } from '@angular/common';
-import { PopoverComponent } from "../../../../shared/common/components/popover/popover.component";
+import { PopoverComponent } from "../../../../../shared/common/components/popover/popover.component";
 
 @Component({
   selector: 'app-overlayed-text',
