@@ -22,6 +22,8 @@ export interface ChatSearchDto {
     updatedAt: string;
     lastMessageUserId: number;
     lastMessageContent: number;
+    lastMessageDate?: string;
+    lastMessageSeen?: string;
 
     firstUser?: UserSmallDto;
     secondUser?: UserSmallDto;

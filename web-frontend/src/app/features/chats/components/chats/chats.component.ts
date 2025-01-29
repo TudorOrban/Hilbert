@@ -1,23 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { faArrowUpWideShort, faArrowDownShortWide, faMessage, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../../../core/user/services/auth.service';
 import { PaginatedResults } from '../../../../shared/search/models/Search';
 import { ChatSearchDto } from '../../models/Chat';
 import { CommonModule } from '@angular/common';
+import { SearchInputComponent } from "../../../../shared/common/components/search-input/search-input.component";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule, SearchInputComponent],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
 export class ChatsComponent implements OnInit {
-    private userId?: number;
+    userId?: number;
     chats?: PaginatedResults<ChatSearchDto>;
 
     constructor (
         private readonly chatService: ChatService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly uiUtilService: UiUtilService
     ) {}
 
     ngOnInit(): void {
@@ -45,4 +50,17 @@ export class ChatsComponent implements OnInit {
             }
         );
     }
+
+    formatDate(dateString?: string): string {
+        return this.uiUtilService.formatDate(dateString);
+    }
+
+    handleAddChat(): void {
+
+    }
+
+    faArrowUpWideShort = faArrowUpWideShort;
+    faArrowDownShortWide = faArrowDownShortWide;
+    faMessage = faMessage;
+    faCheck = faCheck;
 }
