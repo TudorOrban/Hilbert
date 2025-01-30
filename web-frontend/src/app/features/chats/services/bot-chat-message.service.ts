@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpEventType } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
 import { BotChatMessageSearchParams, PaginatedResults } from "../../../shared/search/models/Search";
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { BotChatMessageSearchDto, CreateBotChatMessageDto } from "../models/BotChatMessage";
 
 @Injectable({
@@ -23,7 +23,19 @@ export class BotChatMessageService {
         return this.http.get<PaginatedResults<BotChatMessageSearchDto>>(`${url}&includeUsers=${includeUsers ?? false}`);
     }
 
-    createMessageAndRespond(messageDto: CreateBotChatMessageDto): Observable<String> {
-        return this.http.post<String>(`${this.apiUrl}/respond`, messageDto);
+    createMessageAndRespond(messageDto: CreateBotChatMessageDto): Observable<String | null | undefined> {
+        return this.http.post<String>(`${this.apiUrl}/respond`, messageDto, {
+            observe: 'events',
+            reportProgress: true
+        }).pipe(
+            map(event => {
+                if (event.type === HttpEventType.DownloadProgress) {
+                    return "";
+                } else if (event.type === HttpEventType.Response) {
+                    return event.body;
+                }
+                return "";
+            })
+        );
     }
 }

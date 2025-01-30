@@ -18,6 +18,7 @@ import com.hilbert.shared.search.models.BotChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -51,16 +52,13 @@ public class BotChatMessageServiceImpl implements BotChatMessageService {
         );
     }
 
-    public String createMessageAndResponse(CreateBotChatMessageDto messageDto) {
+    public Flux<String> createMessageAndResponse(CreateBotChatMessageDto messageDto) {
         BotChatMessageSearchDto savedMessageDto = this.createMessage(messageDto);
 
         BotChatInputDto inputDto = new BotChatInputDto(
                 savedMessageDto.getContent(), new ArrayList<>(), messageDto.getLanguage(), Language.ENGLISH, false
         );
-        String response = botChatResponseService.respondToUser(inputDto);
-        System.out.println("Response: " + response);
-
-        return response;
+        return botChatResponseService.respondToUser(inputDto);
     }
 
     public BotChatMessageSearchDto createMessage(CreateBotChatMessageDto messageDto) {

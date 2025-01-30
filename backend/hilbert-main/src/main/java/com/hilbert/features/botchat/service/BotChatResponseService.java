@@ -1,8 +1,9 @@
 package com.hilbert.features.botchat.service;
 
 import com.hilbert.features.botchat.dto.BotChatInputDto;
+import reactor.core.publisher.Flux;
 
 public interface BotChatResponseService {
 
-    String respondToUser(BotChatInputDto inputDto);
+    Flux<String> respondToUser(BotChatInputDto inputDto);
 }

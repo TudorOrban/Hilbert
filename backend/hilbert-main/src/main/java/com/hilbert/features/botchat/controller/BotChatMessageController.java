@@ -8,6 +8,7 @@ import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("api/v1/bot-chat-messages")
@@ -37,9 +38,9 @@ public class BotChatMessageController {
     }
 
     @PostMapping("/respond")
-    public ResponseEntity<String> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
-        String responseMessage = chatMessageService.createMessageAndResponse(messageDto);
-        return ResponseEntity.ok(responseMessage);
+    public ResponseEntity<Flux<String>> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
+        Flux<String> responseMessageFlux = chatMessageService.createMessageAndResponse(messageDto);
+        return ResponseEntity.ok(responseMessageFlux);
     }
 
     @PostMapping
