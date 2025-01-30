@@ -4,3 +4,4 @@ transformers
 sentencepiece
 sacremoses
 python-dotenv
+protobuf
