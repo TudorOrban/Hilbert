@@ -27,7 +27,7 @@ public class BotChatMessage {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "translation", nullable = false)
+    @Column(name = "translation")
     private String translation;
 
     @Column(name = "created_at")

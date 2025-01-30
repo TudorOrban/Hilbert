@@ -100,6 +100,7 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.delete(chat);
     }
 
+
     private void findAndAttachMessagesToFullDto(ChatFullDto chatFullDto) {
         Integer numberOfMessages = 10;
         ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatFullDto.getId(), "", "createdAt", false, 1, numberOfMessages);
@@ -112,6 +113,7 @@ public class ChatServiceImpl implements ChatService {
 
         chatFullDto.setMessages(dtoResults);
     }
+
     private void findAndAttachUsersToFullDto(ChatFullDto chatFullDto) {
         List<UserSmallDto> users = userService.getByIds(new ArrayList<>(Arrays.asList(chatFullDto.getFirstUserId(), chatFullDto.getSecondUserId())));
         Optional<UserSmallDto> firstUserOpt = users.stream().filter(u -> Objects.equals(u.getId(), chatFullDto.getFirstUserId())).findFirst();

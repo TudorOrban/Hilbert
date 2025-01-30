@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BotChatMessageSearchDto {
     private Long id;
-    private Long userId;
     private Long botChatId;
     private Boolean isUser;
     private String content;

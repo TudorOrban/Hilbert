@@ -1,6 +1,7 @@
 package com.hilbert.features.botchat.dto;
 
 import com.hilbert.core.user.dto.UserSmallDto;
+import com.hilbert.shared.common.enums.Language;
 import com.hilbert.shared.search.models.PaginatedResults;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class BotChatFullDto {
 
     private Long id;
     private Long userId;
+    private Language language;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Boolean lastMessageFromUser;

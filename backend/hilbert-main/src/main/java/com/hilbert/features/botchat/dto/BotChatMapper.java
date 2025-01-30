@@ -43,7 +43,6 @@ public interface BotChatMapper {
     @Mapping(source = "message.createdAt", target = "createdAt")
     BotChatMessageSearchDto messageToMessageSearchDto(BotChatMessage message);
 
-    @Mapping(source = "userId", target = "userId")
     @Mapping(source = "botChatId", target = "botChatId")
     @Mapping(source = "isUser", target = "isUser")
     @Mapping(source = "content", target = "content")
