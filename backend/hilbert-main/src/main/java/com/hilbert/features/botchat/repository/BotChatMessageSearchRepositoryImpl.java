@@ -55,7 +55,7 @@ public class BotChatMessageSearchRepositoryImpl implements BotChatMessageSearchR
         Predicate conditions = builder.conjunction();
 
         if (searchParams.getChatId() != null) {
-            conditions = builder.and(conditions, builder.equal(root.get("chatId"), searchParams.getChatId()));
+            conditions = builder.and(conditions, builder.equal(root.get("botChatId"), searchParams.getChatId()));
         }
 
         return conditions;

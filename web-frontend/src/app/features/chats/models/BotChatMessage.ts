@@ -1,6 +1,6 @@
 export interface BotChatMessageSearchDto {
     id: number;
-    userId: number;
+    isUser: boolean;
     chatId: number;
     content: string;
     createdAt: string;
