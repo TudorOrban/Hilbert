@@ -1,5 +1,6 @@
 package com.hilbert.features.botchat.service;
 
+import com.hilbert.features.botchat.dto.BotChatInputDto;
 import com.hilbert.features.botchat.dto.BotChatMapper;
 import com.hilbert.features.botchat.dto.BotChatMessageSearchDto;
 import com.hilbert.features.botchat.dto.CreateBotChatMessageDto;
@@ -7,6 +8,7 @@ import com.hilbert.features.botchat.model.BotChat;
 import com.hilbert.features.botchat.model.BotChatMessage;
 import com.hilbert.features.botchat.repository.BotChatMessageRepository;
 import com.hilbert.features.botchat.repository.BotChatRepository;
+import com.hilbert.shared.common.enums.Language;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
@@ -17,6 +19,7 @@ import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
@@ -24,16 +27,19 @@ public class BotChatMessageServiceImpl implements BotChatMessageService {
 
     private final BotChatMessageRepository chatMessageRepository;
     private final BotChatRepository chatRepository;
+    private final BotChatResponseService botChatResponseService;
     private final EntitySanitizerService sanitizationService;
 
     @Autowired
     public BotChatMessageServiceImpl(
             BotChatMessageRepository chatMessageRepository,
             BotChatRepository chatRepository,
+            BotChatResponseService botChatResponseService,
             EntitySanitizerService sanitizationService
     ) {
         this.chatMessageRepository = chatMessageRepository;
         this.chatRepository = chatRepository;
+        this.botChatResponseService = botChatResponseService;
         this.sanitizationService = sanitizationService;
     }
 
@@ -43,6 +49,18 @@ public class BotChatMessageServiceImpl implements BotChatMessageService {
                 results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
                 results.getTotalCount()
         );
+    }
+
+    public String createMessageAndResponse(CreateBotChatMessageDto messageDto) {
+        BotChatMessageSearchDto savedMessageDto = this.createMessage(messageDto);
+
+        BotChatInputDto inputDto = new BotChatInputDto(
+                savedMessageDto.getContent(), new ArrayList<>(), messageDto.getLanguage(), Language.ENGLISH, false
+        );
+        String response = botChatResponseService.respondToUser(inputDto);
+        System.out.println("Response: " + response);
+
+        return response;
     }
 
     public BotChatMessageSearchDto createMessage(CreateBotChatMessageDto messageDto) {
@@ -55,7 +73,6 @@ public class BotChatMessageServiceImpl implements BotChatMessageService {
         }
 
         BotChatMessage message = this.mapCreateMessageDtoToChatMessage(sanitizedDto);
-
         BotChatMessage savedMessage = chatMessageRepository.save(message);
         return this.mapMessageToMessageSearchDto(savedMessage);
     }

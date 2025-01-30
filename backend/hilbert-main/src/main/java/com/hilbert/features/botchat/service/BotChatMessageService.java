@@ -8,6 +8,7 @@ import com.hilbert.shared.search.models.PaginatedResults;
 public interface BotChatMessageService {
 
     PaginatedResults<BotChatMessageSearchDto> searchMessages(BotChatMessageSearchParams searchParams);
+    String createMessageAndResponse(CreateBotChatMessageDto messageDto);
     BotChatMessageSearchDto createMessage(CreateBotChatMessageDto messageDto);
     void deleteMessage(Long messageId);
 }

@@ -25,6 +25,6 @@ export const routes: Routes = [
     { path: 'grammar', component: GrammarComponent, canActivate: [AuthGuard] },
     { path: 'chat', component: ChatsComponent, canActivate: [AuthGuard] },
     { path: 'chat/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
-    { path: 'bot-chat/:chatId', component: BotChatComponent, canActivate: [AuthGuard] },
+    { path: 'bot-chat/:botChatId', component: BotChatComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 ];

@@ -1,14 +1,14 @@
 package com.hilbert.shared.error.types;
 
 public enum HilbertServiceType {
-    MainService,
-    TranslationService;
+    HILBERT_MAIN,
+    HILBERT_ML;
 
     @Override
     public String toString() {
         return switch (this) {
-            case MainService -> "Main Service";
-            case TranslationService -> "Translation Service";
+            case HILBERT_MAIN -> "Hilbert Main Service";
+            case HILBERT_ML -> "Hilbert ML Service";
         };
     }
 }

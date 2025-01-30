@@ -1,3 +1,5 @@
+import { Language } from "../../../shared/language/models/Language";
+
 export interface BotChatMessageSearchDto {
     id: number;
     isUser: boolean;
@@ -9,6 +11,8 @@ export interface BotChatMessageSearchDto {
 
 export interface CreateBotChatMessageDto {
     userId: number;
-    chatId: number;
+    isUser: boolean;
+    botChatId: number;
     content: string;
+    language: Language;
 }

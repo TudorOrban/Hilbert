@@ -36,6 +36,12 @@ public class BotChatMessageController {
         return ResponseEntity.ok(results);
     }
 
+    @PostMapping("/respond")
+    public ResponseEntity<String> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
+        String responseMessage = chatMessageService.createMessageAndResponse(messageDto);
+        return ResponseEntity.ok(responseMessage);
+    }
+
     @PostMapping
     public ResponseEntity<BotChatMessageSearchDto> createMessage(@RequestBody CreateBotChatMessageDto messageDto) {
         BotChatMessageSearchDto message = chatMessageService.createMessage(messageDto);

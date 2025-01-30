@@ -16,7 +16,7 @@ import { UiUtilService } from "../../../../shared/common/services/ui-util.servic
 import { RxStompService } from "../../services/rx-stomp.service";
 import { Message } from "stompjs";
 import { FormsModule } from "@angular/forms";
-import { ChatMessageService } from "../../services/chatmessage.service";
+import { ChatMessageService } from "../../services/chat-message.service";
 import { ChatMessageSearchParams } from "../../../../shared/search/models/Search";
 
 @Component({
@@ -91,7 +91,7 @@ export class ChatComponent implements OnInit {
     private scrollToBottom(): void {
         if (this.messagesContainer && this.messagesContainer.nativeElement) {
             const element = this.messagesContainer.nativeElement;
-            element.scrollTop = element.scrollHeight; // Simplified scrolling
+            element.scrollTop = element.scrollHeight;
         }
     }
 
@@ -159,6 +159,7 @@ export class ChatComponent implements OnInit {
         )
     }
 
+    // Utils
     shouldShowData(index: number): boolean {
         let currentDate = new Date(this.messages?.[index]?.createdAt).getDate();
         let previousDate = new Date(this.messages?.[index + 1]?.createdAt).getDate();

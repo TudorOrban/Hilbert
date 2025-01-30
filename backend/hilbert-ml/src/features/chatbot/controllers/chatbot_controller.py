@@ -31,12 +31,12 @@ def chatbotstream() -> Response:
 
 # Util
 def get_chat_input_dto(data: Any) -> ChatInputDto:
-    previous_messages = [MessageSearchDto(**msg) for msg in data["previous_messages"]]
+    # previous_messages = [MessageSearchDto(**msg) for msg in data["previous_messages"]]
     language_str = data.get("language", "NONE")
     language = Language[language_str] if language_str in Language.__members__ else Language.NONE
 
     return ChatInputDto(
-        input_text=data["input_text"],
-        previous_messages=previous_messages,
+        input_text=data["inputText"],
+        previous_messages=[],
         language=language
     )

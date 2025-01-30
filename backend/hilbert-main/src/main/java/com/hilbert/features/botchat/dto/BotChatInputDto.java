@@ -5,14 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBotChatMessageDto {
+public class BotChatInputDto {
 
-    private Long userId;
-    private Long botChatId;
-    private Boolean isUser;
-    private String content;
+    private String inputText;
+    private List<BotChatMessageSearchDto> messages;
     private Language language;
+    private Language destLanguage;
+    private Boolean shouldTranslate;
 }

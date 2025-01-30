@@ -1,9 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
-import { ChatMessageSearchParams, ChatSearchParams, PaginatedResults } from "../../../shared/search/models/Search";
+import { ChatMessageSearchParams, PaginatedResults } from "../../../shared/search/models/Search";
 import { Observable } from "rxjs";
-import { ChatFullDto, ChatSearchDto, CreateChatDto } from "../models/Chat";
 import { ChatMessageSearchDto } from "../models/ChatMessage";
 
 @Injectable({

@@ -13,11 +13,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UiUtilService } from "../../../../shared/common/services/ui-util.service";
 import { RxStompService } from "../../services/rx-stomp.service";
-import { Message } from "stompjs";
 import { FormsModule } from "@angular/forms";
-import { BotChatMessageService } from "../../services/botchatmessage.service";
+import { BotChatMessageService } from "../../services/bot-chat-message.service";
 import { BotChatMessageSearchParams } from "../../../../shared/search/models/Search";
 import { BotChatMessageSearchDto, CreateBotChatMessageDto } from "../../models/BotChatMessage";
+import { Language } from "../../../../shared/language/models/Language";
 
 @Component({
     selector: "app-bot-chat",
@@ -33,8 +33,10 @@ export class BotChatComponent implements OnInit {
     chat?: BotChatFullDto;
     messages: BotChatMessageSearchDto[] = [];
     totalCount?: number;
+
     currentPage: number = 1;
     messageToSendContent: string = "";
+    isBotResponding: boolean = false;
 
     constructor(
         private readonly chatService: BotChatService,
@@ -47,15 +49,13 @@ export class BotChatComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.paramMap.subscribe((params) => {
-            this.chatId = Number(params.get("chatId"));
+            this.chatId = Number(params.get("botChatId"));
 
             this.loadBotChat();
         });
         this.authService.getCurrentUser().subscribe((user) => {
             this.userId = user?.id;
         });
-
-        this.connectToWebSocket();
     }
 
     // Initial data loading
@@ -67,7 +67,6 @@ export class BotChatComponent implements OnInit {
 
         this.chatService.getChat(this.chatId, true, true).subscribe(
             (data) => {
-                console.log("DAta: ", data);
                 this.handleChatResponse(data);
             },
             (error) => {
@@ -85,32 +84,15 @@ export class BotChatComponent implements OnInit {
         ) ?? [];
         this.totalCount = chatResponse.messages?.totalCount;
         setTimeout(() => {
-          this.scrollToBottom();
+            this.scrollToBottom();
         }, 100);
     }
 
     private scrollToBottom(): void {
         if (this.messagesContainer && this.messagesContainer.nativeElement) {
             const element = this.messagesContainer.nativeElement;
-            element.scrollTop = element.scrollHeight; // Simplified scrolling
+            element.scrollTop = element.scrollHeight;
         }
-    }
-
-    // Live messages
-    connectToWebSocket(): void {
-      if (!this.chatId) {
-          return;
-      }
-
-      this.rxStompService
-          .watch("/topic/bot-chat/" + this.chatId)
-          .subscribe((message: Message) => {
-              this.handleNewMessage(JSON.parse(message.body));
-          });
-    }
-
-    handleNewMessage(message: BotChatMessageSearchDto): void {
-        this.messages?.push(message);
     }
 
     sendMessage(): void {
@@ -120,15 +102,22 @@ export class BotChatComponent implements OnInit {
         }
         const messageDto: CreateBotChatMessageDto = {
             userId: this.userId ?? 0,
-            chatId: this.chatId ?? 0,
-            content: this.messageToSendContent
+            isUser: true,
+            botChatId: this.chatId ?? 0,
+            content: this.messageToSendContent,
+            language: this.chat?.language ?? Language.NONE,
         }
 
-        this.rxStompService.publish({
-            destination: "/app/botChat.sendMessage",
-            body: JSON.stringify(messageDto),
-        });
         this.messageToSendContent = "";
+
+        this.chatMessageService.createMessageAndRespond(messageDto).subscribe(
+            (data) => {
+                console.log("Data: ", data);
+            },
+            (error) => {
+                console.error("Error occured when sending message: ", error);
+            }
+        );
     }
 
     onKeydown(event: KeyboardEvent): void {
@@ -160,6 +149,7 @@ export class BotChatComponent implements OnInit {
         )
     }
 
+    // Utils
     shouldShowData(index: number): boolean {
         let currentDate = new Date(this.messages?.[index]?.createdAt).getDate();
         let previousDate = new Date(this.messages?.[index + 1]?.createdAt).getDate();

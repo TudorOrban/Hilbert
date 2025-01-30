@@ -1,13 +1,11 @@
-package com.hilbert.features.article.service.translation.omw;
+package com.hilbert.features.botchat.service;
 
-import com.hilbert.features.article.dto.TranslationRequestDto;
-import com.hilbert.features.article.dto.TranslationResponseDto;
+import com.hilbert.features.botchat.dto.BotChatInputDto;
 import com.hilbert.shared.error.types.HilbertServiceType;
 import com.hilbert.shared.error.types.UnauthorizedException;
 import com.hilbert.shared.error.types.UnavailableServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,9 +16,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.ConnectException;
 
+
 @Service
-@Primary
-public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
+public class BotChatResponseServiceImpl implements BotChatResponseService {
 
     @Value("${hilbert.ml.api.url}")
     private String hilbertMLApiUrl;
@@ -31,17 +29,17 @@ public class ArticleTranslatorServiceImpl implements ArticleTranslatorService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public ArticleTranslatorServiceImpl(RestTemplate restTemplate) {
+    public BotChatResponseServiceImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public TranslationResponseDto translateContent(TranslationRequestDto translationRequestDto) {
+    public String respondToUser(BotChatInputDto inputDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("API-Key", hilbertMLApiKey);
-        HttpEntity<TranslationRequestDto> requestEntity = new HttpEntity<>(translationRequestDto, headers);
+        HttpEntity<BotChatInputDto> requestEntity = new HttpEntity<>(inputDto, headers);
 
         try {
-            ResponseEntity<TranslationResponseDto> response = restTemplate.exchange(hilbertMLApiUrl + "/translate", HttpMethod.POST, requestEntity, TranslationResponseDto.class);
+            ResponseEntity<String> response = restTemplate.exchange(hilbertMLApiUrl + "/chatbot/stream", HttpMethod.POST, requestEntity, String.class);
             if (response.getStatusCode().value() == 401) {
                 throw new UnauthorizedException("Hilbert ML Service rejected access. Ensure you have a valid API key.");
             }
