@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageSearchDto {
+public class ChatMessageSearchDto {
     private Long id;
     private Long userId;
     private Long chatId;

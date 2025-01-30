@@ -1,8 +1,8 @@
 package com.hilbert.features.chat.service;
 
 import com.hilbert.features.chat.dto.ChatMapper;
-import com.hilbert.features.chat.dto.CreateMessageDto;
-import com.hilbert.features.chat.dto.MessageSearchDto;
+import com.hilbert.features.chat.dto.CreateChatMessageDto;
+import com.hilbert.features.chat.dto.ChatMessageSearchDto;
 import com.hilbert.features.chat.model.Chat;
 import com.hilbert.features.chat.model.ChatMessage;
 import com.hilbert.features.chat.repository.ChatMessageRepository;
@@ -37,7 +37,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         this.sanitizationService = sanitizationService;
     }
 
-    public PaginatedResults<MessageSearchDto> searchMessages(ChatMessageSearchParams searchParams) {
+    public PaginatedResults<ChatMessageSearchDto> searchMessages(ChatMessageSearchParams searchParams) {
         PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
         return new PaginatedResults<>(
                 results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
@@ -45,8 +45,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         );
     }
 
-    public MessageSearchDto createMessage(CreateMessageDto messageDto) {
-        CreateMessageDto sanitizedDto = sanitizationService.sanitizeCreateMessageDto(messageDto);
+    public ChatMessageSearchDto createMessage(CreateChatMessageDto messageDto) {
+        CreateChatMessageDto sanitizedDto = sanitizationService.sanitizeCreateMessageDto(messageDto);
 
         Chat chat = chatRepository.findById(sanitizedDto.getChatId())
                 .orElseThrow(() -> new ResourceNotFoundException(sanitizedDto.getChatId().toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
@@ -68,11 +68,11 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         chatMessageRepository.delete(message);
     }
 
-    private MessageSearchDto mapMessageToMessageSearchDto(ChatMessage message) {
+    private ChatMessageSearchDto mapMessageToMessageSearchDto(ChatMessage message) {
         return ChatMapper.INSTANCE.messageToMessageSearchDto(message);
     }
 
-    private ChatMessage mapCreateMessageDtoToChatMessage(CreateMessageDto messageDto) {
+    private ChatMessage mapCreateMessageDtoToChatMessage(CreateChatMessageDto messageDto) {
         return ChatMapper.INSTANCE.createMessageDtoToChatMessage(messageDto);
     }
 }

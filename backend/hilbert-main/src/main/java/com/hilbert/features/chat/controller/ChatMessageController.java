@@ -1,7 +1,7 @@
 package com.hilbert.features.chat.controller;
 
-import com.hilbert.features.chat.dto.CreateMessageDto;
-import com.hilbert.features.chat.dto.MessageSearchDto;
+import com.hilbert.features.chat.dto.CreateChatMessageDto;
+import com.hilbert.features.chat.dto.ChatMessageSearchDto;
 import com.hilbert.features.chat.service.ChatMessageService;
 import com.hilbert.shared.search.models.ChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
@@ -21,7 +21,7 @@ public class ChatMessageController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PaginatedResults<MessageSearchDto>> searchChats(
+    public ResponseEntity<PaginatedResults<ChatMessageSearchDto>> searchChats(
             @RequestParam(value = "chatId", required = false) Long chatId,
             @RequestParam(value = "searchQuery", required = false, defaultValue = "") String searchQuery,
             @RequestParam(value = "sortBy", required = false, defaultValue = "createdAt") String sortBy,
@@ -33,13 +33,13 @@ public class ChatMessageController {
                 chatId, searchQuery, sortBy, isAscending, page, itemsPerPage
         );
 
-        PaginatedResults<MessageSearchDto> results = chatMessageService.searchMessages(searchParams);
+        PaginatedResults<ChatMessageSearchDto> results = chatMessageService.searchMessages(searchParams);
         return ResponseEntity.ok(results);
     }
 
     @PostMapping
-    public ResponseEntity<MessageSearchDto> createMessage(@RequestBody CreateMessageDto messageDto) {
-        MessageSearchDto message = chatMessageService.createMessage(messageDto);
+    public ResponseEntity<ChatMessageSearchDto> createMessage(@RequestBody CreateChatMessageDto messageDto) {
+        ChatMessageSearchDto message = chatMessageService.createMessage(messageDto);
         return ResponseEntity.ok(message);
     }
 

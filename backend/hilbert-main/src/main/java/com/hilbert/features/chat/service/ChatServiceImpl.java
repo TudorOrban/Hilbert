@@ -86,7 +86,7 @@ public class ChatServiceImpl implements ChatService {
         message.setContent(sanitizedDto.getMessageContent());
 
         ChatMessage savedMessage = this.chatMessageRepository.save(message);
-        MessageSearchDto messageDto = this.mapMessageToMessageSearchDto(savedMessage);
+        ChatMessageSearchDto messageDto = this.mapMessageToMessageSearchDto(savedMessage);
 
         chatFullDto.setMessages(new PaginatedResults<>(new ArrayList<>(Collections.singleton(messageDto)), 1L));
 
@@ -105,7 +105,7 @@ public class ChatServiceImpl implements ChatService {
         ChatMessageSearchParams searchParams = new ChatMessageSearchParams(chatFullDto.getId(), "", "createdAt", false, 1, numberOfMessages);
 
         PaginatedResults<ChatMessage> results = chatMessageRepository.searchChatMessages(searchParams);
-        PaginatedResults<MessageSearchDto> dtoResults = new PaginatedResults<>(
+        PaginatedResults<ChatMessageSearchDto> dtoResults = new PaginatedResults<>(
                 results.getResults().stream().map(this::mapMessageToMessageSearchDto).toList(),
                 results.getTotalCount()
         );
@@ -142,7 +142,7 @@ public class ChatServiceImpl implements ChatService {
         return ChatMapper.INSTANCE.chatToChatSearchDto(chat);
     }
 
-    private MessageSearchDto mapMessageToMessageSearchDto(ChatMessage message) {
+    private ChatMessageSearchDto mapMessageToMessageSearchDto(ChatMessage message) {
         return ChatMapper.INSTANCE.messageToMessageSearchDto(message);
     }
 

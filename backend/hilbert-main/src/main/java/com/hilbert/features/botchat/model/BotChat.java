@@ -1,4 +1,4 @@
-package com.hilbert.features.chat.model;
+package com.hilbert.features.botchat.model;
 
 import com.hilbert.shared.common.enums.Language;
 import jakarta.persistence.*;

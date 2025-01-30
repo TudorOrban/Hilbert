@@ -1,6 +1,6 @@
-package com.hilbert.features.chat.repository;
+package com.hilbert.features.botchat.repository;
 
-import com.hilbert.features.chat.model.BotChatMessage;
+import com.hilbert.features.botchat.model.BotChatMessage;
 import com.hilbert.shared.search.models.BotChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 

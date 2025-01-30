@@ -1,4 +1,4 @@
-package com.hilbert.features.chat.dto;
+package com.hilbert.features.botchat.dto;
 
 import com.hilbert.core.user.dto.UserSmallDto;
 import com.hilbert.shared.search.models.PaginatedResults;
@@ -11,17 +11,16 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatFullDto {
+public class BotChatFullDto {
 
     private Long id;
-    private Long firstUserId;
-    private Long secondUserId;
+    private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Long lastMessageUserId;
+    private Boolean lastMessageFromUser;
     private String lastMessageContent;
-    private PaginatedResults<ChatMessageSearchDto> messages;
+    private LocalDateTime lastMessageDate;
+    private PaginatedResults<BotChatMessageSearchDto> messages;
 
-    private UserSmallDto firstUser;
-    private UserSmallDto secondUser;
+    private UserSmallDto user;
 }

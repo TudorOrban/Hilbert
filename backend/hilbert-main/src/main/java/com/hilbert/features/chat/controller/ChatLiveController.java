@@ -1,7 +1,7 @@
 package com.hilbert.features.chat.controller;
 
-import com.hilbert.features.chat.dto.CreateMessageDto;
-import com.hilbert.features.chat.dto.MessageSearchDto;
+import com.hilbert.features.chat.dto.CreateChatMessageDto;
+import com.hilbert.features.chat.dto.ChatMessageSearchDto;
 import com.hilbert.features.chat.service.ChatMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,9 +25,9 @@ public class ChatLiveController {
     }
 
     @MessageMapping("/chat.sendMessage")
-    public void sendMessage(@Payload CreateMessageDto messageDto) {
+    public void sendMessage(@Payload CreateChatMessageDto messageDto) {
         // Validate and persist message
-        MessageSearchDto savedMessage = chatMessageService.createMessage(messageDto);
+        ChatMessageSearchDto savedMessage = chatMessageService.createMessage(messageDto);
 
         String destination = "/topic/chat/" + messageDto.getChatId();
         messagingTemplate.convertAndSend(destination, savedMessage);

@@ -1,13 +1,13 @@
 package com.hilbert.features.chat.service;
 
-import com.hilbert.features.chat.dto.CreateMessageDto;
-import com.hilbert.features.chat.dto.MessageSearchDto;
+import com.hilbert.features.chat.dto.CreateChatMessageDto;
+import com.hilbert.features.chat.dto.ChatMessageSearchDto;
 import com.hilbert.shared.search.models.ChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 
 public interface ChatMessageService {
 
-    PaginatedResults<MessageSearchDto> searchMessages(ChatMessageSearchParams searchParams);
-    MessageSearchDto createMessage(CreateMessageDto messageDto);
+    PaginatedResults<ChatMessageSearchDto> searchMessages(ChatMessageSearchParams searchParams);
+    ChatMessageSearchDto createMessage(CreateChatMessageDto messageDto);
     void deleteMessage(Long messageId);
 }

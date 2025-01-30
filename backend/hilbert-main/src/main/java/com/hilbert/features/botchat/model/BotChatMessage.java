@@ -1,4 +1,4 @@
-package com.hilbert.features.chat.model;
+package com.hilbert.features.botchat.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,8 +18,8 @@ public class BotChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "chat_id", nullable = false)
-    private Long chatId;
+    @Column(name = "bot_chat_id", nullable = false)
+    private Long botChatId;
 
     @Column(name = "is_user", nullable = false)
     private Boolean isUser;

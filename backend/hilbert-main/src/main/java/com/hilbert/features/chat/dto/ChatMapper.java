@@ -39,10 +39,10 @@ public interface ChatMapper {
     @Mapping(source = "message.chatId", target = "chatId")
     @Mapping(source = "message.content", target = "content")
     @Mapping(source = "message.createdAt", target = "createdAt")
-    MessageSearchDto messageToMessageSearchDto(ChatMessage message);
+    ChatMessageSearchDto messageToMessageSearchDto(ChatMessage message);
 
     @Mapping(source = "userId", target = "userId")
     @Mapping(source = "chatId", target = "chatId")
     @Mapping(source = "content", target = "content")
-    ChatMessage createMessageDtoToChatMessage(CreateMessageDto messageDto);
+    ChatMessage createMessageDtoToChatMessage(CreateChatMessageDto messageDto);
 }
