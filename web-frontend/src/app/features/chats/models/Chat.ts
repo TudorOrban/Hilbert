@@ -1,6 +1,6 @@
 import { UserSmallDto } from "../../../core/user/models/User";
 import { PaginatedResults } from "../../../shared/search/models/Search";
-import { MessageSearchDto } from "./ChatMessage";
+import { ChatMessageSearchDto } from "./ChatMessage";
 
 
 export interface ChatFullDto {
@@ -13,7 +13,7 @@ export interface ChatFullDto {
     lastMessageContent: number;
     lastMessageDate?: string;
     lastMessageSeen?: string;
-    messages?: PaginatedResults<MessageSearchDto>;
+    messages?: PaginatedResults<ChatMessageSearchDto>;
 
     firstUser?: UserSmallDto;
     secondUser?: UserSmallDto;

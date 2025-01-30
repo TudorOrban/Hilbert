@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../../../core/user/services/auth.service";
 import { ChatService } from "../../services/chat.service";
 import { ChatFullDto } from "../../models/Chat";
-import { CreateMessageDto, MessageSearchDto } from "../../models/ChatMessage";
+import { CreateChatMessageDto, ChatMessageSearchDto } from "../../models/ChatMessage";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import {
@@ -31,7 +31,7 @@ export class ChatComponent implements OnInit {
     chatId?: number;
     userId?: number;
     chat?: ChatFullDto;
-    messages: MessageSearchDto[] = [];
+    messages: ChatMessageSearchDto[] = [];
     totalCount?: number;
     currentPage: number = 1;
     messageToSendContent: string = "";
@@ -108,7 +108,7 @@ export class ChatComponent implements OnInit {
           });
     }
 
-    handleNewMessage(message: MessageSearchDto): void {
+    handleNewMessage(message: ChatMessageSearchDto): void {
         this.messages?.push(message);
     }
 
@@ -117,7 +117,7 @@ export class ChatComponent implements OnInit {
             console.error("You are not logged in");
             return;
         }
-        const messageDto: CreateMessageDto = {
+        const messageDto: CreateChatMessageDto = {
             userId: this.userId ?? 0,
             chatId: this.chatId ?? 0,
             content: this.messageToSendContent

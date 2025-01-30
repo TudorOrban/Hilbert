@@ -27,6 +27,15 @@ export interface ChatMessageSearchParams extends SearchParams {
     chatId?: number;
 }
 
+export interface BotChatSearchParams extends SearchParams {
+    userId?: number;
+    language?: Language;
+}
+
+export interface BotChatMessageSearchParams extends SearchParams {
+    chatId?: number;
+}
+
 export interface PaginatedResults<T> {
     results: T[];
     totalCount: number;

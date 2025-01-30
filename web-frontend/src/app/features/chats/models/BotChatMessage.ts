@@ -1,4 +1,4 @@
-export interface ChatMessageSearchDto {
+export interface BotChatMessageSearchDto {
     id: number;
     userId: number;
     chatId: number;
@@ -7,7 +7,7 @@ export interface ChatMessageSearchDto {
     updatedAt: string;
 }
 
-export interface CreateChatMessageDto {
+export interface CreateBotChatMessageDto {
     userId: number;
     chatId: number;
     content: string;

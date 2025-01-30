@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/botchats")
+@RequestMapping("api/v1/bot-chats")
 public class BotChatController {
     
     private final BotChatService chatService;
