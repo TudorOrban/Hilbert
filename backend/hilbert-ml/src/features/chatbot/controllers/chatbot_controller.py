@@ -13,9 +13,7 @@ def chatbot() -> str:
     data = request.get_json()
     input_dto = get_chat_input_dto(data)
 
-    print(f"Input text: {input_dto.input_text}")
     response = chatbot_service.generate_response(input_dto)
-    print(f"Returning: {response}")
 
     return jsonify(response)
 

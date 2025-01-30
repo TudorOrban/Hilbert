@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Any, Generator
+from typing import Generator
 from ollama import Client
 
 from src.features.chatbot.dto.chat_dtos import ChatInputDto, ChatOutputDto, MessageSearchDto
@@ -33,8 +33,20 @@ class ChatbotService:
             input_prompt = self.construct_input_prompt(input_dto)
             response_generator = self.ollama.generate(model=self.model_name, prompt=input_prompt, stream=True)
 
+            # Prevent streaming before </think> tag is encountered
+            buffer = ""
+            think_tag_encountered = False
+
             for chunk in response_generator:
-                yield self.extract_response(chunk["response"])
+                buffer += chunk["response"]
+                if "</think>" in buffer:
+                    think_tag_encountered = True
+                    buffer = buffer.split("</think>", 1)[1]
+
+                if think_tag_encountered:
+                    yield buffer
+                    buffer = ""
+
         except Exception as e:
             print(f"Error: {e}")
             yield "Error generating response."
