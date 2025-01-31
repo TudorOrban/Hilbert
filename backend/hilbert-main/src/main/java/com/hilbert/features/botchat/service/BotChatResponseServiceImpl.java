@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
-
-
 @Service
 public class BotChatResponseServiceImpl implements BotChatResponseService {
 
@@ -30,7 +28,6 @@ public class BotChatResponseServiceImpl implements BotChatResponseService {
 
     @PostConstruct
     public void init() {
-        System.out.println("Api url: " + hilbertMLApiUrl);
         this.webClient = webClientBuilder.baseUrl(hilbertMLApiUrl).build();
     }
 
@@ -40,23 +37,7 @@ public class BotChatResponseServiceImpl implements BotChatResponseService {
                 .header("API-Key", hilbertMLApiKey)
                 .bodyValue(inputDto)
                 .retrieve()
-                .bodyToFlux(String.class);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("API-Key", hilbertMLApiKey);
-//        HttpEntity<BotChatInputDto> requestEntity = new HttpEntity<>(inputDto, headers);
-//
-//        try {
-//            ResponseEntity<String> response = restTemplate.exchange(hilbertMLApiUrl + "/chatbot/stream", HttpMethod.POST, requestEntity, String.class);
-//            if (response.getStatusCode().value() == 401) {
-//                throw new UnauthorizedException("Hilbert ML Service rejected access. Ensure you have a valid API key.");
-//            }
-//
-//            return response.getBody();
-//        } catch (RestClientException e) {
-//            if (e.getCause() instanceof ConnectException) {
-//                throw new UnavailableServiceException(HilbertServiceType.HILBERT_ML);
-//            }
-//            throw e;
-//        }
+                .bodyToFlux(String.class)
+                .log();
     }
 }

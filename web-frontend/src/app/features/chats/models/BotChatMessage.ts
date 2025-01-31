@@ -16,3 +16,7 @@ export interface CreateBotChatMessageDto {
     content: string;
     language: Language;
 }
+
+export interface BotChatStartStreamResponse {
+    requestId: string;
+}

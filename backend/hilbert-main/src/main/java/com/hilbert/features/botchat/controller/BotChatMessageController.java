@@ -1,11 +1,14 @@
 package com.hilbert.features.botchat.controller;
 
 import com.hilbert.features.botchat.dto.BotChatMessageSearchDto;
+import com.hilbert.features.botchat.dto.BotChatStartStreamResponse;
 import com.hilbert.features.botchat.dto.CreateBotChatMessageDto;
 import com.hilbert.features.botchat.service.BotChatMessageService;
+import com.hilbert.features.botchat.service.BotChatStreamService;
 import com.hilbert.shared.search.models.BotChatMessageSearchParams;
 import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -15,10 +18,15 @@ import reactor.core.publisher.Flux;
 public class BotChatMessageController {
 
     private final BotChatMessageService chatMessageService;
+    private final BotChatStreamService botChatStreamService;
 
     @Autowired
-    public BotChatMessageController(BotChatMessageService chatMessageService) {
+    public BotChatMessageController(
+            BotChatMessageService chatMessageService,
+            BotChatStreamService botChatStreamService
+    ) {
         this.chatMessageService = chatMessageService;
+        this.botChatStreamService = botChatStreamService;
     }
 
     @GetMapping("/search")
@@ -37,10 +45,17 @@ public class BotChatMessageController {
         return ResponseEntity.ok(results);
     }
 
-    @PostMapping("/respond")
-    public ResponseEntity<Flux<String>> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
-        Flux<String> responseMessageFlux = chatMessageService.createMessageAndResponse(messageDto);
-        return ResponseEntity.ok(responseMessageFlux);
+    @PostMapping("/start-responding")
+    public ResponseEntity<BotChatStartStreamResponse> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
+        String requestId = botChatStreamService.processMessageAndTriggerResponse(messageDto);
+        return ResponseEntity.ok(new BotChatStartStreamResponse(requestId));
+    }
+
+    @GetMapping("/response-stream/{requestId}")
+    public ResponseEntity<Flux<String>> responseStream(@PathVariable String requestId) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_EVENT_STREAM)
+                .body(botChatStreamService.getResponseStream(requestId));
     }
 
     @PostMapping
