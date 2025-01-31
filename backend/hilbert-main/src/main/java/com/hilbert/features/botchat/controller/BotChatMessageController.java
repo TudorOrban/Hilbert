@@ -56,19 +56,11 @@ public class BotChatMessageController {
 
     @GetMapping("/response-stream/{requestId}")
     public ResponseEntity<Flux<String>> responseStream(@PathVariable String requestId) {
+        Flux<String> responseStream = botChatStreamService.getResponseStream(requestId);
+
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_EVENT_STREAM)
-                .body(botChatStreamService.getResponseStream(requestId)
-                        .map(data -> {
-                            // 1. Encode to UTF-8 explicitly:
-                            byte[] utf8Bytes = data.getBytes(StandardCharsets.UTF_8);
-
-                            // 2. Then, Base64 encode the UTF-8 bytes:
-                            String base64Encoded = Base64.getEncoder().encodeToString(utf8Bytes);
-
-                            return "data: " + base64Encoded + "\n\n";
-                        })
-                        .log());
+                .body(responseStream);
     }
 
     @PostMapping

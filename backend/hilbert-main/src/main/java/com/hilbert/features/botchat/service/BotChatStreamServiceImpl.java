@@ -8,11 +8,17 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+ * Service
+ *
+ */
 @Service
 public class BotChatStreamServiceImpl implements BotChatStreamService {
 
@@ -43,6 +49,8 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
         Sinks.Many<String> sink = Sinks.many().multicast().directAllOrNothing();
         sinks.put(requestId, sink);
 
+        StringBuilder messageBuilder = new StringBuilder();
+
         responseFlux.subscribe(new org.reactivestreams.Subscriber<>() {
             @Override
             public void onSubscribe(org.reactivestreams.Subscription s) {
@@ -52,6 +60,7 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
             @Override
             public void onNext(String s) {
                 sink.tryEmitNext(s);
+                messageBuilder.append(s);
             }
 
             @Override
@@ -63,6 +72,9 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
             public void onComplete() {
                 sink.tryEmitComplete();
                 sinks.remove(requestId);
+
+                String completeMessage = messageBuilder.toString();
+                saveBotMessage(messageDto.getBotChatId(), completeMessage, messageDto.getLanguage());
             }
         });
 
@@ -74,6 +86,22 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
         if (sink == null) {
             return Flux.just("error");
         }
-        return sink.asFlux();
+        return sink
+                .asFlux()
+                .map(data -> {
+                    byte[] utf8Bytes = data.getBytes(StandardCharsets.UTF_8);
+                    String base64Encoded = Base64.getEncoder().encodeToString(utf8Bytes);
+                    return "data: " + base64Encoded + "\n\n";
+                })
+                .concatWithValues("data: " + Base64.getEncoder().encodeToString("[DONE]".getBytes(StandardCharsets.UTF_8)) + "\n\n") // End of stream marker
+                .log();
+    }
+
+    private void saveBotMessage(Long chatId, String message, Language language) {
+        CreateBotChatMessageDto messageDto = new CreateBotChatMessageDto(
+            -1L, chatId, false, message, language
+        );
+
+        botChatMessageService.createMessage(messageDto);
     }
 }

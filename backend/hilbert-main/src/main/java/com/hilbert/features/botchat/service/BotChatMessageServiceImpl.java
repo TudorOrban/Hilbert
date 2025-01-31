@@ -52,21 +52,12 @@ public class BotChatMessageServiceImpl implements BotChatMessageService {
         );
     }
 
-    public Flux<String> createMessageAndResponse(CreateBotChatMessageDto messageDto) {
-        BotChatMessageSearchDto savedMessageDto = this.createMessage(messageDto);
-
-        BotChatInputDto inputDto = new BotChatInputDto(
-                savedMessageDto.getContent(), new ArrayList<>(), messageDto.getLanguage(), Language.ENGLISH, false
-        );
-        return botChatResponseService.respondToUser(inputDto);
-    }
-
     public BotChatMessageSearchDto createMessage(CreateBotChatMessageDto messageDto) {
         CreateBotChatMessageDto sanitizedDto = sanitizationService.sanitizeCreateBotChatMessageDto(messageDto);
 
         BotChat chat = chatRepository.findById(sanitizedDto.getBotChatId())
                 .orElseThrow(() -> new ResourceNotFoundException(sanitizedDto.getBotChatId().toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
-        if (!Objects.equals(chat.getUserId(), sanitizedDto.getUserId())) {
+        if (messageDto.getIsUser() && !Objects.equals(chat.getUserId(), sanitizedDto.getUserId())) {
             throw new ValidationException("The user with ID: " + sanitizedDto.getUserId() + " is not allowed to create messages in the chat with ID: " + sanitizedDto.getBotChatId());
         }
 

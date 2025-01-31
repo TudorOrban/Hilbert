@@ -12,7 +12,6 @@ import {
     faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { UiUtilService } from "../../../../shared/common/services/ui-util.service";
-import { RxStompService } from "../../services/rx-stomp.service";
 import { FormsModule } from "@angular/forms";
 import { BotChatMessageService } from "../../services/bot-chat-message.service";
 import { BotChatMessageSearchParams } from "../../../../shared/search/models/Search";
@@ -45,7 +44,6 @@ export class BotChatComponent implements OnInit {
         private readonly authService: AuthService,
         private readonly uiUtilService: UiUtilService,
         private readonly route: ActivatedRoute,
-        private readonly rxStompService: RxStompService,
     ) {}
 
     ngOnInit(): void {
@@ -109,14 +107,51 @@ export class BotChatComponent implements OnInit {
             language: this.chat?.language ?? Language.NONE,
         }
 
-        this.messageToSendContent = "";
+        this.pushUserMessage();
 
-        this.isBotResponding = true;
         this.chatMessageService.createMessageAndRespond(messageDto).subscribe(
             (data) => {
                 this.currentResponse += data;
             },
+            (error) => {
+                console.error("Error occurred while sending message: ", error);
+            },
+            () => {
+                this.handleStreamEnd();
+            }
         );
+    }
+
+    pushUserMessage(): void {
+        const messageToPush: BotChatMessageSearchDto = {
+            id: 0,
+            isUser: true,
+            chatId: this.chatId ?? 0,
+            content: this.messageToSendContent,
+            createdAt: new Date().toISOString(),
+        };
+        this.messages.push(messageToPush);
+
+        this.isBotResponding = true;
+        this.messageToSendContent = "";
+
+        setTimeout(() => {
+            this.scrollToBottom();
+        }, 100);
+    }
+
+    handleStreamEnd(): void {
+        const messageToPush: BotChatMessageSearchDto = {
+            id: -1,
+            isUser: false,
+            chatId: this.chatId ?? 0,
+            content: this.currentResponse,
+            createdAt: new Date().toISOString()
+        };
+        this.messages.push(messageToPush);
+
+        this.isBotResponding = false;
+        this.currentResponse = "";
     }
 
     onKeydown(event: KeyboardEvent): void {

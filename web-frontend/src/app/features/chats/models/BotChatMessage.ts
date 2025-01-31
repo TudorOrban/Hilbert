@@ -6,7 +6,7 @@ export interface BotChatMessageSearchDto {
     chatId: number;
     content: string;
     createdAt: string;
-    updatedAt: string;
+    updatedAt?: string;
 }
 
 export interface CreateBotChatMessageDto {

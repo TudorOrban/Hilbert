@@ -69,11 +69,21 @@ export class BotChatMessageService {
     }
     
     private handleMessage(event: MessageEvent, observer: Observer<string>): void {
+        console.log("Data: ", event.data);
         const encodedData = event.data.substring("data: ".length).trim();
         const decodedBase64 = atob(encodedData);
     
         try {
             const decodedUTF8 = decodeURIComponent(escape(decodedBase64));
+
+            // Check for end-of-stream marker
+            if (decodedUTF8 === "[DONE]") {
+                this.ngZone.run(() => {
+                    observer.complete();
+                });
+                return;
+            }
+            
             this.ngZone.run(() => {
                 observer.next(decodedUTF8);
             });
@@ -86,13 +96,9 @@ export class BotChatMessageService {
     }
     
     private handleError(error: Event, observer: Observer<string>, eventSource: EventSource): void {
-        console.error("EventSource error:", error);
-
         if (error.target instanceof EventSource && error.target.readyState === EventSource.CLOSED) {
             console.log("SSE connection closed normally.");
-            this.ngZone.run(() => {
-                observer.complete();
-            });
+            return;
         } else {
             console.error("EventSource error:", error);
             this.ngZone.run(() => {
