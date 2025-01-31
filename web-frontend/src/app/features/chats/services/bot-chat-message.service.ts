@@ -1,11 +1,11 @@
 import { HttpClient, HttpEventType, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
 import {
     BotChatMessageSearchParams,
     PaginatedResults,
 } from "../../../shared/search/models/Search";
-import { map, Observable } from "rxjs";
+import { map, Observable, Observer } from "rxjs";
 import {
     BotChatMessageSearchDto,
     BotChatStartStreamResponse,
@@ -20,7 +20,8 @@ export class BotChatMessageService {
 
     constructor(
         private http: HttpClient,
-        private urlBuilderService: SearchUrlBuilderService
+        private urlBuilderService: SearchUrlBuilderService,
+        private ngZone: NgZone
     ) {}
 
     searchBotChatMessages(
@@ -37,44 +38,68 @@ export class BotChatMessageService {
         );
     }
 
-    createMessageAndRespond(
-        messageDto: CreateBotChatMessageDto
-    ): Observable<string> {
+    createMessageAndRespond(messageDto: CreateBotChatMessageDto): Observable<string> {
         return new Observable<string>((observer) => {
-            this.http
-                .post<BotChatStartStreamResponse>(this.apiUrl + "/start-responding", messageDto)
-                .subscribe({
-                    next: (response) => {
-                        console.log("Request ID: ", response.requestId);
-                        const eventSource = new EventSource(
-                            this.apiUrl + "/response-stream/" + response.requestId
-                        ); 
-                        
-                        eventSource.onmessage = (event) => {
-                            console.log("Event: ", event);
-                            observer.next(event.data);
-                        };
-
-                        eventSource.onerror = (error) => {
-                            observer.error(error);
-                            eventSource.close();
-                        };
-
-                        eventSource.onopen = () => {
-                            console.log("SSE connection opened");
-                        };
-
-                        return () => {
-                            eventSource.close();
-                            console.log("SSE connection closed");
-                        };
-                    },
-                    error: (error) => {
-                        observer.error(
-                            "Error starting process: " + error.message
-                        );
-                    },
-                });
+            this.startResponseStream(messageDto).subscribe({
+                next: (response) => this.handleResponseStream(response, observer),
+                error: (error) => observer.error("Error starting process: " + error.message),
+            });
         });
     }
+    
+    private startResponseStream(messageDto: CreateBotChatMessageDto): Observable<BotChatStartStreamResponse> {
+        return this.http.post<BotChatStartStreamResponse>(this.apiUrl + "/start-responding", messageDto);
+    }
+    
+    private handleResponseStream(response: BotChatStartStreamResponse, observer: Observer<string>): () => void {
+        const eventSource = this.createEventSource(response.requestId);
+    
+        eventSource.onmessage = (event) => this.handleMessage(event, observer);
+        eventSource.onerror = (error) => this.handleError(error, observer, eventSource);
+        eventSource.onopen = () => console.log("SSE connection opened");
+    
+        return () => {
+            eventSource.close();
+            console.log("SSE connection closed");
+        };
+    }
+    
+    private createEventSource(requestId: string): EventSource {
+        return new EventSource(this.apiUrl + "/response-stream/" + requestId);
+    }
+    
+    private handleMessage(event: MessageEvent, observer: Observer<string>): void {
+        const encodedData = event.data.substring("data: ".length).trim();
+        const decodedBase64 = atob(encodedData);
+    
+        try {
+            const decodedUTF8 = decodeURIComponent(escape(decodedBase64));
+            this.ngZone.run(() => {
+                observer.next(decodedUTF8);
+            });
+        } catch (e) {
+            console.error("UTF-8 decode failed, fallback to direct Base64 string:", e);
+            this.ngZone.run(() => {
+                observer.next(decodedBase64);
+            });
+        }
+    }
+    
+    private handleError(error: Event, observer: Observer<string>, eventSource: EventSource): void {
+        console.error("EventSource error:", error);
+
+        if (error.target instanceof EventSource && error.target.readyState === EventSource.CLOSED) {
+            console.log("SSE connection closed normally.");
+            this.ngZone.run(() => {
+                observer.complete();
+            });
+        } else {
+            console.error("EventSource error:", error);
+            this.ngZone.run(() => {
+                observer.error(error);
+            });
+            eventSource.close();
+        }
+    }
+    
 }

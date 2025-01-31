@@ -37,7 +37,6 @@ public class BotChatResponseServiceImpl implements BotChatResponseService {
                 .header("API-Key", hilbertMLApiKey)
                 .bodyValue(inputDto)
                 .retrieve()
-                .bodyToFlux(String.class)
-                .log();
+                .bodyToFlux(String.class);
     }
 }

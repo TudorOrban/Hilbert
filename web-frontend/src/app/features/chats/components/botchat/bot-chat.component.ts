@@ -37,6 +37,7 @@ export class BotChatComponent implements OnInit {
     currentPage: number = 1;
     messageToSendContent: string = "";
     isBotResponding: boolean = false;
+    currentResponse: string = "";
 
     constructor(
         private readonly chatService: BotChatService,
@@ -110,13 +111,11 @@ export class BotChatComponent implements OnInit {
 
         this.messageToSendContent = "";
 
+        this.isBotResponding = true;
         this.chatMessageService.createMessageAndRespond(messageDto).subscribe(
             (data) => {
-                console.log("Data: ", data);
+                this.currentResponse += data;
             },
-            (error) => {
-                console.error("Error occured when sending message: ", error);
-            }
         );
     }
 

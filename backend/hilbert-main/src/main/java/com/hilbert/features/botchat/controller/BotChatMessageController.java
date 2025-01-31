@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 @RestController
 @RequestMapping("api/v1/bot-chat-messages")
 public class BotChatMessageController {
@@ -55,7 +58,17 @@ public class BotChatMessageController {
     public ResponseEntity<Flux<String>> responseStream(@PathVariable String requestId) {
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_EVENT_STREAM)
-                .body(botChatStreamService.getResponseStream(requestId));
+                .body(botChatStreamService.getResponseStream(requestId)
+                        .map(data -> {
+                            // 1. Encode to UTF-8 explicitly:
+                            byte[] utf8Bytes = data.getBytes(StandardCharsets.UTF_8);
+
+                            // 2. Then, Base64 encode the UTF-8 bytes:
+                            String base64Encoded = Base64.getEncoder().encodeToString(utf8Bytes);
+
+                            return "data: " + base64Encoded + "\n\n";
+                        })
+                        .log());
     }
 
     @PostMapping
