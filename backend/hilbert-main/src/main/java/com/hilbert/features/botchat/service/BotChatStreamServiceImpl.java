@@ -4,6 +4,8 @@ import com.hilbert.features.botchat.dto.BotChatInputDto;
 import com.hilbert.features.botchat.dto.BotChatMessageSearchDto;
 import com.hilbert.features.botchat.dto.CreateBotChatMessageDto;
 import com.hilbert.shared.common.enums.Language;
+import com.hilbert.shared.search.models.BotChatMessageSearchParams;
+import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -16,7 +18,15 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
- * Service
+ * The BotChatStreamServiceImpl class is responsible for managing the lifecycle of bot chat responses.
+ * Workflow in BotChatMessageController usage:
+ * 1. User sends message in an initial POST request, which calls this.processMessageAndTriggerResponse
+ * -> Save to database, subscribe to the Flux of the bot response from Python server and store in a sink. Return a requestId identifier to frontend.
+ * 2. User sends a GET request with the requestId, which calls this.getResponseStream
+ * -> Retrieve the sink from the requestId and stream Flux back to client
+ * -> Save message to database
+ *
+ * NOTE: This 2-step workflow is necessary as browser EventSource API doesn't allow POST requests.
  *
  */
 @Service
@@ -36,16 +46,15 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
     }
 
     public String processMessageAndTriggerResponse(CreateBotChatMessageDto messageDto) {
-        BotChatMessageSearchDto savedMessageDto = this.botChatMessageService.createMessage(messageDto);
+        // Save message
+        botChatMessageService.createMessage(messageDto);
 
-        BotChatInputDto inputDto = new BotChatInputDto(
-                savedMessageDto.getContent(), new ArrayList<>(), messageDto.getLanguage(), Language.ENGLISH, false
-        );
-
-        String requestId = UUID.randomUUID().toString();
-
+        // Get flux for bot response
+        BotChatInputDto inputDto = this.prepareBotResponseInput(messageDto);
         Flux<String> responseFlux = botChatResponseService.respondToUser(inputDto);
 
+        // Store flux in a sync
+        String requestId = UUID.randomUUID().toString();
         Sinks.Many<String> sink = Sinks.many().multicast().directAllOrNothing();
         sinks.put(requestId, sink);
 
@@ -95,6 +104,16 @@ public class BotChatStreamServiceImpl implements BotChatStreamService {
                 })
                 .concatWithValues("data: " + Base64.getEncoder().encodeToString("[DONE]".getBytes(StandardCharsets.UTF_8)) + "\n\n") // End of stream marker
                 .log();
+    }
+
+    private BotChatInputDto prepareBotResponseInput(CreateBotChatMessageDto messageDto) {
+        BotChatMessageSearchParams searchParams = new BotChatMessageSearchParams(
+                messageDto.getBotChatId(), "", "createdAt", false, 1, 20
+        );
+        PaginatedResults<BotChatMessageSearchDto> recentMessages = botChatMessageService.searchMessages(searchParams);
+        return new BotChatInputDto(
+                messageDto.getContent(), recentMessages.getResults(), messageDto.getLanguage(), Language.ENGLISH, false
+        );
     }
 
     private void saveBotMessage(Long chatId, String message, Language language) {

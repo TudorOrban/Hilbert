@@ -31,12 +31,20 @@ def chatbotstream() -> Response:
 
 # Util
 def get_chat_input_dto(data: Any) -> ChatInputDto:
-    # previous_messages = [MessageSearchDto(**msg) for msg in data["previous_messages"]]
+    previous_messages = [MessageSearchDto(**filter_relevant_properties(msg)) for msg in data["messages"]]
     language_str = data.get("language", "NONE")
     language = Language[language_str] if language_str in Language.__members__ else Language.NONE
 
     return ChatInputDto(
         input_text=data["inputText"],
-        previous_messages=[],
+        previous_messages=previous_messages,
         language=language
     )
+
+def filter_relevant_properties(msg: dict) -> dict:
+    relevant_keys = {'id', 'isUser', 'content'}
+    return {camel_to_snake(k): v for k, v in msg.items() if k in relevant_keys}
+
+def camel_to_snake(name: str) -> str:
+    import re
+    return re.sub(r'(?<!^)(?=[A-Z])', '_', name).lower()
