@@ -22,8 +22,22 @@
         </button>
     </div>
 
+    <!-- Navigation Menu -->
+    <div class="flex items-center space-x-12 px-12 py-2">
+        <button 
+            *ngFor="let tab of tabs"
+            (click)="selectTab(tab.value)"
+            class="py-4 text-lg font-semibold"
+            [ngClass]="{
+                'border-b-2 border-blue-600': tab.value === selectedTab
+            }"
+        >
+            {{ tab.label }}
+        </button>
+    </div>
+
     <!-- Chats -->
-    <div class="py-4">
+    <div *ngIf="selectedTab === 'UserChats'" class="py-4">
         <div *ngFor="let chat of chats?.results" class="flex w-full justify-between px-12 py-2 border-y border-gray-300 hover:bg-gray-50 cursor-pointer" (click)="navigateToChat(chat?.id)">
             <div class="flex items-center space-x-4">
                 <div class="w-10 h-10 border border-gray-300 rounded-full">

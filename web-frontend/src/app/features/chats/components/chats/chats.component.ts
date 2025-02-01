@@ -9,6 +9,7 @@ import { SearchInputComponent } from "../../../../shared/common/components/searc
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
 import { Router } from '@angular/router';
+import { UIItem } from '../../../../shared/common/types/UIItem';
 
 @Component({
   selector: 'app-chats',
@@ -18,6 +19,11 @@ import { Router } from '@angular/router';
 })
 export class ChatsComponent implements OnInit {
     userId?: number;
+    selectedTab: string = "UserChats";
+    tabs: UIItem[] = [
+        { label: "User Chats", value: "UserChats" },
+        { label: "Bot Chats", value: "BotChats" },
+    ];
     chats?: PaginatedResults<ChatSearchDto>;
 
     constructor (
@@ -44,7 +50,6 @@ export class ChatsComponent implements OnInit {
 
         this.chatService.searchChats({}, true).subscribe(
             (data) => {
-                console.log("Chats: ", data);
                 this.chats = data;
             },
             (error) => {
@@ -68,6 +73,10 @@ export class ChatsComponent implements OnInit {
 
     handleAddChat(): void {
 
+    }
+
+    selectTab(tabValue: string) {
+        this.selectedTab = tabValue;
     }
 
     faArrowUpWideShort = faArrowUpWideShort;
