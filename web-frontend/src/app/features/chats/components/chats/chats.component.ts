@@ -10,6 +10,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
 import { Router } from '@angular/router';
 import { UIItem } from '../../../../shared/common/types/UIItem';
+import { BotChatService } from '../../services/bot-chat.service';
+import { BotChatSearchDto } from '../../models/BotChat';
 
 @Component({
   selector: 'app-chats',
@@ -24,10 +26,13 @@ export class ChatsComponent implements OnInit {
         { label: "User Chats", value: "UserChats" },
         { label: "Bot Chats", value: "BotChats" },
     ];
+
     chats?: PaginatedResults<ChatSearchDto>;
+    botChats?: PaginatedResults<BotChatSearchDto>;
 
     constructor (
         private readonly chatService: ChatService,
+        private readonly botChatService: BotChatService,
         private readonly authService: AuthService,
         private readonly uiUtilService: UiUtilService,
         private readonly router: Router
@@ -38,6 +43,7 @@ export class ChatsComponent implements OnInit {
             (user) => {
                 this.userId = user?.id;
                 this.loadUserChats();
+                this.loadBotChats();
             }
         );
     }
@@ -51,6 +57,23 @@ export class ChatsComponent implements OnInit {
         this.chatService.searchChats({}, true).subscribe(
             (data) => {
                 this.chats = data;
+            },
+            (error) => {
+                console.error("Failed to search for chats: ", error);
+            }
+        );
+    }
+
+    loadBotChats(): void {
+        if (!this.userId) {
+            console.error("You are not logged in");
+            return;
+        }
+
+        this.botChatService.searchChats({}, this.userId, true).subscribe(
+            (data) => {
+                console.log("Data:", data);
+                this.botChats = data;
             },
             (error) => {
                 console.error("Failed to search for chats: ", error);
