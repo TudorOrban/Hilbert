@@ -16,7 +16,6 @@
         </button>
     </div>
 
-    <!-- Chats -->
     <app-chats-list 
         *ngIf="selectedTab === 'UserChats'"
         [userId]="userId"
@@ -24,34 +23,10 @@
         [isLoading]="areChatsLoading || areBotChatsLoading"
     ></app-chats-list>
 
-    <!-- Bot Chats -->
-    <!-- <div *ngIf="selectedTab === 'BotChats'" class="py-4">
-        <div *ngFor="let chat of botChats?.results" class="flex w-full justify-between px-12 py-2 border-y border-gray-300 hover:bg-gray-50 cursor-pointer" (click)="navigateToChat(chat?.id)">
-            <div class="flex items-center space-x-4">
-                <div class="w-10 h-10 border border-gray-300 rounded-full">
-                    <img [src]="'assets/flags/' + getLanguageFlagCode(chat?.language) + '.svg'" class="w-10 h-10 rounded-full"/>
-                </div>
-    
-                <div>
-                    <span class="text-lg font-semibold">{{ chat?.user?.username }}</span>
-                    <div class="flex items-center space-x-2">
-                        <div *ngIf="chat?.lastMessageIsUser">
-                            <fa-icon 
-                                [icon]="faCheck"
-                                [ngClass]="{
-                                    'text-blue-800': chat?.lastMessageSeen
-                                }"
-                            ></fa-icon>
-                        </div>
-                        <p class="text-gray-800">{{ chat?.lastMessageContent }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-gray-700">
-                {{ formatDate(chat?.createdAt) }}
-            </div>
-        </div>
-    </div> -->
+    <app-bot-chats-list
+        *ngIf="selectedTab === 'BotChats'"
+        [botChats]="botChats"
+        [isLoading]="areChatsLoading || areBotChatsLoading"
+    ></app-bot-chats-list>
 
 </div>

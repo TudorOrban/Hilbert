@@ -1,12 +1,17 @@
 <div class="py-4">
 
-    <div *ngIf="isLoading" class="flex items-center justify-center py-40">
-        <fa-icon [icon]="faSpinner" class="text-4xl text-gray-500 fa-spin"></fa-icon>
-    </div>
     <div *ngIf="!isLoading">
         <div *ngFor="let chat of chats?.results" class="flex w-full">
-            <app-chat-medium-card [userId]="userId" [chat]="chat"class="w-full"></app-chat-medium-card>
+            <app-chat-medium-card 
+                [userId]="userId" 
+                [chat]="chat"
+                class="w-full"
+            ></app-chat-medium-card>
         </div>
+    </div>
+
+    <div *ngIf="isLoading" class="flex items-center justify-center py-40">
+        <fa-icon [icon]="faSpinner" class="text-4xl text-gray-500 fa-spin"></fa-icon>
     </div>
 </div>
 

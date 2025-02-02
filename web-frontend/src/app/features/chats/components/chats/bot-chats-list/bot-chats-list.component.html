@@ -1,1 +1,15 @@
-<p>bot-chats-list works!</p>
+<div class="py-4">
+    
+    <div *ngIf="!isLoading">
+        <div *ngFor="let chat of botChats?.results" class="flex w-full">
+            <app-bot-chat-medium-card
+                [chat]="chat"
+                class="w-full"
+            ></app-bot-chat-medium-card>
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="flex items-center justify-center py-40">
+        <fa-icon [icon]="faSpinner" class="text-4xl text-gray-500 fa-spin"></fa-icon>
+    </div>
+</div>

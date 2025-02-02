@@ -1,24 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { faArrowUpWideShort, faArrowDownShortWide, faMessage, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { ChatService } from '../../services/chat.service';
 import { AuthService } from '../../../../core/user/services/auth.service';
 import { PaginatedResults } from '../../../../shared/search/models/Search';
 import { ChatSearchDto } from '../../models/Chat';
 import { CommonModule } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
-import { Router } from '@angular/router';
 import { UIItem } from '../../../../shared/common/types/UIItem';
 import { BotChatService } from '../../services/bot-chat.service';
 import { BotChatSearchDto } from '../../models/BotChat';
-import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
-import { Language } from '../../../../shared/language/models/Language';
 import { ChatsHeaderComponent } from "./chats-header/chats-header.component";
 import { ChatsListComponent } from "./chats-list/chats-list.component";
+import { BotChatsListComponent } from "./bot-chats-list/bot-chats-list.component";
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, FontAwesomeModule, ChatsHeaderComponent, ChatsListComponent],
+  imports: [CommonModule, ChatsHeaderComponent, ChatsListComponent, BotChatsListComponent],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
@@ -39,9 +34,6 @@ export class ChatsComponent implements OnInit {
         private readonly chatService: ChatService,
         private readonly botChatService: BotChatService,
         private readonly authService: AuthService,
-        private readonly languageService: LanguageOptionsService,
-        private readonly uiUtilService: UiUtilService,
-        private readonly router: Router
     ) {}
 
     ngOnInit(): void {
@@ -97,17 +89,5 @@ export class ChatsComponent implements OnInit {
     selectTab(tabValue: string) {
         this.selectedTab = tabValue;
     }
-    
 
-
-    // Utils
-    getLanguageFlagCode(language?: Language): string | undefined {
-        return this.languageService.getFlagCode(language);
-    }
-
-
-    faArrowUpWideShort = faArrowUpWideShort;
-    faArrowDownShortWide = faArrowDownShortWide;
-    faMessage = faMessage;
-    faCheck = faCheck;
 }
