@@ -1,28 +1,12 @@
 <div class="py-4">
-    <div *ngFor="let chat of chats?.results" class="flex w-full justify-between px-12 py-2 border-y border-gray-300 hover:bg-gray-50 cursor-pointer" (click)="navigateToChat(chat?.id)">
-        <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 border border-gray-300 rounded-full">
-                <img src="assets/flags/gb.svg" class="w-10 h-10 rounded-full"/>
-            </div>
 
-            <div>
-                <span class="text-lg font-semibold">{{ chat?.firstUser?.username }}</span>
-                <div class="flex items-center space-x-2">
-                    <div *ngIf="userId != chat?.lastMessageUserId">
-                        <fa-icon 
-                            [icon]="faCheck"
-                            [ngClass]="{
-                                'text-blue-800': chat?.lastMessageSeen
-                            }"
-                        ></fa-icon>
-                    </div>
-                    <p class="text-gray-800">{{ chat?.lastMessageContent }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-gray-700">
-            {{ formatDate(chat?.createdAt) }}
+    <div *ngIf="isLoading" class="flex items-center justify-center py-40">
+        <fa-icon [icon]="faSpinner" class="text-4xl text-gray-500 fa-spin"></fa-icon>
+    </div>
+    <div *ngIf="!isLoading">
+        <div *ngFor="let chat of chats?.results" class="flex w-full">
+            <app-chat-medium-card [userId]="userId" [chat]="chat"class="w-full"></app-chat-medium-card>
         </div>
     </div>
 </div>
+

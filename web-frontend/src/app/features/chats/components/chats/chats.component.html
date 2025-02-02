@@ -21,6 +21,7 @@
         *ngIf="selectedTab === 'UserChats'"
         [userId]="userId"
         [chats]="chats"
+        [isLoading]="areChatsLoading || areBotChatsLoading"
     ></app-chats-list>
 
     <!-- Bot Chats -->

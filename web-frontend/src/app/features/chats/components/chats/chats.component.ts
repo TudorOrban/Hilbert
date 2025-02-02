@@ -32,6 +32,8 @@ export class ChatsComponent implements OnInit {
 
     chats?: PaginatedResults<ChatSearchDto>;
     botChats?: PaginatedResults<BotChatSearchDto>;
+    areChatsLoading: boolean = false;
+    areBotChatsLoading: boolean = false;
 
     constructor (
         private readonly chatService: ChatService,
@@ -59,12 +61,15 @@ export class ChatsComponent implements OnInit {
             return;
         }
 
+        this.areChatsLoading = true;
         this.chatService.searchChats({}, true).subscribe(
             (data) => {
                 this.chats = data;
+                this.areChatsLoading = false;
             },
             (error) => {
                 console.error("Failed to search for chats: ", error);
+                this.areChatsLoading = false;
             }
         );
     }
@@ -75,12 +80,15 @@ export class ChatsComponent implements OnInit {
             return;
         }
 
+        this.areBotChatsLoading = true;
         this.botChatService.searchChats({}, this.userId, true).subscribe(
             (data) => {
                 this.botChats = data;
+                this.areBotChatsLoading = false;
             },
             (error) => {
                 console.error("Failed to search for chats: ", error);
+                this.areBotChatsLoading = false;
             }
         );
     }
