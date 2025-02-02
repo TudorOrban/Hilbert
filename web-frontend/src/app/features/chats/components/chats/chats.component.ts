@@ -5,17 +5,20 @@ import { AuthService } from '../../../../core/user/services/auth.service';
 import { PaginatedResults } from '../../../../shared/search/models/Search';
 import { ChatSearchDto } from '../../models/Chat';
 import { CommonModule } from '@angular/common';
-import { SearchInputComponent } from "../../../../shared/common/components/search-input/search-input.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UiUtilService } from '../../../../shared/common/services/ui-util.service';
 import { Router } from '@angular/router';
 import { UIItem } from '../../../../shared/common/types/UIItem';
 import { BotChatService } from '../../services/bot-chat.service';
 import { BotChatSearchDto } from '../../models/BotChat';
+import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
+import { Language } from '../../../../shared/language/models/Language';
+import { ChatsHeaderComponent } from "./chats-header/chats-header.component";
+import { ChatsListComponent } from "./chats-list/chats-list.component";
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, FontAwesomeModule, SearchInputComponent],
+  imports: [CommonModule, FontAwesomeModule, ChatsHeaderComponent, ChatsListComponent],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
@@ -34,6 +37,7 @@ export class ChatsComponent implements OnInit {
         private readonly chatService: ChatService,
         private readonly botChatService: BotChatService,
         private readonly authService: AuthService,
+        private readonly languageService: LanguageOptionsService,
         private readonly uiUtilService: UiUtilService,
         private readonly router: Router
     ) {}
@@ -48,6 +52,7 @@ export class ChatsComponent implements OnInit {
         );
     }
 
+    // Data loading
     loadUserChats(): void {
         if (!this.userId) {
             console.error("You are not logged in");
@@ -72,7 +77,6 @@ export class ChatsComponent implements OnInit {
 
         this.botChatService.searchChats({}, this.userId, true).subscribe(
             (data) => {
-                console.log("Data:", data);
                 this.botChats = data;
             },
             (error) => {
@@ -81,26 +85,18 @@ export class ChatsComponent implements OnInit {
         );
     }
 
-    formatDate(dateString?: string): string {
-        return this.uiUtilService.formatDate(dateString);
-    }
-
-    navigateToChat(chatId?: number) {
-        if (!chatId) {
-            console.error("Chat ID unavailable: ", chatId);
-            return;
-        }
-
-        this.router.navigate([`/chat/${chatId}`]);
-    }
-
-    handleAddChat(): void {
-
-    }
-
+    // Handlers
     selectTab(tabValue: string) {
         this.selectedTab = tabValue;
     }
+    
+
+
+    // Utils
+    getLanguageFlagCode(language?: Language): string | undefined {
+        return this.languageService.getFlagCode(language);
+    }
+
 
     faArrowUpWideShort = faArrowUpWideShort;
     faArrowDownShortWide = faArrowDownShortWide;

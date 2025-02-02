@@ -20,7 +20,7 @@ export class BotChatService {
     
     searchChats(searchParams: BotChatSearchParams, userId: number, includeUsers?: boolean): Observable<PaginatedResults<BotChatSearchDto>> {
         const url = this.urlBuilderService.buildSearchUrl(this.apiUrl + "/search", searchParams);
-            console.log("URLL", url);
+
         return this.http.get<PaginatedResults<BotChatSearchDto>>(`${url}&userId=${userId}&language=${searchParams.language ?? Language.NONE}&includeUsers=${includeUsers ?? false}`);
     }
 

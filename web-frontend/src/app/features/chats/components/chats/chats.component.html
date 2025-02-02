@@ -1,26 +1,6 @@
 <div class="py-8">
     <!-- Header -->
-    <div class="px-12 pb-4 text-2xl font-semibold">
-        Chats
-    </div>
-
-    <div class="flex items-center justify-between w-full px-12">
-        <div class="flex items-center py-4">
-            <app-search-input></app-search-input>
-    
-            <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
-                <fa-icon [icon]="faArrowUpWideShort"></fa-icon>
-            </button>
-        </div>
-
-        <button 
-            (click)="handleAddChat()"
-            class="flex items-center space-x-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm text-gray-800 hover:bg-gray-100"
-        >
-            <fa-icon [icon]="faMessage"></fa-icon>
-            <span class="font-semibold">New Chat</span>
-        </button>
-    </div>
+    <app-chats-header></app-chats-header>
 
     <!-- Navigation Menu -->
     <div class="flex items-center space-x-12 px-12 py-2">
@@ -37,41 +17,18 @@
     </div>
 
     <!-- Chats -->
-    <div *ngIf="selectedTab === 'UserChats'" class="py-4">
-        <div *ngFor="let chat of chats?.results" class="flex w-full justify-between px-12 py-2 border-y border-gray-300 hover:bg-gray-50 cursor-pointer" (click)="navigateToChat(chat?.id)">
-            <div class="flex items-center space-x-4">
-                <div class="w-10 h-10 border border-gray-300 rounded-full">
-                    <img src="assets/flags/gb.svg" class="w-10 h-10 rounded-full"/>
-                </div>
-    
-                <div>
-                    <span class="text-lg font-semibold">{{ chat?.firstUser?.username }}</span>
-                    <div class="flex items-center space-x-2">
-                        <div *ngIf="userId != chat?.lastMessageUserId">
-                            <fa-icon 
-                                [icon]="faCheck"
-                                [ngClass]="{
-                                    'text-blue-800': chat?.lastMessageSeen
-                                }"
-                            ></fa-icon>
-                        </div>
-                        <p class="text-gray-800">{{ chat?.lastMessageContent }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-gray-700">
-                {{ formatDate(chat?.createdAt) }}
-            </div>
-        </div>
-    </div>
+    <app-chats-list 
+        *ngIf="selectedTab === 'UserChats'"
+        [userId]="userId"
+        [chats]="chats"
+    ></app-chats-list>
 
     <!-- Bot Chats -->
-    <div *ngIf="selectedTab === 'BotChats'" class="py-4">
+    <!-- <div *ngIf="selectedTab === 'BotChats'" class="py-4">
         <div *ngFor="let chat of botChats?.results" class="flex w-full justify-between px-12 py-2 border-y border-gray-300 hover:bg-gray-50 cursor-pointer" (click)="navigateToChat(chat?.id)">
             <div class="flex items-center space-x-4">
                 <div class="w-10 h-10 border border-gray-300 rounded-full">
-                    <img src="assets/flags/gb.svg" class="w-10 h-10 rounded-full"/>
+                    <img [src]="'assets/flags/' + getLanguageFlagCode(chat?.language) + '.svg'" class="w-10 h-10 rounded-full"/>
                 </div>
     
                 <div>
@@ -94,6 +51,6 @@
                 {{ formatDate(chat?.createdAt) }}
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>
