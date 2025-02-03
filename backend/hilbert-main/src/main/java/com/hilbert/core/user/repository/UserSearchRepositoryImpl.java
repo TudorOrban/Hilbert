@@ -9,15 +9,16 @@ import com.hilbert.shared.search.models.UserSearchParams;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class UserSearchRepositoryImpl implements UserSearchRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     public PaginatedResults<User> searchUsers(UserSearchParams searchParams) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();

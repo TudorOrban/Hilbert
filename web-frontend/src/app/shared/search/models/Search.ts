@@ -9,6 +9,12 @@ export interface SearchParams {
     itemsPerPage?: number;
 }
 
+export interface UserSearchParams extends SearchParams {
+    languageLevels?: LanguageLevels;
+}
+
+export type LanguageLevels = Partial<Record<Language, DifficultyLevel>>;
+
 export interface ArticleSearchParams extends SearchParams {
     userId?: number;
     language?: Language;

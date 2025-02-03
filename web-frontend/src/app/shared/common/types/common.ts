@@ -6,3 +6,8 @@ export interface UIItem {
     link?: string;
     icon?: IconDefinition;
 }
+
+export interface Pair<S, T> {
+    first: S;
+    second: T;
+}

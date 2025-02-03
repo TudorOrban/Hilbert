@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UIItem } from '../../types/UIItem';
+import { UIItem } from '../../types/common';
 import { CommonModule } from '@angular/common';
 
 @Component({

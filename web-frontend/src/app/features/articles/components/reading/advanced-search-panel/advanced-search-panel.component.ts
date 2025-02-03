@@ -5,7 +5,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { Language } from '../../../../../shared/language/models/Language';
 import { DifficultyLevel } from '../../../models/Article';
 import { LanguageOptionsService } from '../../../../../shared/language/services/language-options.service';
-import { LanguageSelectorComponent } from '../../../../../shared/common/components/language-selector/language-selector.component';
+import { LanguageSelectorComponent } from '../../../../../shared/language/components/language-selector/language-selector.component';
 
 @Component({
   selector: 'app-advanced-search-panel',

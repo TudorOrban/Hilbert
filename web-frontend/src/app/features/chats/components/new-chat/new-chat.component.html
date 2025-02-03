@@ -10,20 +10,32 @@
     ></app-navigation-menu>
 
     <!-- Users -->
-    <app-new-chat-users-search
-        *ngIf="selectedItemValue === 'UserChats'"
-        (selectedLanguageChange)="onSelectedLanguageChange($event)"
-    ></app-new-chat-users-search>
+    <div *ngIf="selectedItemValue === 'UserChat'">
+        <app-new-chat-users-search
+            (selectedLanguageLevelsChange)="onSelectedLanguageLevelsChange($event)"
+        ></app-new-chat-users-search>
 
-    <app-new-chat-users-list
-        *ngIf="selectedItemValue === 'UserChats'"
-        [userId]="userId"
-        [users]="users"
-        [isLoading]="areUsersLoading"
-    ></app-new-chat-users-list>
+        <div class="flex w-full">
+            <app-new-chat-users-list
+                [userId]="userId"
+                [users]="users"
+                [isLoading]="areUsersLoading"
+                class="flex-grow"
+            ></app-new-chat-users-list>
+
+            <div class="w-64 px-4 border-l border-gray-300">
+                <h2 class="text-lg font-semibold">
+                    Languages
+                </h2>
+                <app-language-levels-selector
+                        
+                ></app-language-levels-selector>
+            </div>
+        </div>
+    </div>
 
     <!-- Bots -->
     <app-new-chat-bot-selection
-        *ngIf="selectedItemValue === 'BotChats'"
+        *ngIf="selectedItemValue === 'BotChat'"
     ></app-new-chat-bot-selection>
 </div>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { UIItem } from '../../../../shared/common/types/UIItem';
+import { UIItem } from '../../../../shared/common/types/common';
 import {
     faHome,
     faBook,

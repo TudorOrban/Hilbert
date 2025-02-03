@@ -1,9 +1,10 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CreateUserDto, UpdateUserDto, UserDataDto, UserSearchDto } from "../models/User";
 import { Observable } from "rxjs";
-import { PaginatedResults, SearchParams } from "../../../shared/search/models/Search";
+import { PaginatedResults, UserSearchParams } from "../../../shared/search/models/Search";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
+import { Language } from "../../../shared/language/models/Language";
 
 @Injectable({
     providedIn: 'root'
@@ -20,8 +21,8 @@ export class UserService {
         return this.http.get<UserDataDto>(`${this.apiUrl}/${username}`);
     }
 
-    searchUsers(searchParams: SearchParams): Observable<PaginatedResults<UserSearchDto>> {
-        const url = this.urlBuilderService.buildSearchUrl(this.apiUrl + "/search", searchParams);
+    searchUsers(searchParams: UserSearchParams): Observable<PaginatedResults<UserSearchDto>> {
+        const url = this.urlBuilderService.buildUserSearchUrl(this.apiUrl + "/search", searchParams);
 
         return this.http.get<PaginatedResults<UserSearchDto>>(url);
     }

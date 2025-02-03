@@ -4,7 +4,7 @@ import { AuthService } from '../../../../core/user/services/auth.service';
 import { PaginatedResults } from '../../../../shared/search/models/Search';
 import { ChatSearchDto } from '../../models/Chat';
 import { CommonModule } from '@angular/common';
-import { UIItem } from '../../../../shared/common/types/UIItem';
+import { UIItem } from '../../../../shared/common/types/common';
 import { BotChatService } from '../../services/bot-chat.service';
 import { BotChatSearchDto } from '../../models/BotChat';
 import { ChatsHeaderComponent } from "./chats-header/chats-header.component";

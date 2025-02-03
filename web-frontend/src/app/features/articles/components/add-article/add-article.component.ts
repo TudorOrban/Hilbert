@@ -3,7 +3,7 @@ import { ArticleStatus, CreateArticleDto, DifficultyLevel } from "../../models/A
 import { FormsModule, NgForm } from "@angular/forms";
 import { Language } from "../../../../shared/language/models/Language";
 import { CommonModule } from "@angular/common";
-import { LanguageSelectorComponent } from "../../../../shared/common/components/language-selector/language-selector.component";
+import { LanguageSelectorComponent } from "../../../../shared/language/components/language-selector/language-selector.component";
 import { ArticleService } from "../../services/article.service";
 import { AuthService } from "../../../../core/user/services/auth.service";
 import { Router } from "@angular/router";

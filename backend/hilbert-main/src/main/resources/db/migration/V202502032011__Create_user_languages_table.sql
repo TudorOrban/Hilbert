@@ -4,7 +4,7 @@ CREATE TABLE user_languages (
     user_id INT NOT NULL,
     language language_enum NOT NULL,
     level level_enum,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE INDEX idx_user_languages_user_id ON user_languages(user_id);
