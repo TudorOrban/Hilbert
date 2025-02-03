@@ -12,6 +12,7 @@ import { ReadArticleSummaryComponent } from './features/articles/components/read
 import { ChatsComponent } from './features/chats/components/chats/chats.component';
 import { ChatComponent } from './features/chats/components/chat/chat.component';
 import { BotChatComponent } from './features/chats/components/botchat/bot-chat.component';
+import { NewChatComponent } from './features/chats/components/new-chat/new-chat.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'vocabulary', component: VocabularyComponent, canActivate: [AuthGuard] },
     { path: 'grammar', component: GrammarComponent, canActivate: [AuthGuard] },
     { path: 'chat', component: ChatsComponent, canActivate: [AuthGuard] },
+    { path: 'chat/new-chat', component: NewChatComponent, canActivate: [AuthGuard] },
     { path: 'chat/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
     { path: 'bot-chat/:botChatId', component: BotChatComponent, canActivate: [AuthGuard] },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

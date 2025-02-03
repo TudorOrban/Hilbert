@@ -1,0 +1,16 @@
+<div class="py-4">
+
+    <div *ngIf="!isLoading">
+        <div *ngFor="let user of users?.results" class="flex w-full">
+            <app-new-chat-user-card
+                [user]="user"
+                class="w-full"
+            ></app-new-chat-user-card>
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="flex items-center justify-center py-40">
+        <fa-icon [icon]="faSpinner" class="text-4xl text-gray-500 fa-spin"></fa-icon>
+    </div>
+</div>
+

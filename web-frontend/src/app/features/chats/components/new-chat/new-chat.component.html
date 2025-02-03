@@ -1,5 +1,5 @@
 <div class="py-8">
-    <app-chats-header></app-chats-header>
+    <app-new-chat-header></app-new-chat-header>
 
     <app-navigation-menu
         [navItems]="navItems"
@@ -7,16 +7,14 @@
         (selectedItemChange)="onSelectedItemChange($event)"
     ></app-navigation-menu>
 
-    <app-chats-list 
+    <app-new-chat-users-list
         *ngIf="selectedItemValue === 'UserChats'"
         [userId]="userId"
-        [chats]="chats"
-        [isLoading]="areChatsLoading || areBotChatsLoading"
-    ></app-chats-list>
+        [users]="users"
+        [isLoading]="areUsersLoading"
+    ></app-new-chat-users-list>
 
-    <app-bot-chats-list
+    <app-new-chat-bot-selection
         *ngIf="selectedItemValue === 'BotChats'"
-        [botChats]="botChats"
-        [isLoading]="areChatsLoading || areBotChatsLoading"
-    ></app-bot-chats-list>
+    ></app-new-chat-bot-selection>
 </div>

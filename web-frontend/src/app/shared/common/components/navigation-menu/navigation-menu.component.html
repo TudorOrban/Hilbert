@@ -1,0 +1,12 @@
+<div class="flex items-center space-x-12 px-12 py-2">
+    <button 
+        *ngFor="let item of navItems"
+        (click)="selectItem(item.value)"
+        class="py-4 text-lg font-semibold"
+        [ngClass]="{
+            'border-b-2 border-blue-600': item.value === selectedItemValue
+        }"
+    >
+        {{ item.label }}
+    </button>
+</div>

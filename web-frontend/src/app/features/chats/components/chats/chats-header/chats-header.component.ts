@@ -3,6 +3,7 @@ import { SearchInputComponent } from "../../../../../shared/common/components/se
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowUpWideShort, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chats-header',
@@ -12,10 +13,14 @@ import { faArrowUpWideShort, faMessage } from '@fortawesome/free-solid-svg-icons
 })
 export class ChatsHeaderComponent {
 
+    constructor(
+        private router: Router
+    ) {}
+
     faArrowUpWideShort = faArrowUpWideShort;
     faMessage = faMessage;
 
-    handleAddChat(): void {
-
+    handleNewChat(): void {
+        this.router.navigate(["chat/new-chat"]);
     }
 }

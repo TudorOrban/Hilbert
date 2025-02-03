@@ -10,20 +10,21 @@ import { BotChatSearchDto } from '../../models/BotChat';
 import { ChatsHeaderComponent } from "./chats-header/chats-header.component";
 import { ChatsListComponent } from "./chats-list/chats-list.component";
 import { BotChatsListComponent } from "./bot-chats-list/bot-chats-list.component";
+import { NavigationMenuComponent } from "../../../../shared/common/components/navigation-menu/navigation-menu.component";
 
 @Component({
   selector: 'app-chats',
-  imports: [CommonModule, ChatsHeaderComponent, ChatsListComponent, BotChatsListComponent],
+  imports: [CommonModule, ChatsHeaderComponent, ChatsListComponent, BotChatsListComponent, NavigationMenuComponent],
   templateUrl: './chats.component.html',
   styleUrl: './chats.component.css'
 })
 export class ChatsComponent implements OnInit {
     userId?: number;
-    selectedTab: string = "UserChats";
-    tabs: UIItem[] = [
+    navItems: UIItem[] = [
         { label: "User Chats", value: "UserChats" },
         { label: "Bot Chats", value: "BotChats" },
     ];
+    selectedItemValue: string = "UserChats";
 
     chats?: PaginatedResults<ChatSearchDto>;
     botChats?: PaginatedResults<BotChatSearchDto>;
@@ -85,9 +86,7 @@ export class ChatsComponent implements OnInit {
         );
     }
 
-    // Handlers
-    selectTab(tabValue: string) {
-        this.selectedTab = tabValue;
+    onSelectedItemChange(newValue: string) {
+        this.selectedItemValue = newValue;
     }
-
 }
