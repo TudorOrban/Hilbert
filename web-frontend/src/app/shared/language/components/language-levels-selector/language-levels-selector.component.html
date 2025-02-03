@@ -1,5 +1,20 @@
-<div class="">
-    <div>
-        Add Language
+<div class="py-4">
+
+    <div *ngFor="let entry of languageLevelEntries" class="flex items-center space-x-4">
+        <app-language-selector
+            (selectedLanguageChange)="onSelectedLanguageChange($event)"
+        ></app-language-selector>
+        <app-enum-selector
+            [enumType]="DifficultyLevel"
+            [(selectedValue)]="entry[1]"
+            (selectedValueChange)="onDifficultyLevelChange(entry[0], $event)">
+        </app-enum-selector>
     </div>
+
+    <button class="flex items-center space-x-2 px-2 py-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100" (click)="addLanguage(Language.ENGLISH)">
+        <fa-icon
+            [icon]="faPlus"
+        ></fa-icon>
+        <span class="font-semibold">Add Language</span>
+    </button>
 </div>
