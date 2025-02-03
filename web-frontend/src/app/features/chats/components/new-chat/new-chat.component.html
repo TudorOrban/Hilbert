@@ -11,9 +11,7 @@
 
     <!-- Users -->
     <div *ngIf="selectedItemValue === 'UserChat'">
-        <app-new-chat-users-search
-            (selectedLanguageLevelsChange)="onSelectedLanguageLevelsChange($event)"
-        ></app-new-chat-users-search>
+        <app-new-chat-users-search></app-new-chat-users-search>
 
         <div class="flex w-full">
             <app-new-chat-users-list
@@ -23,14 +21,9 @@
                 class="flex-grow"
             ></app-new-chat-users-list>
 
-            <div class="w-64 px-4 border-l border-gray-300">
-                <h2 class="text-lg font-semibold">
-                    Languages
-                </h2>
-                <app-language-levels-selector
-                        
-                ></app-language-levels-selector>
-            </div>
+            <app-new-chat-users-search-panel
+                (selectedLanguageLevelsChange)="onSelectedLanguageLevelsChange($event)"
+            ></app-new-chat-users-search-panel>
         </div>
     </div>
 

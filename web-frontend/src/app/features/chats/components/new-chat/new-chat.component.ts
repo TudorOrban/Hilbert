@@ -8,12 +8,11 @@ import { NewChatUsersListComponent } from "./new-chat-users-list/new-chat-users-
 import { NewChatBotSelectionComponent } from "./new-chat-bot-selection/new-chat-bot-selection.component";
 import { NewChatUsersSearchComponent } from "./new-chat-users-search/new-chat-users-search.component";
 import { UserService } from '../../../../core/user/services/user.service';
-import { Language } from '../../../../shared/language/models/Language';
-import { LanguageLevelsSelectorComponent } from "../../../../shared/language/components/language-levels-selector/language-levels-selector.component";
+import { NewChatUsersSearchPanelComponent } from "./new-chat-users-search-panel/new-chat-users-search-panel.component";
 
 @Component({
   selector: 'app-new-chat',
-  imports: [CommonModule, NavigationMenuComponent, NewChatUsersListComponent, NewChatBotSelectionComponent, NewChatUsersSearchComponent, LanguageLevelsSelectorComponent],
+  imports: [CommonModule, NavigationMenuComponent, NewChatUsersListComponent, NewChatBotSelectionComponent, NewChatUsersSearchComponent, NewChatUsersSearchPanelComponent],
   templateUrl: './new-chat.component.html',
   styleUrl: './new-chat.component.css'
 })
