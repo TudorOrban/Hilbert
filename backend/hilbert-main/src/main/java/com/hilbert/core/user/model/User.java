@@ -1,11 +1,14 @@
 package com.hilbert.core.user.model;
 
+import com.hilbert.shared.common.enums.Language;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -41,6 +44,8 @@ public class User {
 
     private String role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserLanguage> userLanguages = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

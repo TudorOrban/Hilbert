@@ -1,0 +1,3 @@
+-- V202502031846__Alter_learning_profiles_table.sql
+ALTER TABLE learning_profiles
+ADD COLUMN learning_configuration JSONB;

@@ -1,4 +1,4 @@
-package com.hilbert.features.learningprofile.model.repository;
+package com.hilbert.features.learningprofile.repository;
 
 import com.hilbert.features.learningprofile.model.LearningProfile;
 import org.springframework.data.jpa.repository.JpaRepository;

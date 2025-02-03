@@ -59,6 +59,35 @@ public class LearningProfile {
         }
     }
 
+    @Column(name = "learning_configuration", columnDefinition = "TEXT")
+    private String learningConfigurationJson;
+
+    @Transient
+    private LearningConfiguration learningConfiguration;
+
+    public LearningConfiguration getLearningConfiguration() {
+        if (this.learningConfiguration != null || this.learningConfigurationJson == null) {
+            return this.learningConfiguration;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            this.learningConfiguration = mapper.readValue(this.learningConfigurationJson, LearningConfiguration.class);
+        } catch (JsonProcessingException e) {
+            throw new ValidationException("Invalid Learning Configuration found: " + e.getMessage());
+        }
+        return this.learningConfiguration;
+    }
+
+    public void setLearningConfiguration(LearningConfiguration configuration) {
+        this.learningConfiguration = configuration;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            this.learningConfigurationJson = objectMapper.writeValueAsString(this.learningConfiguration);
+        } catch (JsonProcessingException e) {
+            throw new ValidationException("Invalid Learning Configuration received: " + e.getMessage());
+        }
+    }
 
     @PrePersist
     protected void onCreate() {

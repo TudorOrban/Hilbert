@@ -10,6 +10,7 @@ import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.search.models.PaginatedResults;
 import com.hilbert.shared.search.models.SearchParams;
+import com.hilbert.shared.search.models.UserSearchParams;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,12 +48,12 @@ public class UserServiceImpl implements UserService {
         return users.stream().map(this::mapUserToUserSmallDto).toList();
     }
 
-    public PaginatedResults<UserSearchDto> searchUsers(SearchParams searchParams) {
-        // Placeholder implementation
-        List<User> users = userRepository.findAll().stream().limit(20).toList();
+    public PaginatedResults<UserSearchDto> searchUsers(UserSearchParams searchParams) {
+        PaginatedResults<User> users = userRepository.searchUsers(searchParams);
+
         return new PaginatedResults<>(
-                users.stream().map(this::mapUserToUserSearchDto).toList(),
-                20L
+                users.getResults().stream().map(this::mapUserToUserSearchDto).toList(),
+                users.getTotalCount()
         );
     }
 
