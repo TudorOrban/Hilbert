@@ -1,11 +1,19 @@
 <div class="py-8">
-    <app-new-chat-header></app-new-chat-header>
+    <div class="px-12 pb-4 text-2xl font-semibold">
+        New Chat
+    </div>
 
     <app-navigation-menu
         [navItems]="navItems"
         [selectedItemValue]="selectedItemValue"
         (selectedItemChange)="onSelectedItemChange($event)"
     ></app-navigation-menu>
+
+    <app-new-chat-users-search
+        *ngIf="selectedItemValue === 'UserChats'"
+    >
+
+    </app-new-chat-users-search>
 
     <app-new-chat-users-list
         *ngIf="selectedItemValue === 'UserChats'"

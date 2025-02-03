@@ -8,6 +8,8 @@ import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.sanitization.service.EntitySanitizerService;
+import com.hilbert.shared.search.models.PaginatedResults;
+import com.hilbert.shared.search.models.SearchParams;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,15 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByIds(ids);
 
         return users.stream().map(this::mapUserToUserSmallDto).toList();
+    }
+
+    public PaginatedResults<UserSearchDto> searchUsers(SearchParams searchParams) {
+        // Placeholder implementation
+        List<User> users = userRepository.findAll().stream().limit(20).toList();
+        return new PaginatedResults<>(
+                users.stream().map(this::mapUserToUserSearchDto).toList(),
+                20L
+        );
     }
 
     public UserDataDto createUser(CreateUserDto userDto) {
@@ -90,5 +101,9 @@ public class UserServiceImpl implements UserService {
 
     private UserSmallDto mapUserToUserSmallDto(User user) {
         return UserMapper.INSTANCE.userToUserSmallDto(user);
+    }
+
+    private UserSearchDto mapUserToUserSearchDto(User user) {
+        return UserMapper.INSTANCE.userToUserSearchDto(user);
     }
 }

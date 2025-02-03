@@ -10,6 +10,13 @@ export interface UserDataDto {
     role?: string;
 }
 
+export interface UserSearchDto {
+    id: number;
+    username: string;
+    email: string;
+    createdAt: string;
+}
+
 export interface UserSmallDto {
     id: number;
     username: string;

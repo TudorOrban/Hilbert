@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PaginatedResults } from '../../../../../shared/search/models/Search';
-import { UserSmallDto } from '../../../../../core/user/models/User';
+import { UserSearchDto, UserSmallDto } from '../../../../../core/user/models/User';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,7 +14,7 @@ import { NewChatUserCardComponent } from "../new-chat-user-card/new-chat-user-ca
 })
 export class NewChatUsersListComponent {
     @Input() userId?: number;
-    @Input() users?: PaginatedResults<UserSmallDto>;
+    @Input() users?: PaginatedResults<UserSearchDto>;
     @Input() isLoading?: boolean = false;
 
     faSpinner = faSpinner;
