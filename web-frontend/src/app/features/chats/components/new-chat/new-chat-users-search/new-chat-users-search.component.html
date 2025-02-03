@@ -1,5 +1,5 @@
-<div class="flex items-center justify-between w-full px-12">
-    <div class="flex items-center py-4">
+<div class="flex items-center justify-between w-full px-12 py-4">
+    <div class="flex items-center">
         <app-search-input></app-search-input>
 
         <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
@@ -7,7 +7,9 @@
         </button>
     </div>
 
-    <div>
-        Language
+    <div class="flex items-cepter">
+        <app-language-selector
+            (selectedLanguageChange)="onSelectedLanguageChange($event)"
+        ></app-language-selector>
     </div>
 </div>

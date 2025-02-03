@@ -9,11 +9,11 @@
         (selectedItemChange)="onSelectedItemChange($event)"
     ></app-navigation-menu>
 
+    <!-- Users -->
     <app-new-chat-users-search
         *ngIf="selectedItemValue === 'UserChats'"
-    >
-
-    </app-new-chat-users-search>
+        (selectedLanguageChange)="onSelectedLanguageChange($event)"
+    ></app-new-chat-users-search>
 
     <app-new-chat-users-list
         *ngIf="selectedItemValue === 'UserChats'"
@@ -22,6 +22,7 @@
         [isLoading]="areUsersLoading"
     ></app-new-chat-users-list>
 
+    <!-- Bots -->
     <app-new-chat-bot-selection
         *ngIf="selectedItemValue === 'BotChats'"
     ></app-new-chat-bot-selection>

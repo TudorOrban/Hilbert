@@ -8,6 +8,7 @@ import { NewChatUsersListComponent } from "./new-chat-users-list/new-chat-users-
 import { NewChatBotSelectionComponent } from "./new-chat-bot-selection/new-chat-bot-selection.component";
 import { NewChatUsersSearchComponent } from "./new-chat-users-search/new-chat-users-search.component";
 import { UserService } from '../../../../core/user/services/user.service';
+import { Language } from '../../../../shared/language/models/Language';
 
 @Component({
   selector: 'app-new-chat',
@@ -42,8 +43,11 @@ export class NewChatComponent implements OnInit {
         )
     }
 
-
     onSelectedItemChange(newValue: string) {
         this.selectedItemValue = newValue;
+    }
+
+    onSelectedLanguageChange(language: Language) {
+        console.log("lang: ", language);
     }
 }

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { Language, LanguageUIItem } from "../../../language/models/Language";
 import { LanguageOptionsService } from "../../../language/services/language-options.service";
 import { CommonModule } from "@angular/common";
@@ -16,6 +16,8 @@ export class LanguageSelectorComponent {
     selectedLanguage: Language = Language.FRENCH;
     isDropdownOpen = false;
 
+    @Output() selectedLanguageChange = new EventEmitter<Language>();
+
     constructor(private languageService: LanguageOptionsService) {
         this.languageOptions = this.languageService.getLanguageOptions();
         this.selectedLanguage = this.languageService.getSelectedLanguage();
@@ -29,6 +31,7 @@ export class LanguageSelectorComponent {
         this.languageService.setSelectedLanguage(language);
         this.selectedLanguage = language;
         this.isDropdownOpen = false;
+        this.selectedLanguageChange.emit(language);
     }
 
     getFlagImage(language: Language): string {

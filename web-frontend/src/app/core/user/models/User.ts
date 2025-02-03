@@ -15,6 +15,7 @@ export interface UserSearchDto {
     username: string;
     email: string;
     createdAt: string;
+    isOnline?: boolean;
 }
 
 export interface UserSmallDto {
