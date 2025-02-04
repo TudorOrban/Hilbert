@@ -11,6 +11,8 @@ public interface UserMapper {
 
     @Mapping(source = "user.username", target = "username")
     @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.createdAt", target = "createdAt")
+    @Mapping(source = "user.updatedAt", target = "updatedAt")
     UserDataDto userToUserDataDto(User user);
 
     @Mapping(source = "userDto.username", target = "username")

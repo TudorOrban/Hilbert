@@ -1,3 +1,5 @@
+import { LearningProfileDto } from "../../../features/profile/models/LearningProfile";
+
 export interface UserDataDto {
     id: number;
     username: string;
@@ -8,6 +10,8 @@ export interface UserDataDto {
     lastLogin?: string;
     isActive?: boolean;
     role?: string;
+
+    profileDto: LearningProfileDto;
 }
 
 export interface UserSearchDto {
