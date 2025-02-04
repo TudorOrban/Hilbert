@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
                 return;
             }
 
-            this.userService.getUserByUsername(this.username).subscribe(
+            this.userService.getUserByUsername(this.username, true).subscribe(
                 (data) => {
                     console.log("Data: ", data);
                 },

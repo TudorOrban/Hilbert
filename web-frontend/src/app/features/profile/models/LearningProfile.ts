@@ -1,7 +1,7 @@
 import { Language } from "../../../shared/language/models/Language";
 import { DifficultyLevel } from "../../articles/models/Article";
 
-export interface LearningProfile {
+export interface LearningProfileDto {
     id: number;
     userId: number;
     createdAt: string;

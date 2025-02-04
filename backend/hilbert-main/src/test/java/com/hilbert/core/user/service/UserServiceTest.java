@@ -46,7 +46,7 @@ public class UserServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
         // Act
-        UserDataDto userDataDto = userService.getByUsername(username);
+        UserDataDto userDataDto = userService.getByUsername(username, false);
 
         // Assert
         assertThat(userDataDto).isNotNull();
@@ -62,7 +62,7 @@ public class UserServiceTest {
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.getByUsername(username);
+            userService.getByUsername(username, false);
         });
     }
 

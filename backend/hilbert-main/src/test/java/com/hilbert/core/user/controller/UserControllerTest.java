@@ -33,10 +33,10 @@ public class UserControllerTest {
         UserDataDto userDto = new UserDataDto();
         userDto.setUsername(username);
         userDto.setEmail("testuser@example.com");
-        when(userService.getByUsername(username)).thenReturn(userDto);
+        when(userService.getByUsername(username, false)).thenReturn(userDto);
 
         // Act
-        ResponseEntity<UserDataDto> response = userController.getUserDataByUsername(username);
+        ResponseEntity<UserDataDto> response = userController.getUserDataByUsername(username, false);
 
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));

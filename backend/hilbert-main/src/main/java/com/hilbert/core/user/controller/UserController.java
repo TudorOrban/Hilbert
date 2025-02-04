@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,8 +28,11 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDataDto> getUserDataByUsername(@PathVariable String username) {
-        UserDataDto userDto = userService.getByUsername(username);
+    public ResponseEntity<UserDataDto> getUserDataByUsername(
+            @PathVariable String username,
+            @RequestParam(name = "includeLearningData", required = false, defaultValue = "false") Boolean includeLearningData
+    ) {
+        UserDataDto userDto = userService.getByUsername(username, includeLearningData);
         return ResponseEntity.ok(userDto);
     }
 

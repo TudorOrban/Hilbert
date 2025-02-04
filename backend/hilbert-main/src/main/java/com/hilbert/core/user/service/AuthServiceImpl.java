@@ -48,6 +48,6 @@ public class AuthServiceImpl implements AuthService {
     public UserDataDto getUserFromJWTToken(String jwtToken) {
         String username = tokenProvider.getUsernameFromJWT(jwtToken);
 
-        return userService.getByUsername(username);
+        return userService.getByUsername(username, false);
     }
 }

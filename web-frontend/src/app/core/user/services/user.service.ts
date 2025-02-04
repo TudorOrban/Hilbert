@@ -17,8 +17,8 @@ export class UserService {
         private readonly http: HttpClient
     ) {}
 
-    getUserByUsername(username: string): Observable<UserDataDto> {
-        return this.http.get<UserDataDto>(`${this.apiUrl}/${username}`);
+    getUserByUsername(username: string, includeLearningData?: boolean): Observable<UserDataDto> {
+        return this.http.get<UserDataDto>(`${this.apiUrl}/${username}?includeLearningData=${includeLearningData ?? false}`);
     }
 
     searchUsers(searchParams: UserSearchParams): Observable<PaginatedResults<UserSearchDto>> {

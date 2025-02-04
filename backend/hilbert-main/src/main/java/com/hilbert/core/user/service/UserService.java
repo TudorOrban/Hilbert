@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDataDto getByUsername(String username);
+    UserDataDto getByUsername(String username, Boolean includeLearningData);
     List<UserSmallDto> getByIds(List<Long> ids);
     PaginatedResults<UserSearchDto> searchUsers(UserSearchParams searchParams);
     UserDataDto createUser(CreateUserDto userDto);
