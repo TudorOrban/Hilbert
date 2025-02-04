@@ -1,9 +1,9 @@
 <div>
-    <label for="enum-select">Select a value:</label>
     <select
         id="enum-select"
         [(ngModel)]="selectedValue"
         (ngModelChange)="onSelectChange($event)"
+        class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm font-semibold"
     >
         <option *ngFor="let value of enumValues" [value]="value">
             {{ value }}

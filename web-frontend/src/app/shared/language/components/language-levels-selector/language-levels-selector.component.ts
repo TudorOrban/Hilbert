@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { Language } from "../../models/Language";
 import { DifficultyLevel } from "../../../../features/articles/models/Article";
 import { LanguageLevels } from "../../../search/models/Search";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CommonModule } from "@angular/common";
 import { LanguageSelectorComponent } from "../language-selector/language-selector.component";
 import { EnumSelectorComponent } from "../../../common/components/enum-selector/enum-selector.component";
+import { Pair } from "../../../common/types/common";
 
 @Component({
     selector: "app-language-levels-selector",
@@ -19,49 +20,50 @@ import { EnumSelectorComponent } from "../../../common/components/enum-selector/
     templateUrl: "./language-levels-selector.component.html",
     styleUrl: "./language-levels-selector.component.css",
 })
-export class LanguageLevelsSelectorComponent {
-    languageLevels: LanguageLevels = { ENGLISH: DifficultyLevel.B1 };
-    temporaryLanguage?: Language;
+export class LanguageLevelsSelectorComponent implements OnInit {
+    languageLevels: LanguageLevels = {};
     languageLevelEntries: [Language, DifficultyLevel][] = [];
+    temporaryLanguage: Language = Language.NONE;
+    temporaryLevel: DifficultyLevel = DifficultyLevel.NONE;
 
     @Output() onAddLevel = new EventEmitter<LanguageLevels>();
+
+    ngOnInit(): void {
+        this.updateLanguageLevelEntries();
+    }
 
     addLanguage(language: Language) {
         this.temporaryLanguage = language;
     }
 
-    addLevel(language: Language, level: DifficultyLevel) {
-        if (language != this.temporaryLanguage) {
+    onDifficultyLevelChange(level?: string): void {
+        const difficultyLevel = this.parseDifficultyLevel(level);
+        if (!difficultyLevel) {
             return;
         }
-
-        this.languageLevels[language] = level;
-        this.onAddLevel.emit(this.languageLevels);
+        this.temporaryLevel = difficultyLevel;
     }
 
-    onSelectedLanguageChange(language: Language) {}
-
-    onDifficultyLevelChange(
-        language: Language,
-        level: string | DifficultyLevel
-    ): void {
-        const difficultyLevel = this.parseDifficultyLevel(level);
-        if (difficultyLevel !== undefined) {
-            this.languageLevels[language] = difficultyLevel;
-            this.updateLanguageLevelEntries();
-        }
+    onSelectedLanguageChange(language: Language) {
+        this.temporaryLanguage = language;
     }
 
+    confirmLanguageLevel(): void {
+        this.languageLevels[this.temporaryLanguage] = this.temporaryLevel;
+        this.updateLanguageLevelEntries();
+    }
+
+    // Utils
     updateLanguageLevelEntries(): void {
         this.languageLevelEntries = Object.entries(this.languageLevels).map(
             ([key, value]) => [key as Language, value]
         );
     }
 
-    // Util
-    private parseDifficultyLevel(
-        value: string | DifficultyLevel
-    ): DifficultyLevel | undefined {
+    private parseDifficultyLevel(value?: string): DifficultyLevel | undefined {
+        if (!value) {
+            return;
+        }
         if (typeof value === "string") {
             const parsedValue = value as unknown as DifficultyLevel;
             if (Object.values(DifficultyLevel).includes(parsedValue)) {
@@ -77,4 +79,5 @@ export class LanguageLevelsSelectorComponent {
     Language = Language;
     DifficultyLevel = DifficultyLevel;
     faPlus = faPlus;
+    faCheck = faCheck;
 }

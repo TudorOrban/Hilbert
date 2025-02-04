@@ -13,16 +13,17 @@
     <div *ngIf="selectedItemValue === 'UserChat'">
         <app-new-chat-users-search></app-new-chat-users-search>
 
-        <div class="flex w-full">
+        <div class="flex w-full h-full">
             <app-new-chat-users-list
                 [userId]="userId"
                 [users]="users"
                 [isLoading]="areUsersLoading"
-                class="flex-grow"
+                class="flex-grow overflow-y-auto mr-80"
             ></app-new-chat-users-list>
 
             <app-new-chat-users-search-panel
                 (selectedLanguageLevelsChange)="onSelectedLanguageLevelsChange($event)"
+                class="fixed mr-16 right-0 h-full"
             ></app-new-chat-users-search-panel>
         </div>
     </div>

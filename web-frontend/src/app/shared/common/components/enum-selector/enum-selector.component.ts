@@ -17,12 +17,7 @@ export class EnumSelectorComponent<T> {
         return Object.values(this.enumType);
     }
 
-    onSelectChange(event: Event): void {
-        const selectElement = event.target as HTMLSelectElement;
-        const value = selectElement.value as unknown as T;
-        if (this.selectedValue !== value) {
-            this.selectedValue = value;
-            this.selectedValueChange.emit(value);
-        }
+    onSelectChange(value: T): void {
+          this.selectedValueChange.emit(value);
     }
 }

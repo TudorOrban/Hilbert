@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from "@angular/core";
-import { Language, LanguageUIItem } from "../../models/Language";
-import { LanguageOptionsService } from "../../services/language-options.service";
+import { Language, LanguageUIItem } from "../../../language/models/Language";
+import { LanguageOptionsService } from "../../../language/services/language-options.service";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
