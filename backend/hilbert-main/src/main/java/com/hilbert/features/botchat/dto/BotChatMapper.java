@@ -32,7 +32,6 @@ public interface BotChatMapper {
 
     @Mapping(source = "userId", target = "userId")
     @Mapping(source = "language", target = "language")
-    @Mapping(source = "messageContent", target = "lastMessageContent")
     BotChat createBotChatDtoToBotChat(CreateBotChatDto chatDto);
 
     @Mapping(source = "message.id", target = "id")

@@ -48,7 +48,7 @@ public class BotChatMessageController {
         return ResponseEntity.ok(results);
     }
 
-    @PostMapping("/start-responding")
+    @PostMapping("/create-message")
     public ResponseEntity<BotChatStartStreamResponse> createMessageAndResponse(@RequestBody CreateBotChatMessageDto messageDto) {
         String requestId = botChatStreamService.processMessageAndTriggerResponse(messageDto);
         return ResponseEntity.ok(new BotChatStartStreamResponse(requestId));

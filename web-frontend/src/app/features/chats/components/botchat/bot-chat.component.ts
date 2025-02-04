@@ -17,6 +17,7 @@ import { BotChatMessageService } from "../../services/bot-chat-message.service";
 import { BotChatMessageSearchParams } from "../../../../shared/search/models/Search";
 import { BotChatMessageSearchDto, CreateBotChatMessageDto } from "../../models/BotChatMessage";
 import { Language } from "../../../../shared/language/models/Language";
+import { NavigationUtilService } from "../../../../shared/common/services/navigation-util.service";
 
 @Component({
     selector: "app-bot-chat",
@@ -43,6 +44,7 @@ export class BotChatComponent implements OnInit {
         private readonly chatMessageService: BotChatMessageService,
         private readonly authService: AuthService,
         private readonly uiUtilService: UiUtilService,
+        private readonly navigationService: NavigationUtilService,
         private readonly route: ActivatedRoute,
     ) {}
 
@@ -54,6 +56,14 @@ export class BotChatComponent implements OnInit {
         });
         this.authService.getCurrentUser().subscribe((user) => {
             this.userId = user?.id;
+
+            // For newly created chats
+            const newMessage = this.navigationService.getData("newMessage");
+            if (!newMessage) {
+                return;
+            }
+            this.messageToSendContent = newMessage;
+            this.sendMessage();
         });
     }
 
@@ -109,6 +119,10 @@ export class BotChatComponent implements OnInit {
 
         this.pushUserMessage();
 
+        this.sendMessageRequest(messageDto);
+    }
+
+    sendMessageRequest(messageDto: CreateBotChatMessageDto): void {
         this.chatMessageService.createMessageAndRespond(messageDto).subscribe(
             (data) => {
                 this.currentResponse += data;

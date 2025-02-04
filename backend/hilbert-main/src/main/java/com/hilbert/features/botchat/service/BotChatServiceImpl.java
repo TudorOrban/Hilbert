@@ -1,7 +1,5 @@
 package com.hilbert.features.botchat.service;
 
-import com.hilbert.core.user.dto.UserSmallDto;
-import com.hilbert.core.user.service.UserService;
 import com.hilbert.features.botchat.dto.*;
 import com.hilbert.features.botchat.model.BotChat;
 import com.hilbert.features.botchat.model.BotChatMessage;
@@ -17,27 +15,22 @@ import com.hilbert.shared.search.models.PaginatedResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class BotChatServiceImpl implements BotChatService {
 
     private final BotChatRepository botChatRepository;
     private final BotChatMessageRepository chatMessageRepository;
-    private final UserService userService;
     private final EntitySanitizerService sanitizationService;
 
     @Autowired
     public BotChatServiceImpl(
             BotChatRepository botChatRepository,
             BotChatMessageRepository chatMessageRepository,
-            UserService userService,
             EntitySanitizerService sanitizationService
     ) {
         this.botChatRepository = botChatRepository;
         this.chatMessageRepository = chatMessageRepository;
-        this.userService = userService;
         this.sanitizationService = sanitizationService;
     }
 
@@ -68,20 +61,7 @@ public class BotChatServiceImpl implements BotChatService {
         BotChat chat = this.mapCreateChatDtoToChat(sanitizedDto);
 
         BotChat savedChat = botChatRepository.save(chat);
-        BotChatFullDto chatFullDto = this.mapChatToChatFullDto(savedChat);
-
-        // Create first message
-        BotChatMessage message = new BotChatMessage();
-        message.setIsUser(true);
-        message.setBotChatId(savedChat.getId());
-        message.setContent(sanitizedDto.getMessageContent());
-
-        BotChatMessage savedMessage = this.chatMessageRepository.save(message);
-        BotChatMessageSearchDto messageDto = this.mapMessageToMessageSearchDto(savedMessage);
-
-        chatFullDto.setMessages(new PaginatedResults<>(new ArrayList<>(Collections.singleton(messageDto)), 1L));
-
-        return chatFullDto;
+        return this.mapChatToChatFullDto(savedChat);
     }
 
     public void deleteChat(Long chatId) {

@@ -40,15 +40,15 @@ export class BotChatMessageService {
 
     createMessageAndRespond(messageDto: CreateBotChatMessageDto): Observable<string> {
         return new Observable<string>((observer) => {
-            this.startResponseStream(messageDto).subscribe({
+            this.createMessage(messageDto).subscribe({
                 next: (response) => this.handleResponseStream(response, observer),
                 error: (error) => observer.error("Error starting process: " + error.message),
             });
         });
     }
     
-    private startResponseStream(messageDto: CreateBotChatMessageDto): Observable<BotChatStartStreamResponse> {
-        return this.http.post<BotChatStartStreamResponse>(this.apiUrl + "/start-responding", messageDto);
+    private createMessage(messageDto: CreateBotChatMessageDto): Observable<BotChatStartStreamResponse> {
+        return this.http.post<BotChatStartStreamResponse>(this.apiUrl + "/create-message", messageDto);
     }
     
     private handleResponseStream(response: BotChatStartStreamResponse, observer: Observer<string>): () => void {

@@ -72,7 +72,6 @@ public class EntitySanitizerServiceImpl implements EntitySanitizerService {
     }
 
     public CreateBotChatDto sanitizeCreateBotChatDto(CreateBotChatDto chatDto) {
-        chatDto.setMessageContent(sanitizationService.sanitize(chatDto.getMessageContent()));
 
         return chatDto;
     }

@@ -1,6 +1,7 @@
 import { UserSmallDto } from "../../../core/user/models/User";
 import { Language } from "../../../shared/language/models/Language";
 import { PaginatedResults } from "../../../shared/search/models/Search";
+import { DifficultyLevel } from "../../articles/models/Article";
 import { BotChatMessageSearchDto } from "./BotChatMessage";
 
 
@@ -35,6 +36,7 @@ export interface BotChatSearchDto {
 
 export interface CreateBotChatDto {
     userId: number;
-    languge: Language,
+    language: Language;
+    level?: DifficultyLevel;
     messageContent: string;
 }

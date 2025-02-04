@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 public class CreateBotChatDto {
     private Long userId;
     private Language language;
-    private String messageContent;
 }
 

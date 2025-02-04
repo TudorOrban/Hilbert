@@ -22,7 +22,7 @@ export class NewChatComponent implements OnInit {
         { label: "User Chat", value: "UserChat" },
         { label: "Bot Chat", value: "BotChat" },
     ];
-    selectedItemValue: string = "UserChat";
+    selectedItemValue: string = "BotChat";
 
     searchParams: UserSearchParams = { languageLevels: {}, searchQuery: "", sortBy: "createdAt", isAscending: false, page: 1, itemsPerPage: 20 };
 
