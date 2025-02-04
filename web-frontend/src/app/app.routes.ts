@@ -4,7 +4,6 @@ import { AuthGuard } from './core/main/routing/AuthGuard';
 import { HomeComponent } from './core/main/components/home/home.component';
 import { ReadingComponent } from './features/articles/components/reading/reading.component';
 import { VocabularyComponent } from './features/vocabulary/components/vocabulary/vocabulary.component';
-import { ProfileComponent } from './core/user/components/profile/profile.component';
 import { GrammarComponent } from './features/exercises/components/grammar/grammar.component';
 import { AddArticleComponent } from './features/articles/components/add-article/add-article.component';
 import { ArticleComponent } from './features/articles/components/article/article.component';
@@ -13,6 +12,7 @@ import { ChatsComponent } from './features/chats/components/chats/chats.componen
 import { ChatComponent } from './features/chats/components/chat/chat.component';
 import { BotChatComponent } from './features/chats/components/botchat/bot-chat.component';
 import { NewChatComponent } from './features/chats/components/new-chat/new-chat.component';
+import { ProfileComponent } from './features/profile/components/profile/profile.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -28,5 +28,5 @@ export const routes: Routes = [
     { path: 'chat/new-chat', component: NewChatComponent, canActivate: [AuthGuard] },
     { path: 'chat/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
     { path: 'bot-chat/:botChatId', component: BotChatComponent, canActivate: [AuthGuard] },
-    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+    { path: ':username/profile', component: ProfileComponent, canActivate: [AuthGuard] },
 ];
