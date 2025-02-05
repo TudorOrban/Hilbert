@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         UserDataDto userDto = this.mapUserToUserDataDto(foundUser);
 
         if (includeLearningData) {
-            LearningProfileFullDto profileFullDto = learningProfileService.getByUserId(foundUser.getId());
+            LearningProfileFullDto profileFullDto = learningProfileService.getByUserId(foundUser.getId(), true);
             userDto.setProfileDto(profileFullDto);
         }
 

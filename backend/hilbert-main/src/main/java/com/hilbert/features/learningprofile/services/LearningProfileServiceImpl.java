@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class LearningProfileServiceImpl implements LearningProfileService {
@@ -25,11 +26,17 @@ public class LearningProfileServiceImpl implements LearningProfileService {
         this.learningProfileRepository = learningProfileRepository;
     }
 
-    public LearningProfileFullDto getByUserId(Long userId) {
-        LearningProfile learningProfile = learningProfileRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(userId.toString(), ResourceType.USER_PROFILE, ResourceIdentifierType.ID));
+    public LearningProfileFullDto getByUserId(Long userId, Boolean createIfMissing) {
+        Optional<LearningProfile> learningProfileOpt = learningProfileRepository.findByUserId(userId);
+        if (learningProfileOpt.isEmpty()) {
+            if (createIfMissing) {
+                return this.createLearningProfile(userId);
+            } else {
+                throw new ResourceNotFoundException(userId.toString(), ResourceType.USER_PROFILE, ResourceIdentifierType.USER_ID);
+            }
+        }
 
-        return this.mapProfileToProfileFullDto(learningProfile);
+        return this.mapProfileToProfileFullDto(learningProfileOpt.get());
     }
 
     public LearningProfileFullDto createLearningProfile(Long userId) {

@@ -15,11 +15,12 @@ public class LearningProfileData {
 
     private LocalDateTime startDate;
     private LocalDateTime lastActiveDate;
-    private Integer totalLearningDays;
+    private Long totalLearningDays;
     private LocalDateTime currentStreakStartDate;
-    private Integer currentStreakDays;
+    private LocalDateTime currentStreakEndDate;
+    private Long currentStreakDays;
     private Double totalXp;
 
     private Language nativeLanguage;
-    private HashMap<Language, LanguageProfileData> languageData;
+    private HashMap<Language, LearningLanguageData> languageData;
 }

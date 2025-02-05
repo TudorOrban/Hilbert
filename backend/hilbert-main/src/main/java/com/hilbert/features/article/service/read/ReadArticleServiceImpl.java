@@ -5,6 +5,7 @@ import com.hilbert.features.article.dto.ReadArticleDto;
 import com.hilbert.features.article.dto.ReadArticleSummaryDto;
 import com.hilbert.features.article.model.Article;
 import com.hilbert.features.article.repository.ArticleRepository;
+import com.hilbert.features.learningprofile.services.LearningProfileUpdaterService;
 import com.hilbert.features.vocabulary.model.VocabularyData;
 import com.hilbert.features.vocabulary.model.Vocabulary;
 import com.hilbert.features.vocabulary.service.VocabularyService;
@@ -23,21 +24,24 @@ import java.util.List;
 @Service
 public class ReadArticleServiceImpl implements ReadArticleService {
 
-    private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final VocabularyService vocabularyService;
+    private final UserRepository userRepository;
+    private final LearningProfileUpdaterService profileUpdaterService;
     private final TextWordsManager textWordsManager;
 
     @Autowired
     public ReadArticleServiceImpl(
-            UserRepository userRepository,
             ArticleRepository articleRepository,
             VocabularyService vocabularyService,
+            UserRepository userRepository,
+            LearningProfileUpdaterService profileUpdaterService,
             TextWordsManager textWordsManager
     ) {
-        this.userRepository = userRepository;
         this.articleRepository = articleRepository;
         this.vocabularyService = vocabularyService;
+        this.userRepository = userRepository;
+        this.profileUpdaterService = profileUpdaterService;
         this.textWordsManager = textWordsManager;
     }
 
@@ -56,7 +60,7 @@ public class ReadArticleServiceImpl implements ReadArticleService {
 
         vocabularyService.updateVocabularyData(vocabulary.getId(), result.getFirst());
 
-        // TODO: Register article as read in future User Learning data as well
+        profileUpdaterService.updateLearningDataOnReadArticle(userId, article.getId());
 
         return result.getSecond();
     }
