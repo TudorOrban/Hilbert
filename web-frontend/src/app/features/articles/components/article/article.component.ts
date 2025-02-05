@@ -2,48 +2,49 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ArticleService } from "../../services/article.service";
 import { ArticleFullDto } from "../../models/Article";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faAngleRight, faCheck, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { LanguageOptionsService } from "../../../../shared/language/services/language-options.service";
 import { OverlayedTextComponent } from "./overlayed-text/overlayed-text.component";
 import { AuthService } from "../../../../core/user/services/auth.service";
 import { ArticleHeaderComponent } from "./article-header/article-header.component";
+import { OptionsBarComponent } from "./options-bar/options-bar.component";
+import { UserDataDto } from "../../../../core/user/models/User";
+import { Language } from "../../../../shared/language/models/Language";
 
 @Component({
     selector: "app-article",
-    imports: [FontAwesomeModule, OverlayedTextComponent, ArticleHeaderComponent],
+    imports: [OverlayedTextComponent, ArticleHeaderComponent, OptionsBarComponent],
     templateUrl: "./article.component.html",
     styleUrl: "./article.component.css",
 })
 export class ArticleComponent implements OnInit {
     articleId?: number;
     article?: ArticleFullDto;
-    userId?: number;
+    user?: UserDataDto;
 
-    languageService: LanguageOptionsService;
+    isArticleRead?: boolean = false;
+
 
     constructor(
-        languageService: LanguageOptionsService,
+        readonly languageService: LanguageOptionsService,
         private readonly articleService: ArticleService,
         private readonly authService: AuthService,
         private readonly route: ActivatedRoute,
         private readonly router: Router,
-    ) {
-        this.languageService = languageService;
-    }
+    ) {}
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe((params) => {
-            this.articleId = Number(params.get("articleId"));
-
-            this.loadArticle();
-        });
         this.authService.getCurrentUser().subscribe((user) => {
-            this.userId = user?.id;
+            this.user = user ?? undefined;
+
+            this.route.paramMap.subscribe((params) => {
+                this.articleId = Number(params.get("articleId"));
+
+                this.loadArticle();
+            });
         });
     }
 
-    private loadArticle() {
+    private loadArticle(): void {
         if (!this.articleId) {
             return;
         }
@@ -51,6 +52,7 @@ export class ArticleComponent implements OnInit {
         this.articleService.getArticle(this.articleId).subscribe(
             (data) => {
                 this.article = data;
+                this.updateIsArticleRead();
             },
             (error) => {
                 console.error("Error: ", error);
@@ -58,8 +60,14 @@ export class ArticleComponent implements OnInit {
         );
     }
 
-    markArticleAsRead() {
-        if (!this.userId) {
+    updateIsArticleRead(): void {
+        const foundArticleId = this.user?.profileDto?.learningData?.languageData?.[this.article?.language ?? Language.NONE]
+            ?.readArticleIds?.find(id => id == this.article?.id);
+        this.isArticleRead = !!foundArticleId;
+    }
+
+    markArticleAsRead(): void {
+        if (!this.user?.id) {
             console.error("You are not logged in");
             return;
         }
@@ -67,7 +75,7 @@ export class ArticleComponent implements OnInit {
             return;
         }
         
-        this.articleService.readArticle(this.articleId, this.userId).subscribe(
+        this.articleService.readArticle(this.articleId, this.user?.id).subscribe(
             (data) => {
                 this.router.navigate([`/reading/${this.articleId}/read`], {
                     state: { 
@@ -82,7 +90,4 @@ export class ArticleComponent implements OnInit {
         );        
     }
 
-    faEllipsisVertical = faEllipsisVertical;
-    faCheck = faCheck;
-    faAngleRight = faAngleRight;
 }

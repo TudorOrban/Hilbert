@@ -1,0 +1,20 @@
+<div class="flex items-center justify-between w-full px-16 h-20 p-4 bg-gray-50 border-t border-gray-300">
+    <button class="flex items-center space-x-4 hover:text-blue-700">
+        <fa-icon [icon]="faEllipsisVertical"></fa-icon>
+        <span class="font-semibold">Options</span>
+    </button>
+
+    <button 
+        *ngIf="!isRead"
+        (click)="markArticleAsRead()"
+        class="flex items-center space-x-2 hover:text-blue-700" 
+    >
+        <fa-icon [icon]="faCheck"></fa-icon>
+        <span class="font-semibold">Mark as Read</span>
+        <fa-icon [icon]="faAngleRight"></fa-icon>
+    </button>
+    <div *ngIf="isRead" class="flex items-center space-x-2 text-gray-800 font-semibold">
+        <fa-icon [icon]="faCheck"></fa-icon>
+        <span>Already Read</span>
+    </div>
+</div>

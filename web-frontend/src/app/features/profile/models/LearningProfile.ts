@@ -29,4 +29,5 @@ export interface LanguageProfileData {
     currentStatedLevel?: DifficultyLevel;
     openToChatInLang?: boolean;
     vocabularySize?: number;
+    readArticleIds?: number[];
 }

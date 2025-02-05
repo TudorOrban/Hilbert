@@ -57,7 +57,7 @@ export class AuthService {
     }
 
     fetchAndSetCurrentUser(username: string): void {
-        this.userService.getUserByUsername(username).subscribe(
+        this.userService.getUserByUsername(username, true).subscribe(
             (user) => {
                 console.log("User: ", user);
                 this.setCurrentUser(user);
