@@ -37,11 +37,10 @@ export class ReadingComponent implements OnInit {
     }
 
     handleAddArticle() {
-        console.log("Test");
         this.router.navigate(['/reading/add-article']);
     }
 
-
+    
     faPlus = faPlus;
     faArrowUpWideShort = faArrowUpWideShort;
     faArrowDownShortWide = faArrowDownShortWide;

@@ -1,40 +1,30 @@
-<div class="w-64 h-full border-l border-gray-200 p-4 space-y-4">
+<div class="w-64 h-full border-l border-gray-300 p-4 space-y-4">
     <h1 class="text-xl font-semibold">
         Filters
     </h1>
 
     <div class="flex space-x-4">
-        <h1 class="pt-2 text-lg font-semibold">Language</h1>
+        <h1 class="pt-2 font-semibold">Language</h1>
 
         <app-language-selector></app-language-selector>
     </div>
 
     <div class="flex items-center space-x-4">
-        <h1>Level</h1>
+        <h1 class="font-semibold">Level</h1>
 
-        <div>
-            <select [(ngModel)]="selectedLevel" class="p-2 border border-gray-200 rounded-md">
-                <option *ngFor="let option of levelOptions" [value]="option.value">
-                    {{ option.viewValue }}
-                </option>
-            </select>
-        </div>
+        <app-enum-selector
+            [enumType]="DifficultyLevel"
+            [selectedValue]="selectedLevel"
+            (selectedValueChange)="onSelectedLevelChange($event)"
+        ></app-enum-selector>
     </div>
 
     <div>
-        <h1>Topics</h1>
+        <h1 class="font-semibold">Topics</h1>
     </div>
 
     <div class="flex items-center space-x-4">
-        <h1>User</h1>
-
-        <div>
-            <select [(ngModel)]="selectedLanguage" class="p-2 border border-gray-200 rounded-md">
-                <option *ngFor="let option of this.languageService.getLanguageOptions()" [value]="option.value">
-                    {{ option.viewValue }}
-                </option>
-            </select>
-        </div>
+        <h1 class="font-semibold">Creator</h1>
     </div>
 
 </div>

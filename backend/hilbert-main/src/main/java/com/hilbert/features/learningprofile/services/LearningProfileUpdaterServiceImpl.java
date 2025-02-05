@@ -111,7 +111,7 @@ public class LearningProfileUpdaterServiceImpl implements LearningProfileUpdater
     private Double getGainedXPByReadArticle(Article article) {
         // To be expanded once (word -> DifficultyLevel) mapping is implemented
         Double multiplier = 0.2;
-        Long wordCount = article.getWordCount() != null ? article.getWordCount() : 10L;
+        Long wordCount = article.getWordCount() != null ? article.getWordCount() : 0L;
 
         return multiplier * wordCount;
     }

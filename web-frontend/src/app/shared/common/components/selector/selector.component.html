@@ -5,8 +5,8 @@
         (ngModelChange)="onSelectChange($event)"
         class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm font-semibold text-sm"
     >
-        <option *ngFor="let value of enumValues" [value]="value">
-            {{ value }}
+        <option *ngFor="let option of options" [value]="option.value">
+            {{ option.label }}
         </option>
     </select>
 </div>

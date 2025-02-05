@@ -6,10 +6,11 @@ import { Language } from '../../../../../shared/language/models/Language';
 import { DifficultyLevel } from '../../../models/Article';
 import { LanguageOptionsService } from '../../../../../shared/language/services/language-options.service';
 import { LanguageSelectorComponent } from '../../../../../shared/language/components/language-selector/language-selector.component';
+import { EnumSelectorComponent } from "../../../../../shared/common/components/enum-selector/enum-selector.component";
 
 @Component({
   selector: 'app-advanced-search-panel',
-  imports: [CommonModule, FormsModule, NgSelectModule, LanguageSelectorComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, LanguageSelectorComponent, EnumSelectorComponent],
   templateUrl: './advanced-search-panel.component.html',
   styleUrl: './advanced-search-panel.component.css'
 })
@@ -29,12 +30,9 @@ export class AdvancedSearchPanelComponent {
         this.languageService = languageService;
     }
 
-    levelOptions = [
-        { value: DifficultyLevel.A1, viewValue: 'A1 - Beginner' },
-        { value: DifficultyLevel.A2, viewValue: 'A2 - Elementary' },
-        { value: DifficultyLevel.B1, viewValue: 'B1 - Intermediate' },
-        { value: DifficultyLevel.B2, viewValue: 'B2 - Upper Intermediate' },
-        { value: DifficultyLevel.C1, viewValue: 'C1 - Advanced' },
-        { value: DifficultyLevel.C2, viewValue: 'C2 - Proficient' }
-    ];
+    onSelectedLevelChange(level?: DifficultyLevel): void {
+        this.selectedLevel = level;
+    }
+
+    DifficultyLevel = DifficultyLevel;
 }

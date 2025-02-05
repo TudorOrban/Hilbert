@@ -1,10 +1,10 @@
-<div class="relative w-24 h-10 border border-gray-300 shadow-sm rounded-sm">
+<div class="relative w-24 h-10 border border-gray-300 rounded-md shadow-sm">
     <div
         *ngIf="selectedLanguage !== Language.NONE" 
-        class="flex items-center px-4 space-x-4 py-1 cursor-pointer bg-gray-50 rounded-sm"
+        class="flex items-center h-full px-4 space-x-4 cursor-pointer"
         (click)="toggleDropdown()"
     >
-        <img [src]="getFlagImage(selectedLanguage)" alt="{{ getLanguageName(selectedLanguage) }}" class="w-9 h-7 border border-gray-300">
+        <img [src]="getFlagImage(selectedLanguage)" alt="{{ getLanguageName(selectedLanguage) }}" class="w-9 border border-gray-300">
         <fa-icon [icon]="faCaretDown"></fa-icon>
     </div>
     <div class="absolute top-full left-0 right-0 p-2 z-20 bg-white border border-gray-300 shadow-lg rounded-b-md" *ngIf="isDropdownOpen">
