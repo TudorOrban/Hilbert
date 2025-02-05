@@ -2,6 +2,7 @@ package com.hilbert.features.learningprofile.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hilbert.shared.error.types.ValidationException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class LearningProfile {
         }
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
             this.learningData = mapper.readValue(this.learningDataJson, LearningProfileData.class);
         } catch (JsonProcessingException e) {
@@ -51,9 +53,10 @@ public class LearningProfile {
 
     public void setLearningData(LearningProfileData data) {
         this.learningData = data;
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
-            this.learningDataJson = objectMapper.writeValueAsString(this.learningData);
+            this.learningDataJson = mapper.writeValueAsString(this.learningData);
         } catch (JsonProcessingException e) {
             throw new ValidationException("Invalid Learning Data received: " + e.getMessage());
         }
@@ -71,6 +74,7 @@ public class LearningProfile {
         }
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
             this.learningConfiguration = mapper.readValue(this.learningConfigurationJson, LearningConfiguration.class);
         } catch (JsonProcessingException e) {
@@ -81,9 +85,10 @@ public class LearningProfile {
 
     public void setLearningConfiguration(LearningConfiguration configuration) {
         this.learningConfiguration = configuration;
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
-            this.learningConfigurationJson = objectMapper.writeValueAsString(this.learningConfiguration);
+            this.learningConfigurationJson = mapper.writeValueAsString(this.learningConfiguration);
         } catch (JsonProcessingException e) {
             throw new ValidationException("Invalid Learning Configuration received: " + e.getMessage());
         }

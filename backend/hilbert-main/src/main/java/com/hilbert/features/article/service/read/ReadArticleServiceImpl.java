@@ -12,6 +12,7 @@ import com.hilbert.features.vocabulary.service.VocabularyService;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class ReadArticleServiceImpl implements ReadArticleService {
         this.textWordsManager = textWordsManager;
     }
 
+    @Transactional
     public ReadArticleSummaryDto readArticle(ReadArticleDto readArticleDto) {
         Long userId = readArticleDto.getUserId();
         if (!userRepository.existsById(userId)) {

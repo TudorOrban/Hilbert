@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 @Service
@@ -38,22 +39,30 @@ public class LearningProfileUpdaterServiceImpl implements LearningProfileUpdater
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(() -> new ResourceNotFoundException(articleId.toString(), ResourceType.ARTICLE, ResourceIdentifierType.ID));
 
-        this.updateGeneralDataOnReadArticle(learningProfile.getLearningData(), article);
-        this.updateLanguageDataOnReadArticle(learningProfile.getLearningData(), article);
+        LearningProfileData learningProfileData = learningProfile.getLearningData();
+        this.updateGeneralDataOnReadArticle(learningProfileData, article);
+        this.updateLanguageDataOnReadArticle(learningProfileData, article);
 
+        learningProfile.setLearningData(learningProfileData);
         profileRepository.save(learningProfile);
     }
 
     private void updateGeneralDataOnReadArticle(LearningProfileData learningProfileData, Article article) {
         LocalDateTime now = LocalDateTime.now();
 
-        if (!now.toLocalDate().equals(learningProfileData.getLastActiveDate().toLocalDate())) {
+        boolean isLastActiveDateToday = learningProfileData.getLastActiveDate() != null &&
+                now.toLocalDate().equals(learningProfileData.getLastActiveDate().toLocalDate());
+        if (!isLastActiveDateToday) {
             learningProfileData.setLastActiveDate(now);
-            learningProfileData.setTotalLearningDays(learningProfileData.getTotalLearningDays() + 1);
+            long totalLearningDays = learningProfileData.getTotalLearningDays() != null ?
+                    learningProfileData.getTotalLearningDays() : 0;
+            learningProfileData.setTotalLearningDays(totalLearningDays + 1);
         }
 
         if (learningProfileData.getCurrentStreakEndDate() == null) {
-            Long streakDays = ChronoUnit.DAYS.between(learningProfileData.getCurrentStreakStartDate(), now);
+            LocalDateTime streakStartDate = learningProfileData.getCurrentStreakStartDate() != null ?
+                    learningProfileData.getCurrentStreakStartDate() : now;
+            Long streakDays = ChronoUnit.DAYS.between(streakStartDate, now);
             learningProfileData.setCurrentStreakDays(streakDays);
         } else {
             // Start new streak
@@ -72,19 +81,27 @@ public class LearningProfileUpdaterServiceImpl implements LearningProfileUpdater
         LearningLanguageData languageData = learningProfileData.getLanguageData().get(article.getLanguage());
         if (languageData == null) {
             languageData = new LearningLanguageData(
-                now, now, 0, 0.0, new ArrayList<>(), 0
+                now, now, 0L, 0.0, new ArrayList<>(), 0L
             );
         }
 
-        if (!now.toLocalDate().equals(languageData.getLastActiveDate().toLocalDate())) {
+        boolean isLastActiveDateToday = languageData.getLastActiveDate() != null &&
+                now.toLocalDate().equals(languageData.getLastActiveDate().toLocalDate());
+        if (!isLastActiveDateToday) {
             languageData.setLastActiveDate(now);
-            languageData.setTotalLearningDays(languageData.getTotalLearningDays() + 1);
+            long totalLearningDays = learningProfileData.getTotalLearningDays() != null ?
+                    learningProfileData.getTotalLearningDays() : 0;
+            languageData.setTotalLearningDays(totalLearningDays);
         }
 
         Double gainedXP = this.getGainedXPByReadArticle(article);
         languageData.setTotalXp(gainedXP);
 
-        languageData.getReadArticleIds().add(article.getId());
+        if (languageData.getReadArticleIds() != null) {
+            languageData.getReadArticleIds().add(article.getId());
+        } else {
+            languageData.setReadArticleIds(new ArrayList<>(Collections.singletonList(article.getId())));
+        }
 
         // TODO: Update vocabulary count
 
@@ -94,7 +111,8 @@ public class LearningProfileUpdaterServiceImpl implements LearningProfileUpdater
     private Double getGainedXPByReadArticle(Article article) {
         // To be expanded once (word -> DifficultyLevel) mapping is implemented
         Double multiplier = 0.2;
+        Long wordCount = article.getWordCount() != null ? article.getWordCount() : 10L;
 
-        return multiplier * article.getWordCount();
+        return multiplier * wordCount;
     }
 }

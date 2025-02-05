@@ -48,6 +48,18 @@
 
                 <app-language-selector></app-language-selector>
             </div>
+
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">
+                    Level
+                </label>
+                
+                <app-enum-selector
+                    [enumType]="DifficultyLevel"
+                    [selectedValue]="article.level"
+                    (selectedValueChange)="onSelectedLevelChange($event)"
+                ></app-enum-selector>
+            </div>
         </div>
         <div>
             <label

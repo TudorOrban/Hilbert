@@ -8,10 +8,11 @@ import { ArticleService } from "../../services/article.service";
 import { AuthService } from "../../../../core/user/services/auth.service";
 import { Router } from "@angular/router";
 import { ProgressDialogComponent } from "../../../../shared/common/components/progress-dialog/progress-dialog.component";
+import { EnumSelectorComponent } from "../../../../shared/common/components/enum-selector/enum-selector.component";
 
 @Component({
     selector: "app-add-article",
-    imports: [CommonModule, FormsModule, LanguageSelectorComponent, ProgressDialogComponent],
+    imports: [CommonModule, FormsModule, LanguageSelectorComponent, ProgressDialogComponent, EnumSelectorComponent],
     templateUrl: "./add-article.component.html",
     styleUrl: "./add-article.component.css",
 })
@@ -44,6 +45,10 @@ export class AddArticleComponent {
               }
           }
       );
+    }
+
+    onSelectedLevelChange(level: DifficultyLevel): void {
+        this.article.level = level;
     }
 
     onSubmit(form: NgForm) {
@@ -105,4 +110,7 @@ export class AddArticleComponent {
         
         return Math.max(estimatedTime, 3);
     }
+
+
+    DifficultyLevel = DifficultyLevel;
 }

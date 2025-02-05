@@ -6,6 +6,7 @@ import com.hilbert.features.learningprofile.model.LearningProfile;
 import com.hilbert.features.learningprofile.model.LearningProfileData;
 import com.hilbert.features.learningprofile.repository.LearningProfileRepository;
 import com.hilbert.shared.common.enums.Language;
+import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
@@ -40,12 +41,17 @@ public class LearningProfileServiceImpl implements LearningProfileService {
     }
 
     public LearningProfileFullDto createLearningProfile(Long userId) {
+        Optional<LearningProfile> existingProfileOpt = learningProfileRepository.findByUserId(userId);
+        if (existingProfileOpt.isPresent()) {
+            throw new ResourceAlreadyExistsException(userId.toString(), ResourceType.USER_PROFILE, ResourceIdentifierType.USER_ID);
+        }
+
         LearningProfile learningProfile = new LearningProfile();
         learningProfile.setUserId(userId);
 
         LocalDateTime now = LocalDateTime.now();
         LearningProfileData learningData = new LearningProfileData(
-                now, now, 0, now, 0, 0.0, Language.NONE, new HashMap<>()
+                now, now, 0L, now, null, 0L, 0.0, Language.NONE, new HashMap<>()
         );
         learningProfile.setLearningData(learningData);
 

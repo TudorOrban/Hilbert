@@ -13,6 +13,7 @@ import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.search.models.PaginatedResults;
 import com.hilbert.shared.search.models.UserSearchParams;
 import com.hilbert.shared.util.PasswordEncoderUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Transactional
     public UserDataDto createUser(CreateUserDto userDto) {
         CreateUserDto sanitizedUserDto = entitySanitizerService.sanitizeCreateUserDto(userDto);
 
