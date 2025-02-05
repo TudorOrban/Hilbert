@@ -17,7 +17,7 @@ public class LearningProfileData {
     private LocalDateTime lastActiveDate;
     private Integer totalLearningDays;
     private LocalDateTime currentStreakStartDate;
-    private LocalDateTime currentStreakDays;
+    private Integer currentStreakDays;
     private Double totalXp;
 
     private Language nativeLanguage;

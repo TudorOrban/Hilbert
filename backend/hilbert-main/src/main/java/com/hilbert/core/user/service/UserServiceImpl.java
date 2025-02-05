@@ -4,41 +4,37 @@ import com.hilbert.core.user.dto.*;
 import com.hilbert.core.user.model.User;
 import com.hilbert.core.user.repository.UserRepository;
 import com.hilbert.features.learningprofile.dto.LearningProfileFullDto;
-import com.hilbert.features.learningprofile.dto.LearningProfileMapper;
-import com.hilbert.features.learningprofile.model.LearningProfile;
-import com.hilbert.features.learningprofile.repository.LearningProfileRepository;
+import com.hilbert.features.learningprofile.services.LearningProfileService;
 import com.hilbert.shared.error.types.ResourceAlreadyExistsException;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.sanitization.service.EntitySanitizerService;
 import com.hilbert.shared.search.models.PaginatedResults;
-import com.hilbert.shared.search.models.SearchParams;
 import com.hilbert.shared.search.models.UserSearchParams;
 import com.hilbert.shared.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final LearningProfileRepository profileRepository;
+    private final LearningProfileService learningProfileService;
     private final PasswordEncoderUtil passwordEncoderUtil;
     private final EntitySanitizerService entitySanitizerService;
 
     @Autowired
     public UserServiceImpl(
         UserRepository userRepository,
-        LearningProfileRepository profileRepository,
+        LearningProfileService learningProfileService,
         PasswordEncoderUtil passwordEncoderUtil,
         EntitySanitizerService entitySanitizerService
     ) {
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
+        this.learningProfileService = learningProfileService;
         this.passwordEncoderUtil = passwordEncoderUtil;
         this.entitySanitizerService = entitySanitizerService;
     }
@@ -50,11 +46,8 @@ public class UserServiceImpl implements UserService {
         UserDataDto userDto = this.mapUserToUserDataDto(foundUser);
 
         if (includeLearningData) {
-            Optional<LearningProfile> profileOpt = profileRepository.findByUserId(foundUser.getId());
-            if (profileOpt.isPresent()) {
-                LearningProfileFullDto profileFullDto = this.mapProfileToProfileFullDto(profileOpt.get());
-                userDto.setProfileDto(profileFullDto);
-            }
+            LearningProfileFullDto profileFullDto = learningProfileService.getByUserId(foundUser.getId());
+            userDto.setProfileDto(profileFullDto);
         }
 
         return userDto;
@@ -88,9 +81,13 @@ public class UserServiceImpl implements UserService {
         User user = this.mapCreateUserDtoToUser(sanitizedUserDto);
         user.setPasswordHash(passwordEncoderUtil.encode(sanitizedUserDto.getPassword()));
 
-        User savedUser = this.userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        UserDataDto userDataDto = this.mapUserToUserDataDto(savedUser);
 
-        return this.mapUserToUserDataDto(savedUser);
+        LearningProfileFullDto profileFullDto = learningProfileService.createLearningProfile(savedUser.getId());
+        userDataDto.setProfileDto(profileFullDto);
+
+        return userDataDto;
     }
 
     public UserDataDto updateUser(UpdateUserDto userDto) {
@@ -112,10 +109,6 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(id.toString(), ResourceType.USER, ResourceIdentifierType.ID));
 
         this.userRepository.delete(foundUser);
-    }
-
-    private LearningProfileFullDto mapProfileToProfileFullDto(LearningProfile profile) {
-        return LearningProfileMapper.INSTANCE.profileToProfileFullDto(profile);
     }
 
     private User mapCreateUserDtoToUser(CreateUserDto userDto) {
