@@ -10,7 +10,7 @@ import {
     faComment,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../user/services/auth.service';
 
 @Component({
@@ -21,9 +21,11 @@ import { AuthService } from '../../../user/services/auth.service';
 })
 export class SidebarComponent implements OnInit {
     username?: string;
+    currentRoute?: string;
 
     constructor(
         private readonly authService: AuthService,
+        private readonly router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -40,6 +42,15 @@ export class SidebarComponent implements OnInit {
                 });
             }
         );
+    }
+
+    navigateTo(item?: UIItem) {
+        if (!item) {
+            return;
+        }
+
+        this.currentRoute = item.value;
+        this.router.navigate([item?.link ?? 'notFound']);
     }
 
     faHome = faHome;
