@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { LoginDto, LoginResponseDto, UserDataDto } from "../models/User";
-import { BehaviorSubject, catchError, map, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { UserService } from "./user.service";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
 import * as jwt_decoder from "jwt-decode";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root"
 })
 export class AuthService {
     private apiUrl: string = "http://localhost:8080/api/v1/auth";
@@ -24,9 +24,9 @@ export class AuthService {
     logIn(loginDto: LoginDto) {
         return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, loginDto).subscribe(
             (responseDto) => {
-                this.cookieService.set('jwtToken', responseDto.accessToken);
+                this.cookieService.set("jwtToken", responseDto.accessToken, { path: "/" });
                 this.fetchAndSetCurrentUser(loginDto.username);
-                this.router.navigate(['/home']);
+                this.router.navigate(["/home"]);
             },
             (err) => {
                 console.error("Login error:", err);
@@ -34,12 +34,20 @@ export class AuthService {
         );
     }
 
-    loadUser() {
+    logOut(): void {
+        this.cookieService.delete("jwtToken", "/");
+        this.currentUserSubject.next(null);
+        console.log("subectj null");
+        this.router.navigate(["/login"]);
+    }
+
+    loadUser(): void {
+        console.log("loading user");
         const username = this.getUsernameFromToken();
         if (!username) {
             console.error("Invalid token");
-            this.cookieService.delete('jwtToken');
-            this.router.navigate(['/login']);
+            this.cookieService.delete("jwtToken", "/");
+            this.router.navigate(["/login"]);
             return;
         }
 
@@ -47,7 +55,7 @@ export class AuthService {
     }
 
     public getUsernameFromToken(): string | null {
-        const token = this.cookieService.get('jwtToken');
+        const token = this.cookieService.get("jwtToken");
         if (!token) {
             return null;
         }
@@ -59,7 +67,6 @@ export class AuthService {
     fetchAndSetCurrentUser(username: string): void {
         this.userService.getUserByUsername(username, true).subscribe(
             (user) => {
-                console.log("User: ", user);
                 this.setCurrentUser(user);
             },
             (error) => {

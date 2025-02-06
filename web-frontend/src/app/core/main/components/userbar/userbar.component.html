@@ -1,8 +1,8 @@
 <div class="w-44 p-8 space-y-4 bg-white border border-gray-300 rounded-md shadow-md">
     <div *ngFor="let item of navigationItems" class="flex items-center space-x-4 text-gray-800">
         <fa-icon [icon]="item?.icon ?? faUser"></fa-icon>
-        <a [href]="item?.link ?? 'not-found'" class="font-semibold">
+        <button class="font-semibold" (click)="navigateTo(item)">
             {{ item?.label }}
-        </a>
+        </button>
     </div>
 </div>

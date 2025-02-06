@@ -1,4 +1,4 @@
-<div class="flex items-center justify-end w-full space-x-8 page-std-padding-x py-2">
+<div *ngIf="isLoggedIn" class="flex items-center justify-end w-full space-x-8 page-std-padding-x py-2">
     <button>
         <img [src]="'assets/flags/' + languageService.getFlagCode(currentLanguage) + '.svg'" class="w-8 h-8" />
     </button>

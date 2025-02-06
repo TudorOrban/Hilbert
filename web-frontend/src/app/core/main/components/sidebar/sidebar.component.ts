@@ -19,6 +19,13 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
     currentRoute?: string;
+    sidebarItems: UIItem[] = [
+        { label: "Home", value: "home", icon: faHome, link: "/home" },
+        { label: "Reading", value: "reading", icon: faBook, link: "/reading" },
+        { label: "Vocabulary", value: "vocabulary", icon: faFont, link: "/vocabulary" },
+        { label: "Grammar", value: "grammar", icon: faSpellCheck, link: "/grammar" },
+        { label: "Chat", value: "chat", icon: faComment, link: "/chat" },
+    ];
 
     constructor(
         private readonly router: Router,
@@ -30,16 +37,8 @@ export class SidebarComponent {
         }
 
         this.currentRoute = item.value;
-        this.router.navigate([item?.link ?? 'notFound']);
+        this.router.navigate([item?.link ?? 'not-found']);
     }
 
     faHome = faHome;
-    sidebarItems: UIItem[] = [
-        { label: "Home", value: "home", icon: faHome, link: "/home" },
-        { label: "Reading", value: "reading", icon: faBook, link: "/reading" },
-        { label: "Vocabulary", value: "vocabulary", icon: faFont, link: "/vocabulary" },
-        { label: "Grammar", value: "grammar", icon: faSpellCheck, link: "/grammar" },
-        { label: "Chat", value: "chat", icon: faComment, link: "/chat" },
-    ];
-
 }

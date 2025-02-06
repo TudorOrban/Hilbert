@@ -5,19 +5,22 @@ import { faGear, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-
 import { AuthService } from '../../../user/services/auth.service';
 import { UserDataDto } from '../../../user/models/User';
 import { UIItem } from '../../../../shared/common/types/common';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-userbar',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, RouterModule],
   templateUrl: './userbar.component.html',
   styleUrl: './userbar.component.css'
 })
 export class UserbarComponent implements OnInit {
     user?: UserDataDto;
     navigationItems: UIItem[] = [];
+    currentRoute: string = "";
 
     constructor(
         private readonly authService: AuthService,
+        private readonly router: Router
     ) {}
 
     ngOnInit(): void {
@@ -35,6 +38,15 @@ export class UserbarComponent implements OnInit {
                 ];
             }
         );
+    }
+
+    navigateTo(item?: UIItem): void {
+        if (!item) {
+            return;
+        }
+
+        this.currentRoute = item.value;
+        this.router.navigate([item?.link ?? 'not-found']);
     }
 
     faUser = faUser;

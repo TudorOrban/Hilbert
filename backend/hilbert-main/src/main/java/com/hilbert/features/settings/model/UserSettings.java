@@ -47,7 +47,7 @@ public class UserSettings {
 
     public void setSettings(UserSettingsData settings) {
         this.settings = settings;
-            
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         try {
