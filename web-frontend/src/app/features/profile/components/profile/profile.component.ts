@@ -7,10 +7,11 @@ import { UiUtilService } from '../../../../shared/common/services/ui-util.servic
 import { CommonModule } from '@angular/common';
 import { Language } from '../../../../shared/language/models/Language';
 import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
+import { LabelValueComponent } from "../../../../shared/common/components/label-value/label-value.component";
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule],
+  imports: [CommonModule, LabelValueComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

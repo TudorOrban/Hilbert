@@ -1,4 +1,4 @@
 .sidebar {
-   background-color: var(--secondary-color);
+   background: linear-gradient(135deg, rgb(17, 82, 147), rgb(93, 54, 155));;
 
 }

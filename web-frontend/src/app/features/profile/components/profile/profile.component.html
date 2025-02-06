@@ -1,5 +1,5 @@
 <!-- Header -->
-<div class="px-12 py-8 space-y-8 border border-gray-300">
+<div class="px-12 py-8 space-y-8 bg-gray-50 border border-gray-300">
     <div class="flex items-center space-x-4">
         <img src="assets/flags/gb.svg" class="w-10 h-10"/>
 
@@ -32,17 +32,30 @@
 <!-- Content -->
 <div class="px-12 py-8">
     <div>
-        <h2 class="text-lg font-semibold">
+        <div class="text-lg font-semibold pb-4">
             Statistics
-        </h2>
+        </div>
 
-        <div class="flex items-center space-x-2 py-4">
-            <div class="font-semibold">
-                Total XP
-            </div>
-            <div>
-                {{ userData?.profileDto?.learningData?.totalXp ?? 0 }}
-            </div>
+        <div class="grid grid-cols-2 gap-4">
+            <app-label-value
+                [label]="'Current Streak'"
+                [value]="(userData?.profileDto?.learningData?.currentStreakDays ?? 0).toString()"
+            ></app-label-value>
+
+            <app-label-value
+                [label]="'Total XP'"
+                [value]="(userData?.profileDto?.learningData?.totalXp ?? 0).toString()"
+            ></app-label-value>
+            <app-label-value
+                [label]="'Last Active'"
+                [value]="formatDate(userData?.profileDto?.learningData?.lastActiveDate)"
+            ></app-label-value>
+            
+
+            <app-label-value
+                [label]="'Total Learning Days'"
+                [value]="(userData?.profileDto?.learningData?.totalLearningDays ?? 0).toString()"
+            ></app-label-value>
         </div>
     </div>
 </div>
