@@ -1,0 +1,6 @@
+<div *ngFor="let article of (articles?.results ?? [])" class="flex w-full overflow-y-auto py-2">
+    <app-article-medium-card
+        [article]="article"
+        class="w-full"
+    ></app-article-medium-card>
+</div>

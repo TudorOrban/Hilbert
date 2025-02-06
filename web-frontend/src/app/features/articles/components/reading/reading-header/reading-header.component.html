@@ -1,5 +1,5 @@
-<div class="pb-4 page-title">
-    Chats
+<div class="p-2 page-title">
+    Articles
 </div>
 
 <div class="flex items-center justify-between w-full">
@@ -12,10 +12,10 @@
     </div>
 
     <button 
-        (click)="handleNewChat()"
-        class="flex items-center space-x-2 px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm text-gray-800 hover:bg-gray-100"
+        (click)="handleAddArticle()"
+        class="standard-write-button flex items-center space-x-2 h-10"
     >
-        <fa-icon [icon]="faMessage"></fa-icon>
-        <span class="font-semibold">New Chat</span>
+        <fa-icon [icon]="faPlus"></fa-icon>
+        <span class="font-semibold">Add Article</span>
     </button>
 </div>

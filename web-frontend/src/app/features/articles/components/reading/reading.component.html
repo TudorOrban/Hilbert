@@ -1,34 +1,9 @@
-<div class="px-12 py-4">
-    <div class="p-2 page-title">
-        Articles
-    </div>
-
-    <div class="flex items-center justify-between w-full">
-        <div class="flex items-center py-4">
-            <app-search-input></app-search-input>
-    
-            <button class="mx-4 w-10 h-10 border border-gray-300 shadow-sm rounded-md">
-                <fa-icon [icon]="faArrowUpWideShort"></fa-icon>
-            </button>
-        </div>
-
-        <button 
-            (click)="handleAddArticle()"
-            class="standard-write-button flex items-center space-x-2 h-10"
-        >
-            <fa-icon [icon]="faPlus"></fa-icon>
-            <span class="font-semibold">Add Article</span>
-        </button>
-    </div>
+<div class="page-std-padding-x page-std-padding-y">
+    <app-reading-header></app-reading-header>
 
     <div class="flex w-full h-full py-4">
-        <div class="flex-grow space-y-4 overflow-y-auto mr-64">
-            <div *ngFor="let article of (articles?.results ?? [])" class="flex w-full overflow-y-auto">
-                <app-article-medium-card
-                    [article]="article"
-                    class="w-full"
-                ></app-article-medium-card>
-            </div>
+        <div class="flex-grow overflow-y-auto mr-64">
+            <app-articles-list [articles]="articles"></app-articles-list>
         </div>
 
         <app-advanced-search-panel class="fixed mr-16 right-0 h-full"></app-advanced-search-panel> 
