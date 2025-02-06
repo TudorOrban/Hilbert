@@ -2,10 +2,11 @@
 export interface UserSettingsDto {
     id: number;
     userId: number;
-    settings: SettingsData;
+    settings: UserSettingsData;
 }
 
-export interface SettingsData {
+export interface UserSettingsData {
     notificationsOn?: boolean;
-    isProfilePublic?: boolean;
+    profilePublic?: boolean;
+    darkMode?: boolean;
 }
