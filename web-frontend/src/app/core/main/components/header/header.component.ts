@@ -30,7 +30,6 @@ export class HeaderComponent implements OnInit {
                     this.isLoggedIn = false;
                     return;
                 }
-                console.log("Data id", data?.id);
                 this.isLoggedIn = true;
             }
         );

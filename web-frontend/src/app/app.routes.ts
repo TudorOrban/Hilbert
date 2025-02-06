@@ -14,9 +14,13 @@ import { BotChatComponent } from './features/chats/components/botchat/bot-chat.c
 import { NewChatComponent } from './features/chats/components/new-chat/new-chat.component';
 import { ProfileComponent } from './features/profile/components/profile/profile.component';
 import { SettingsComponent } from './features/settings/components/settings/settings.component';
+import { LogoutComponent } from './core/user/components/logout/logout.component';
+import { SignUpComponent } from './core/user/components/sign-up/sign-up.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'sign-up', component: SignUpComponent },
+    { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'reading', component: ReadingComponent, canActivate: [AuthGuard] },

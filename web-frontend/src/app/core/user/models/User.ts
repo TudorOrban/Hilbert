@@ -42,7 +42,7 @@ export interface LoginResponseDto {
 export interface CreateUserDto {
     username: string;
     email: string;
-    passwordHash: string;
+    password: string;
 }
 
 export interface UpdateUserDto {

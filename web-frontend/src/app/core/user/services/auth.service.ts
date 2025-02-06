@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { LoginDto, LoginResponseDto, UserDataDto } from "../models/User";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
 import { UserService } from "./user.service";
 import { CookieService } from "ngx-cookie-service";
 import { Router } from "@angular/router";
@@ -22,27 +22,37 @@ export class AuthService {
     ) {}
 
     logIn(loginDto: LoginDto) {
-        return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, loginDto).subscribe(
-            (responseDto) => {
-                this.cookieService.set("jwtToken", responseDto.accessToken, { path: "/" });
-                this.fetchAndSetCurrentUser(loginDto.username);
+        // return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, loginDto).subscribe(
+        //     (responseDto) => {
+        //         this.cookieService.set("jwtToken", responseDto.accessToken, { path: "/" });
+        //         this.fetchAndSetCurrentUser(loginDto.username);
+        //         this.router.navigate(["/home"]);
+        //     },
+        //     (err) => {
+        //         console.error("Login error:", err);
+        //     },
+        // );
+        return this.http.post<LoginResponseDto>(`${this.apiUrl}/login`, loginDto).pipe(
+            tap((responseDto) => {
+                this.cookieService.set("jwtToken", responseDto.accessToken, { path: '/', sameSite: 'Lax', secure: true });
+                this.fetchAndSetCurrentUser(loginDto.username); 
+                
                 this.router.navigate(["/home"]);
-            },
-            (err) => {
-                console.error("Login error:", err);
-            },
+            }),
+            catchError((error) => {
+                console.error("Login error:", error);
+                return throwError(() => error);
+            })
         );
     }
 
     logOut(): void {
         this.cookieService.delete("jwtToken", "/");
         this.currentUserSubject.next(null);
-        console.log("subectj null");
         this.router.navigate(["/login"]);
     }
 
     loadUser(): void {
-        console.log("loading user");
         const username = this.getUsernameFromToken();
         if (!username) {
             console.error("Invalid token");

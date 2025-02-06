@@ -1,6 +1,6 @@
 <div class="flex flex-col items-center w-full h-full py-12">
     <div class="page-title pb-4">
-        Login
+        Sign Up
     </div>
 
     <form (ngSubmit)="onSubmit()" class="space-y-4">
@@ -16,6 +16,17 @@
             >
         </div>
         <div class="space-y-2">
+            <label for="email" class="form-label">Email:</label>
+            <input 
+                type="text" 
+                id="email" 
+                name="email" 
+                [(ngModel)]="email" 
+                required
+                class="form-input w-96"
+            >
+        </div>
+        <div class="space-y-2">
             <label for="password" class="form-label">Password:</label>
             <input 
                 type="password" 
@@ -26,14 +37,10 @@
                 class="form-input w-96"
             >
         </div>
-
-        <div *ngIf="invalidCredentials" class="form-error">
-            Invalid Credentials.
-        </div>
     
         <div class="flex items-center justify-center space-x-8 pt-4">
-            <button type="submit" class="auth-button">Login</button>
-            <button type="button" class="auth-label" (click)="goToSignUp()">Sign Up</button>
+            <button type="submit" class="auth-button" (click)="goToSignUp()">Sign Up</button>
+            <button type="button" class="auth-label">Log In</button>
         </div>
     </form>
 </div>

@@ -34,7 +34,7 @@ export class UserbarComponent implements OnInit {
                 this.navigationItems = [
                     { label: this.user?.username, value: "profile", link: this.user?.username + "/profile", icon: faUser },
                     { label: "Settings", value: "settings", link: "/settings", icon: faGear },
-                    { label: "Log Out", value: "logout", link: "", icon: faRightFromBracket }
+                    { label: "Log Out", value: "logout", link: "/logout", icon: faRightFromBracket }
                 ];
             }
         );

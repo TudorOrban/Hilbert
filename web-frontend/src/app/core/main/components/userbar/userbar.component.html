@@ -1,4 +1,4 @@
-<div class="w-44 p-8 space-y-4 bg-white border border-gray-300 rounded-md shadow-md">
+<div class="w-40 p-4 space-y-4 bg-white border border-gray-300 rounded-md shadow-md">
     <div *ngFor="let item of navigationItems" class="flex items-center space-x-4 text-gray-800">
         <fa-icon [icon]="item?.icon ?? faUser"></fa-icon>
         <button class="font-semibold" (click)="navigateTo(item)">
