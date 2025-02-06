@@ -3,7 +3,7 @@
         id="enum-select"
         [(ngModel)]="selectedValue"
         (ngModelChange)="onSelectChange($event)"
-        class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm font-semibold text-sm"
+        class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm font-semibold text-sm cursor-pointer"
     >
         <option *ngFor="let value of enumValues" [value]="value">
             {{ value }}

@@ -1,0 +1,14 @@
+<div class="flex items-center justify-end w-full space-x-8 px-12 pt-4">
+    <button>
+        <img [src]="'assets/flags/' + languageService.getFlagCode(currentLanguage) + '.svg'" class="w-8 h-8" />
+    </button>
+
+    <div class="flex items-center space-x-2">
+        <fa-icon [icon]="faFire" class=""></fa-icon>
+        <span class="font-semibold text-gray-800 text-lg">14</span>
+    </div>
+
+    <button class="profile-button">
+        <fa-icon [icon]="faUser" class="text-sm"></fa-icon>
+    </button>
+</div>
