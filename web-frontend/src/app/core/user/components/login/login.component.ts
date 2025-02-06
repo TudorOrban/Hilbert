@@ -16,8 +16,11 @@ export class LoginComponent {
         private readonly authService: AuthService
     ) {}
 
-    onSubmit() {
-
+    onSubmit(): void {
         this.authService.logIn({ username: this.username, password: this.password });
+    }
+
+    goToSignUp(): void {
+
     }
 }

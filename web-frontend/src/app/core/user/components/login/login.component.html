@@ -1,11 +1,36 @@
-<form (ngSubmit)="onSubmit()">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username" required>
+<div class="flex flex-col items-center w-full h-full py-12">
+    <div class="page-title pb-4">
+        Login
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required>
-    </div>
-    <button type="submit">Login</button>
-</form>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+        <div class="space-y-2">
+            <label for="username" class="form-label">Username:</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                [(ngModel)]="username" 
+                required
+                class="form-input w-96"
+            >
+        </div>
+        <div class="space-y-2">
+            <label for="password" class="form-label">Password:</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                [(ngModel)]="password" 
+                required
+                class="form-input w-96"
+            >
+        </div>
+    
+        <div class="flex items-center justify-center space-x-8 pt-4">
+            <button type="submit" class="auth-button">Login</button>
+            <button type="button" class="auth-label" (click)="goToSignUp()">Sign Up</button>
+        </div>
+    </form>
+</div>
+

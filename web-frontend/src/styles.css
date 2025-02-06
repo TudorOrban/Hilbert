@@ -1,6 +1,7 @@
 @import url('styles/main.css');
 @import url('styles/common.css');
 @import url('styles/buttons.css');
+@import url('styles/forms.css');
 
 @tailwind base;
 @tailwind components;
@@ -12,6 +13,8 @@
     --text-color: #000000;
     --primary-color: white;
     --secondary-color: rgb(17, 82, 147);
+    --tertiary-color: rgb(93, 54, 155);
+    --tertiary-color-hover: rgb(80, 47, 135);
     --border-color: #dee2e6;
     --border-color-secondary: #b3b3b3;
     --scrollbar-color: #d4d4d4;
