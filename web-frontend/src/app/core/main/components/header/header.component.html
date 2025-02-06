@@ -1,4 +1,4 @@
-<div class="flex items-center justify-end w-full space-x-8 px-12 pt-4">
+<div class="flex items-center justify-end w-full space-x-8 page-std-padding-x py-2">
     <button>
         <img [src]="'assets/flags/' + languageService.getFlagCode(currentLanguage) + '.svg'" class="w-8 h-8" />
     </button>
@@ -8,7 +8,13 @@
         <span class="font-semibold text-gray-800 text-lg">14</span>
     </div>
 
-    <button class="profile-button">
-        <fa-icon [icon]="faUser" class="text-sm"></fa-icon>
-    </button>
+    <div class="relative">
+        <button class="profile-button" (click)="toggleIsUserbarOpen()">
+            <fa-icon [icon]="faUser" class="text-sm"></fa-icon>
+        </button>
+
+        <div *ngIf="isUserbarOpen" class="absolute right-0 top-0 mt-10 z-50">
+            <app-userbar></app-userbar>
+        </div>
+    </div>
 </div>

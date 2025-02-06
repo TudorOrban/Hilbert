@@ -22,7 +22,7 @@ export class ReadingHeaderComponent {
     constructor(
         private router: Router
     ) {}
-    
+
     handleAddArticle() {
         this.router.navigate(["/reading/add-article"]);
     }
