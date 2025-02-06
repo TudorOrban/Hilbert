@@ -13,6 +13,7 @@ import { ChatComponent } from './features/chats/components/chat/chat.component';
 import { BotChatComponent } from './features/chats/components/botchat/bot-chat.component';
 import { NewChatComponent } from './features/chats/components/new-chat/new-chat.component';
 import { ProfileComponent } from './features/profile/components/profile/profile.component';
+import { SettingsComponent } from './features/settings/components/settings/settings.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -29,4 +30,5 @@ export const routes: Routes = [
     { path: 'chat/:chatId', component: ChatComponent, canActivate: [AuthGuard] },
     { path: 'bot-chat/:botChatId', component: BotChatComponent, canActivate: [AuthGuard] },
     { path: ':username/profile', component: ProfileComponent, canActivate: [AuthGuard] },
+    { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
 ];
