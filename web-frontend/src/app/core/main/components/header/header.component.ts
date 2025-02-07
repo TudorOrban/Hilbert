@@ -17,6 +17,7 @@ import { CurrentLanguageSelectorComponent } from "../current-language-selector/c
 export class HeaderComponent implements OnInit {
     isLoggedIn: boolean = false;
     isUserbarOpen: boolean = false;
+    currentStreak?: number;
 
     constructor(
         private readonly authService: AuthService,
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit {
                     return;
                 }
                 this.isLoggedIn = true;
+                this.currentStreak = data.profileDto.learningData.currentStreakDays;
             }
         );
     }

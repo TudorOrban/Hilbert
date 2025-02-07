@@ -5,7 +5,7 @@
 
     <div class="flex items-center space-x-2">
         <fa-icon [icon]="faFire" class=""></fa-icon>
-        <span class="font-semibold text-gray-800 text-lg">14</span>
+        <span class="font-semibold text-gray-800 text-lg">{{ currentStreak }}</span>
     </div>
 
     <div class="relative">
@@ -17,4 +17,10 @@
             <app-userbar></app-userbar>
         </div>
     </div>
+</div>
+
+<div *ngIf="!isLoggedIn" class="flex items-center justify-end w-full space-x-8 page-std-padding-x py-2">
+    <a [href]="'/login'" class="auth-button">
+        Login
+    </a>
 </div>

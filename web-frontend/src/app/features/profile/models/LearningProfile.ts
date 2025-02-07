@@ -13,7 +13,7 @@ export interface LearningProfileData {
     lastActiveDate: string;
     totalLearningDays: number;
     currentStreakStartDate?: string;
-    currentStreakDays?: string;
+    currentStreakDays?: number;
     totalXp: number;
 
     nativeLanguage?: Language;

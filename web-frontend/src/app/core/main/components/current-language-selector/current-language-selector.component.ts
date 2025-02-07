@@ -38,6 +38,10 @@ export class CurrentLanguageSelectorComponent {
         return this.currentLanguageService.getLanguage();
     }
 
+    setCurrentLanguage(language: Language): void {
+        this.currentLanguageService.setLanguage(language);
+    }
+
     toggleLanguageBar(): void {
         this.isLanguageBarOpen = !this.isLanguageBarOpen;
     }

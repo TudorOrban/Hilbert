@@ -23,7 +23,6 @@ export class ArticleComponent implements OnInit {
 
     isArticleRead?: boolean = false;
 
-
     constructor(
         readonly languageService: LanguageOptionsService,
         private readonly articleService: ArticleService,
@@ -34,7 +33,10 @@ export class ArticleComponent implements OnInit {
 
     ngOnInit(): void {
         this.authService.getCurrentUser().subscribe((user) => {
-            this.user = user ?? undefined;
+            if (!user) {
+                return;
+            }
+            this.user = user;
 
             this.route.paramMap.subscribe((params) => {
                 this.articleId = Number(params.get("articleId"));
