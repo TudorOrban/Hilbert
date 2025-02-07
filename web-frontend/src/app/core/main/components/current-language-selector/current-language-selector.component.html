@@ -1,0 +1,16 @@
+<div class="relative pt-1">
+    <button (click)="toggleLanguageBar()">
+        <img [src]="'assets/flags/' + languageService.getFlagCode(getCurrentLanguage()) + '.svg'" class="w-8 h-8" />
+    </button>
+    
+    <div
+        *ngIf="isLanguageBarOpen"
+        class="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-40 flex flex-col items-center mt-10 bg-white border border-gray-300 rounded-md shadow-md overflow-y-auto"
+    >   
+        <div *ngFor="let language of languageService.getLanguageOptions()">
+            <div *ngIf="language.value !== Language.NONE">
+                <img [src]="'assets/flags/' + languageService.getFlagCode(language.value) + '.svg'" class="w-8 h-8" />
+            </div>
+        </div>
+    </div>
+</div>

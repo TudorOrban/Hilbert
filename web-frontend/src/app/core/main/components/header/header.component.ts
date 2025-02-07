@@ -6,15 +6,15 @@ import { Language } from '../../../../shared/language/models/Language';
 import { LanguageOptionsService } from '../../../../shared/language/services/language-options.service';
 import { UserbarComponent } from "../userbar/userbar.component";
 import { AuthService } from '../../../user/services/auth.service';
+import { CurrentLanguageSelectorComponent } from "../current-language-selector/current-language-selector.component";
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, FontAwesomeModule, UserbarComponent],
+  imports: [CommonModule, FontAwesomeModule, UserbarComponent, CurrentLanguageSelectorComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-    currentLanguage: Language = Language.ENGLISH;
     isLoggedIn: boolean = false;
     isUserbarOpen: boolean = false;
 

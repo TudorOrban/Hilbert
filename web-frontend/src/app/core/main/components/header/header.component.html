@@ -1,7 +1,7 @@
 <div *ngIf="isLoggedIn" class="flex items-center justify-end w-full space-x-8 page-std-padding-x py-2">
-    <button>
-        <img [src]="'assets/flags/' + languageService.getFlagCode(currentLanguage) + '.svg'" class="w-8 h-8" />
-    </button>
+    <div>
+        <app-current-language-selector></app-current-language-selector>
+    </div>
 
     <div class="flex items-center space-x-2">
         <fa-icon [icon]="faFire" class=""></fa-icon>
@@ -9,7 +9,7 @@
     </div>
 
     <div class="relative">
-        <button class="profile-button" (click)="toggleIsUserbarOpen()">
+        <button class="profile-button w-8 h-8" (click)="toggleIsUserbarOpen()">
             <fa-icon [icon]="faUser" class="text-sm"></fa-icon>
         </button>
 
