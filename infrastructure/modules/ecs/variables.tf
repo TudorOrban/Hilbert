@@ -52,7 +52,7 @@ variable "hilbert_ml_desired_count" {
     default = 1
 }
 
-variable "rds_endpoint" {
+variable "db_endpoint" {
     type = string
 }
 
@@ -67,6 +67,10 @@ variable "db_username" {
 variable "db_password" {
     type = string
     sensitive = true
+}
+
+variable "s3_website_url" {
+    type = string
 }
 
 variable "tags" {
