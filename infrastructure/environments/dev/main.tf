@@ -49,3 +49,44 @@ module "rds" {
         Environment = "dev"
     }
 }
+
+data "aws_caller_identity" "current" {}
+
+data "aws_ecr_repository" "hilbert_main_repo" {
+    name = "hilbert-main"
+    registry_id = data.aws_caller_identity.current.account_id
+}
+
+data "aws_ecr_repository" "hilbert_ml_repo" {
+    name = "hilbert_ml"
+    registry_id = data.aws_caller_identity.current.account_id
+}
+
+module "ecs" {
+    source = "../../modules/ecs"
+    cluster_name = "dev-cluster"
+    instance_type = "t2.micro"
+
+    desired_capacity = 2
+    min_size = 2
+    max_size = 2
+
+    public_subnet_a_id = module.network.public_subnet_a_id
+    public_subnet_b_id = module.network.public_subnet_b_id    
+    ec2_sg_id = module.network.rds_sg_id
+
+    hilbert_main_image_uri = "${data.aws_ecr_repository.hilbert_main_repo.repository_url}:latest"
+    hilbert_ml_image_uri = "${data.aws_ecr_repository.hilbert_ml_repo.repository_url}:latest"
+
+    hilbert_main_desired_count = 1
+    hilbert_ml_desired_count = 1
+
+    rds_endpoint = module.rds.rds_endpoint
+    db_name = module.rds.db_name
+    db_username = module.rds.db_username
+    db_password = module.rds.db_password
+
+    tags = {
+        Environment = "dev"
+    }
+}
