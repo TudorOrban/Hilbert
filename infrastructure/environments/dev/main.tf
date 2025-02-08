@@ -2,12 +2,13 @@ provider "aws" {
     region = "eu-west-1"
 }
 
-resource "aws_s3_bucket" "hilbert_frontend" {
-    bucket = "hilbert-frontend"
+module "s3" {
+    source = "../../modules/s3"
+    bucket_name = "hilbert-frontend-dev"
     acl = "private"
-
     tags = {
         Name = "My bucket"
         Environment = "Dev"
     }
 }
+
