@@ -3,6 +3,7 @@ resource "aws_db_instance" "main" {
     db_name = var.db_name
     engine = "postgres"
     engine_version = var.engine_version
+    instance_class = var.instance_class
     username = var.db_username
     password = random_password.db_password.result
     parameter_group_name = aws_db_parameter_group.main.name
@@ -12,6 +13,12 @@ resource "aws_db_instance" "main" {
     publicly_accessible = var.publicly_accessible
     skip_final_snapshot = true
     identifier = var.identifier
+
+    depends_on = [
+        var.internet_gateway_id,
+        var.public_route_table_a_id,
+        var.public_route_table_b_id 
+    ]
 
     tags = var.tags
 }
@@ -27,7 +34,7 @@ resource "aws_db_parameter_group" "main" {
 }
 
 resource "aws_security_group" "rds_sg" {
-    nae = "rds-sg-${var.identifier}"
+    name = "rds-sg-${var.identifier}"
     description = "Security group for RDS instance"
     vpc_id = var.vpc_id
 

@@ -57,3 +57,15 @@ variable "tags" {
     type = map(string)
     description = "Tags for the RDS instance"
 }
+
+variable "internet_gateway_id" {
+    type = string
+}
+
+variable "public_route_table_a_id" {
+    type = string
+}
+
+variable "public_route_table_b_id" {
+    type = string
+}
