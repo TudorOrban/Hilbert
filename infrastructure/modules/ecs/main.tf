@@ -13,6 +13,10 @@ resource "aws_launch_template" "ecs_launch_template" {
         security_groups = [var.ec2_sg_id]
     }
 
+    iam_instance_profile {
+        arn = aws_iam_instance_profile.ecs_instance_profile.arn 
+    }
+
     lifecycle {
         create_before_destroy = true
     }
@@ -27,6 +31,10 @@ resource "aws_autoscaling_group" "ecs_asg" {
     launch_template {
         id = aws_launch_template.ecs_launch_template.id
         version = "$Latest"
+    }
+
+    lifecycle {
+        create_before_destroy = true
     }
 
     desired_capacity = var.desired_capacity
@@ -72,6 +80,45 @@ resource "aws_ecs_task_definition" "hilbert_main_task_definition" {
     ])
 
     execution_role_arn = aws_iam_role.ecs_tasks_role.arn
+}
+
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
+    name = "ecs-instance-profile"
+    role = aws_iam_role.ecs_instance_role.name
+}
+
+resource "aws_iam_role" "ecs_instance_role" {
+    name = "ecs-instance-role"
+    assume_role_policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+            {
+                Action = "sts:AssumeRole"
+                Effect = "Allow"
+                Principal = {
+                    Service = "ec2.amazonaws.com"
+                }
+            }
+        ]
+    })
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecr" {
+    name = "ecs-instance-role-policy-attachment-ecr"
+    roles = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" 
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs" {
+    name = "ecs-instance-role-policy-attachment-ecs"
+    roles = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM" 
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs_2" {
+    name = "ecs-instance-role-policy-attachment-ecs2"
+    roles = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess" 
 }
 
 resource "aws_iam_role" "ecs_tasks_role" {

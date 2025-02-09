@@ -9,6 +9,8 @@ module "network" {
     region = "eu-west-1"
     public_subnet_a_cidr = "10.0.1.0/24"
     public_subnet_b_cidr = "10.0.2.0/24"
+    private_subnet_a_cidr = "10.0.1.0/24"
+    private_subnet_b_cidr = "10.0.2.0/24"
 
     tags = {
         Environment = "dev"
@@ -62,32 +64,32 @@ data "aws_ecr_repository" "hilbert_ml_repo" {
     registry_id = data.aws_caller_identity.current.account_id
 }
 
-module "ecs" {
-    source = "../../modules/ecs"
-    cluster_name = "dev-cluster"
-    instance_type = "t2.micro"
+# module "ecs" {
+#     source = "../../modules/ecs"
+#     cluster_name = "dev-cluster"
+#     instance_type = "t2.micro"
 
-    desired_capacity = 2
-    min_size = 2
-    max_size = 2
+#     desired_capacity = 2
+#     min_size = 2
+#     max_size = 2
 
-    public_subnet_a_id = module.network.public_subnet_a_id
-    public_subnet_b_id = module.network.public_subnet_b_id    
-    ec2_sg_id = module.rds.rds_sg_id
+#     public_subnet_a_id = module.network.public_subnet_a_id
+#     public_subnet_b_id = module.network.public_subnet_b_id    
+#     ec2_sg_id = module.rds.rds_sg_id
 
-    hilbert_main_image_uri = "${data.aws_ecr_repository.hilbert_main_repo.repository_url}:latest"
-    hilbert_ml_image_uri = "${data.aws_ecr_repository.hilbert_ml_repo.repository_url}:latest"
+#     hilbert_main_image_uri = "${data.aws_ecr_repository.hilbert_main_repo.repository_url}:latest"
+#     hilbert_ml_image_uri = "${data.aws_ecr_repository.hilbert_ml_repo.repository_url}:latest"
 
-    hilbert_main_desired_count = 1
-    hilbert_ml_desired_count = 1
+#     hilbert_main_desired_count = 1
+#     hilbert_ml_desired_count = 1
 
-    db_endpoint = module.rds.db_endpoint
-    db_name = module.rds.db_name
-    db_username = module.rds.db_username
-    db_password = module.rds.db_password
-    s3_website_url = module.s3.s3_website_url
+#     db_endpoint = module.rds.db_endpoint
+#     db_name = module.rds.db_name
+#     db_username = module.rds.db_username
+#     db_password = module.rds.db_password
+#     s3_website_url = module.s3.s3_website_url
 
-    tags = {
-        Environment = "dev"
-    }
-}
+#     tags = {
+#         Environment = "dev"
+#     }
+# }
