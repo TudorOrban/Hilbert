@@ -16,19 +16,19 @@ resource "aws_s3_bucket_website_configuration" "this" {
     }
 }
 
-resource "aws_s3_bucket_policy" "this" {
-    bucket = aws_s3_bucket.this.bucket
-    policy = data.aws_iam_policy_document.this.json
-}
+# resource "aws_s3_bucket_policy" "this" {
+#     bucket = aws_s3_bucket.this.bucket
+#     policy = data.aws_iam_policy_document.this.json
+# }
 
-data "aws_iam_policy_document" "this" {
-    statement {
-        actions = ["s3:GetObject"]
-        resources = ["${aws_s3_bucket.this.arn}/*"]
+# data "aws_iam_policy_document" "this" {
+#     statement {
+#         actions = ["s3:GetObject"]
+#         resources = ["${aws_s3_bucket.this.arn}/*"]
         
-        principals {
-            type = "AWS"
-            identifiers = ["*"]
-        }
-    }
-}
+#         principals {
+#             type = "AWS"
+#             identifiers = ["*"]
+#         }
+#     }
+# }

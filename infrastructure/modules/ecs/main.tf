@@ -2,6 +2,40 @@ resource "aws_ecs_cluster" "main" {
     name = var.cluster_name
 }
 
+resource "aws_cloudwatch_log_group" "ecs_instance_logs" {
+    name = "/ecs/ecs-instance-logs"
+    retention_in_days = 30
+}
+
+resource "aws_security_group" "ecs_sg" { 
+    name        = "ecs-sg-${var.identifier}"
+    description = "Security group for ECS instances"
+    vpc_id      = var.vpc_id
+
+    egress {
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = var.tags
+}
+
 resource "aws_launch_template" "ecs_launch_template" {
     name_prefix = "ecs-launch-template-"
     image_id    = data.aws_ami.ecs_optimized.id
@@ -10,7 +44,7 @@ resource "aws_launch_template" "ecs_launch_template" {
         cluster_name = aws_ecs_cluster.main.name
     }))
     network_interfaces {
-        security_groups = [var.ec2_sg_id]
+        security_groups = [aws_security_group.ecs_sg.id]
     }
 
     iam_instance_profile {
@@ -41,7 +75,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
     min_size = var.min_size
     max_size = var.max_size
 
-    vpc_zone_identifier = [var.public_subnet_a_id, var.public_subnet_b_id]
+    vpc_zone_identifier = [var.private_subnet_a_id, var.private_subnet_b_id]
 }
 
 # Hilbert Main Service
@@ -73,7 +107,15 @@ resource "aws_ecs_task_definition" "hilbert_main_task_definition" {
                     name = "HILBERT_ML_API_KEY_PROD",
                     valueFrom = "arn:aws:secretsmanager:eu-west-1:474668403865:secret:hilbert-app-secrets-szLLQu:HILBERT_ML_API_KEY_PROD::"
                 }
-            ]
+            ],
+            logConfiguration = {
+                logDriver = "awslogs"
+                options = {
+                    awslogs-group = aws_cloudwatch_log_group.ecs_instance_logs.name
+                    awslogs-region = "eu-west-1"
+                    awslogs-stream-prefix = "ecs"
+                }
+            },
             cpu = 256,
             memory = 512
         }
@@ -110,15 +152,27 @@ resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecr" {
 }
 
 resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs" {
-    name = "ecs-instance-role-policy-attachment-ecs"
-    roles = [aws_iam_role.ecs_instance_role.name]
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM" 
+    name       = "ecs-instance-role-policy-attachment-ecs"
+    roles      = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
 
 resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs_2" {
     name = "ecs-instance-role-policy-attachment-ecs2"
     roles = [aws_iam_role.ecs_instance_role.name]
     policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess" 
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs_3" {
+    name       = "ecs-instance-role-policy-attachment-ecs3"
+    roles      = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_policy_attachment" "ecs_instance_role_policy_attachment_ecs_4" {
+    name = "ecs-instance-role-policy-attachment-ecs4"
+    roles = [aws_iam_role.ecs_instance_role.name]
+    policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess" 
 }
 
 resource "aws_iam_role" "ecs_tasks_role" {
@@ -173,6 +227,12 @@ resource "aws_ecs_service" "hilbert_main_service" {
     cluster = aws_ecs_cluster.main.id
     task_definition = aws_ecs_task_definition.hilbert_main_task_definition.arn
     desired_count = var.hilbert_main_desired_count
+
+    load_balancer {
+        target_group_arn = var.aws_lb_target_group_arn
+        container_name = "hilbert-main-container"
+        container_port = 8080
+    }
 }
 
 # Hilbert ML Service
@@ -201,12 +261,11 @@ resource "aws_ecs_service" "hilbert_ml_service" {
     desired_count = var.hilbert_ml_desired_count 
 }
 
-
 data "aws_ami" "ecs_optimized" {
     most_recent = true
     owners = ["amazon"]
     filter {
         name = "name"
-        values = ["amzn-ami-*"]
+        values = ["amzn2-ami-*"]
     }
 }

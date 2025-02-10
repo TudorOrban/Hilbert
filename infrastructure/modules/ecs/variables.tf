@@ -2,6 +2,16 @@ variable "cluster_name" {
     type = string
 }
 
+variable "identifier" {
+    type = string
+    description = "A unique identifier for this deployment (e.g., dev, staging, prod)"
+    default = "dev" 
+}
+
+variable "vpc_id" {
+    type = string
+}
+
 variable "instance_type" {
     type = string
     default = "t2.micro"
@@ -31,6 +41,18 @@ variable "public_subnet_b_id" {
 }
 
 variable "ec2_sg_id" {
+    type = string
+}
+
+variable "aws_lb_target_group_arn" {
+    type = string
+}
+
+variable "private_subnet_a_id" {
+    type = string
+}
+
+variable "private_subnet_b_id" {
     type = string
 }
 
