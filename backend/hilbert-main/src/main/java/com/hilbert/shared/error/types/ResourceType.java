@@ -6,6 +6,7 @@ public enum ResourceType {
     ARTICLE,
     COMMENT,
     VOCABULARY,
+    EXERCISE,
     CHAT,
     MESSAGE;
 
@@ -17,6 +18,7 @@ public enum ResourceType {
             case ARTICLE -> "Article";
             case COMMENT -> "Comment";
             case VOCABULARY -> "Vocabulary";
+            case EXERCISE -> "Exercise";
             case CHAT -> "Chat";
             case MESSAGE -> "Message";
         };
