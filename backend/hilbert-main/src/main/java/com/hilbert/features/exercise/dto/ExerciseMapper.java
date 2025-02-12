@@ -16,8 +16,7 @@ public interface ExerciseMapper {
     @Mapping(source = "exercise.exerciseData", target = "exerciseData")
     ExerciseFullDto exerciseToExerciseFullDto(Exercise exercise);
 
-    @Mapping(source = "exercise.creatorId", target = "creatorId")
-    @Mapping(source = "exercise.exerciseData", target = "exerciseData")
+    @Mapping(source = "creatorId", target = "creatorId")
+    @Mapping(source = "exerciseData", target = "exerciseData")
     Exercise createExerciseDtoToExercise(CreateExerciseDto exerciseDto);
-
 }

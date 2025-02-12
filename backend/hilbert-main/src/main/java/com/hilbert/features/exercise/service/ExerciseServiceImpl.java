@@ -1,6 +1,7 @@
 package com.hilbert.features.exercise.service;
 
 import com.hilbert.features.exercise.dto.CreateExerciseDto;
+import com.hilbert.features.exercise.dto.ExerciseAnswerDto;
 import com.hilbert.features.exercise.dto.ExerciseFullDto;
 import com.hilbert.features.exercise.dto.ExerciseMapper;
 import com.hilbert.features.exercise.model.Exercise;
@@ -15,10 +16,15 @@ import org.springframework.stereotype.Service;
 public class ExerciseServiceImpl implements ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
+    private final ExerciseAnswerService answerService;
 
     @Autowired
-    public ExerciseServiceImpl(ExerciseRepository exerciseRepository) {
+    public ExerciseServiceImpl(
+            ExerciseRepository exerciseRepository,
+            ExerciseAnswerService answerService
+    ) {
         this.exerciseRepository = exerciseRepository;
+        this.answerService = answerService;
     }
 
     public ExerciseFullDto getExerciseById(Long id) {
@@ -34,6 +40,15 @@ public class ExerciseServiceImpl implements ExerciseService {
         Exercise savedExercise = exerciseRepository.save(exercise);
 
         return this.mapExerciseToExerciseFullDto(savedExercise);
+    }
+
+    public Boolean answerExercise(ExerciseAnswerDto answerDto) {
+        Exercise exercise = exerciseRepository.findById(answerDto.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(answerDto.getId().toString(), ResourceType.EXERCISE, ResourceIdentifierType.ID));
+
+        // TODO: Save to db
+
+        return answerService.verifyExerciseAnswer(exercise, answerDto.getAnswerData());
     }
 
     public void deleteExercise(Long id) {
