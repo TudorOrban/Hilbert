@@ -5,3 +5,4 @@ sentencepiece
 sacremoses
 python-dotenv
 protobuf
+ollama

@@ -1,4 +1,4 @@
-<div #contentContainer class="p-8 relative h-full overflow-y-auto">
+<div #contentContainer class="px-8 py-8 relative h-full overflow-x-hidden overflow-y-auto">
     <span *ngFor="let word of words" class="inline mr-1 text-gray-800 cursor-pointer" (click)="showPopover($event, word)">
         {{ word }}
     </span>

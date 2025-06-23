@@ -1,4 +1,4 @@
--- V202501112153__Create_exercises_table.sql
+-- V202502112153__Create_exercises_table.sql
 CREATE TABLE exercises (
     id SERIAL PRIMARY KEY,
     creator_id INT NOT NULL,

@@ -18,4 +18,4 @@ app.register_blueprint(translation_bp, url_prefix=URL_PREFIX)
 app.register_blueprint(chatbot_bp, url_prefix=URL_PREFIX)
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

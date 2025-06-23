@@ -1,4 +1,5 @@
 import json
+import logging
 from flask import Blueprint, jsonify, request
 from src.core.security.security_service import SecurityService
 from src.shared.common.util.json_encoder import CustomJSONEncoder
@@ -17,6 +18,7 @@ def translate() -> tuple[dict, int]:
             return jsonify({"error": "Unauthorized"}), 401
 
         data = request.get_json() 
+
         dto = TranslationRequestDto(
             content=data.get("content", ""),
             src_language=Language[data.get("srcLanguage", "NONE")],
