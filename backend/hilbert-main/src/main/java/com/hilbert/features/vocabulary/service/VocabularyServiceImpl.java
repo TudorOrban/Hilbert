@@ -7,6 +7,8 @@ import com.hilbert.shared.common.enums.Language;
 import com.hilbert.shared.error.types.ResourceIdentifierType;
 import com.hilbert.shared.error.types.ResourceNotFoundException;
 import com.hilbert.shared.error.types.ResourceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class VocabularyServiceImpl implements VocabularyService {
 
     private final VocabularyRepository vocabularyRepository;
+    private final Logger logger = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     @Autowired
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository) {
@@ -26,13 +29,12 @@ public class VocabularyServiceImpl implements VocabularyService {
         List<Vocabulary> vocabularies = vocabularyRepository.findByUserId(userId);
         List<Vocabulary> languageVocabularies = vocabularies.stream().filter(v -> v.getLanguage() == language).toList();
 
-        Vocabulary foundVocabulary = null;
+        Vocabulary foundVocabulary;
         if (languageVocabularies.isEmpty()) {
             foundVocabulary = this.createVocabulary(userId, language);
         } else {
             if (languageVocabularies.size() >= 2) {
-                // TODO: Replace with structured logger
-                System.out.println("User with ID: " + userId + " has multiple vocabularies for language: " + language.toString());
+                logger.warn("User with ID: {} has multiple vocabularies for language: {}", userId, language.toString());
             }
             foundVocabulary = languageVocabularies.getFirst();
         }
