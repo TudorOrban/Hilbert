@@ -13,5 +13,9 @@ export const AuthService = {
     getUserFromToken: async (token: string): Promise<UserDataDto> => {
         const response = await axiosInstance.post<UserDataDto>(`${RESOURCE_PATH}/get-user-from-token`, token);
         return response.data;
+    },
+    getUsernameFromToken: async (token: string): Promise<string> => {
+        const response = await axiosInstance.post<string>(`${RESOURCE_PATH}/get-user-from-token`, token);
+        return response.data;
     }
 }

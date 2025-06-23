@@ -32,5 +32,18 @@ export const AuthManagerService = {
             console.error("Error fetching current user: ", error);
             throw error;
         }
+    },
+    getUsernameFromToken: async (): Promise<string | undefined> => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            if (!token) {
+                return undefined;
+            }
+
+            return await AuthService.getUsernameFromToken(token);
+        } catch(error) {
+            console.error("Error fetching current user: ", error);
+            throw error;
+        }
     }
 }
