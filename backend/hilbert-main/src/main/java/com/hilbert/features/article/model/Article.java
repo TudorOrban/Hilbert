@@ -13,6 +13,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -118,5 +120,17 @@ public class Article {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    public List<String> getWords() {
+        return Arrays.stream(content.toLowerCase().replaceAll("[^a-z\\s]", "").split("\\s+"))
+                .filter(word -> !word.isEmpty())
+                .toList();
+    }
+
+    public Article(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
     }
 }

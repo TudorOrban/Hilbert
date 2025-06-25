@@ -5,7 +5,7 @@ import com.hilbert.features.vocabulary.model.Vocabulary;
 
 import java.util.List;
 
-public interface VocabularyBasedRecommender {
+public interface ArticleRecommenderService {
 
     List<Article> recommendArticles(Vocabulary vocabulary, int numberOfRecommendations);
 }

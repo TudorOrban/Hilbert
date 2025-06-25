@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-public class VocabularyBasedRecommenderImpl implements VocabularyBasedRecommender {
+public class ArticleRecommenderServiceImpl implements ArticleRecommenderService {
 
     private final ArticleRepository repository;
 
-    private static final int IS_LEARNED_THRESHOLD = 50;
+    public static final int IS_LEARNED_THRESHOLD = 50;
 
     @Autowired
-    public VocabularyBasedRecommenderImpl(ArticleRepository repository) {
+    public ArticleRecommenderServiceImpl(ArticleRepository repository) {
         this.repository = repository;
     }
 
@@ -45,7 +45,7 @@ public class VocabularyBasedRecommenderImpl implements VocabularyBasedRecommende
             int wordsToRefreshInArticle = 0;
             int newWordsInArticle = 0;
 
-            List<String> articleWords = List.of(article.getContent().split(" "));
+            List<String> articleWords = article.getWords();
             if (articleWords.isEmpty()) continue;
 
             // First pass: categorize words and sum up basic refresh contribution

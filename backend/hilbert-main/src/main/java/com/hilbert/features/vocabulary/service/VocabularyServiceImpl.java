@@ -27,14 +27,14 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     public Vocabulary findOrCreateVocabulary(Long userId, Language language) {
         List<Vocabulary> vocabularies = vocabularyRepository.findByUserId(userId);
-        List<Vocabulary> languageVocabularies = vocabularies.stream().filter(v -> v.getLanguage() == language).toList();
+        List<Vocabulary> languageVocabularies = vocabularies.stream().filter(v -> v.getLanguage().equals(language)).toList();
 
         Vocabulary foundVocabulary;
         if (languageVocabularies.isEmpty()) {
             foundVocabulary = this.createVocabulary(userId, language);
         } else {
             if (languageVocabularies.size() >= 2) {
-                logger.warn("User with ID: {} has multiple vocabularies for language: {}", userId, language.toString());
+                logger.warn("User with ID: {} has multiple vocabularies for language: {}", userId, language);
             }
             foundVocabulary = languageVocabularies.getFirst();
         }

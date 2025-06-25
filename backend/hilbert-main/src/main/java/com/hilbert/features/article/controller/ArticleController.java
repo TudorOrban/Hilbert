@@ -1,8 +1,6 @@
 package com.hilbert.features.article.controller;
 
 import com.hilbert.features.article.dto.*;
-import com.hilbert.features.article.service.read.ReadArticleService;
-import com.hilbert.features.vocabulary.model.Vocabulary;
 import com.hilbert.shared.common.enums.DifficultyLevel;
 import com.hilbert.shared.common.enums.Language;
 import com.hilbert.features.article.service.ArticleService;
@@ -17,15 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ReadArticleService readArticleService;
 
     @Autowired
     public ArticleController(
-        ArticleService articleService,
-        ReadArticleService readArticleService
+        ArticleService articleService
     ) {
         this.articleService = articleService;
-        this.readArticleService = readArticleService;
     }
 
     @GetMapping("/{id}")
@@ -57,12 +52,6 @@ public class ArticleController {
     public ResponseEntity<ArticleFullDto> createArticle(@RequestBody CreateArticleDto articleDto) {
         ArticleFullDto createdArticle = articleService.createArticle(articleDto);
         return ResponseEntity.ok(createdArticle);
-    }
-
-    @PostMapping("/read")
-    public ResponseEntity<ReadArticleSummaryDto> readArticle(@RequestBody ReadArticleDto readArticleDto) {
-        ReadArticleSummaryDto summaryDto = readArticleService.readArticle(readArticleDto);
-        return ResponseEntity.ok(summaryDto);
     }
 
     @PutMapping

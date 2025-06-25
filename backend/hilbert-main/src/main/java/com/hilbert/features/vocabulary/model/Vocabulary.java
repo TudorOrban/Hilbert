@@ -81,4 +81,8 @@ public class Vocabulary {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public Vocabulary(VocabularyData vocabularyData) {
+        this.vocabularyData = vocabularyData;
+    }
 }
