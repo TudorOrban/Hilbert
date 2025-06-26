@@ -4,12 +4,13 @@ import { ArticleSearchParams, PaginatedResults } from "../../../shared/search/mo
 import { ArticleFullDto, ArticleSearchDto, CreateArticleDto, ReadArticleSummaryDto, UpdateArticleDto } from "../models/Article";
 import { Observable } from "rxjs";
 import { SearchUrlBuilderService } from "../../../shared/search/services/SearchUrlBuilderService";
+import { environment } from "../../../../environments/environment.development";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ArticleService {
-    private apiUrl = "http://localhost:8080/api/v1/articles";
+    private apiUrl = `${environment.apiUrl}/articles`;
 
     constructor(
         private http: HttpClient,
