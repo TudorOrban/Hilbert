@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/lessons")
+@RequestMapping("api/v1/grammar-lessons")
 public class GrammarLessonController {
 
     private final GrammarLessonService lessonService;

@@ -102,7 +102,7 @@ public class GrammarLessonServiceImpl implements GrammarLessonService {
 
         GrammarLesson lesson = new GrammarLesson();
         lesson.setCreatorId(lessonDto.getCreatorId());
-        LessonData lessonData = new LessonData(exerciseIds);
+        LessonData lessonData = new LessonData(exerciseIds, lessonDto.getKeepOrder());
         lesson.setLessonData(lessonData);
 
         GrammarLesson savedLesson = lessonRepository.save(lesson);

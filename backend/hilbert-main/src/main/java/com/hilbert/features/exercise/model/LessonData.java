@@ -11,4 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class LessonData {
     private List<Long> exerciseIds;
+    private Boolean keepOrder;
 }
