@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LessonData {
-    private List<Long> exercisesId;
+    private List<Long> exerciseIds;
 }

@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateLessonDto {
     private Long creatorId;
-    private HashMap<Integer, LessonExercise> exercises;
+    private List<LessonExercise> exercises;
     private Boolean keepOrder;
 }
