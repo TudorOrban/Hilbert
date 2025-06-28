@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface GrammarLessonService {
 
-    List<GrammarLessonDto> searchLessons();
+    List<GrammarLessonDto> searchLessons(Boolean includeExercises);
     GrammarLessonDto createLesson(CreateLessonDto lessonDto);
+    void deleteLesson(Long id);
 }

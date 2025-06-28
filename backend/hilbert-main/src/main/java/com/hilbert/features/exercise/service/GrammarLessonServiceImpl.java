@@ -6,6 +6,9 @@ import com.hilbert.features.exercise.model.GrammarLesson;
 import com.hilbert.features.exercise.model.LessonData;
 import com.hilbert.features.exercise.repository.ExerciseRepository;
 import com.hilbert.features.exercise.repository.GrammarLessonRepository;
+import com.hilbert.shared.error.types.ResourceIdentifierType;
+import com.hilbert.shared.error.types.ResourceNotFoundException;
+import com.hilbert.shared.error.types.ResourceType;
 import com.hilbert.shared.error.types.ValidationException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GrammarLessonServiceImpl implements GrammarLessonService {
@@ -31,9 +36,41 @@ public class GrammarLessonServiceImpl implements GrammarLessonService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    public List<GrammarLessonDto> searchLessons() {
-        return lessonRepository.findAll().stream()
-                .map(GrammarLessonMapper.INSTANCE::lessonToLessonDto).toList();
+    public List<GrammarLessonDto> searchLessons(Boolean includeExercises) { // TODO: Add Search Params
+        List<GrammarLesson> lessons = lessonRepository.findAll();
+
+        List<Exercise> allExercises = new ArrayList<>();
+        if (includeExercises) {
+            allExercises = this.fetchAllExercises(lessons);
+        }
+
+        List<GrammarLessonDto> lessonDtos = new ArrayList<>();
+
+        for (GrammarLesson lesson : lessons) {
+            GrammarLessonDto lessonDto = GrammarLessonMapper.INSTANCE.lessonToLessonDto(lesson);
+
+            List<Exercise> lessonExercises = allExercises.stream()
+                    .filter(e -> lessonDto.getLessonData().getExerciseIds().contains(e.getId())).toList();
+
+            List<ExerciseFullDto> exerciseDtos = lessonExercises.stream().map(ExerciseMapper.INSTANCE::exerciseToExerciseFullDto).toList();
+            lessonDto.setExercises(exerciseDtos);
+
+            lessonDtos.add(lessonDto);
+        }
+
+        return lessonDtos;
+    }
+
+    private List<Exercise> fetchAllExercises(List<GrammarLesson> lessons) {
+        Set<Long> allUniqueExerciseIds = lessons.stream()
+                .filter(lesson -> lesson.getLessonDataJson() != null && !lesson.getLessonDataJson().isEmpty())
+                .flatMap(lesson -> {
+                    List<Long> exerciseIds = lesson.getLessonData().getExerciseIds();
+                    return exerciseIds != null ? exerciseIds.stream() : java.util.stream.Stream.empty();
+                })
+                .collect(Collectors.toSet());
+
+        return exerciseRepository.findAllById(allUniqueExerciseIds);
     }
 
     @Transactional
@@ -71,5 +108,12 @@ public class GrammarLessonServiceImpl implements GrammarLessonService {
         GrammarLesson savedLesson = lessonRepository.save(lesson);
 
         return GrammarLessonMapper.INSTANCE.lessonToLessonDto(savedLesson);
+    }
+
+    public void deleteLesson(Long id) {
+        GrammarLesson existingLesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id.toString(), ResourceType.CHAT, ResourceIdentifierType.ID));
+
+        lessonRepository.delete(existingLesson);
     }
 }
