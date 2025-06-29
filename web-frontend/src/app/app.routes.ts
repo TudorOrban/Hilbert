@@ -4,7 +4,7 @@ import { AuthGuard } from './core/main/routing/AuthGuard';
 import { HomeComponent } from './core/main/components/home/home.component';
 import { ReadingComponent } from './features/articles/components/reading/reading.component';
 import { VocabularyComponent } from './features/vocabulary/components/vocabulary/vocabulary.component';
-import { GrammarComponent } from './features/exercises/components/grammar/grammar.component';
+import { GrammarComponent } from './features/grammar/components/grammar/grammar.component';
 import { AddArticleComponent } from './features/articles/components/add-article/add-article.component';
 import { ArticleComponent } from './features/articles/components/article/article.component';
 import { ReadArticleSummaryComponent } from './features/articles/components/read-article-summary/read-article-summary.component';

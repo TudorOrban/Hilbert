@@ -8,4 +8,4 @@ CREATE TABLE grammar_lessons (
     FOREIGN KEY (creator_id) REFERENCES users(id)
 );
 
-CREATE INDEX idx_exercises_creator_id ON exercises(creator_id);
+CREATE INDEX idx_lessons_creator_id ON grammar_lessons(creator_id);

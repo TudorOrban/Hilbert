@@ -8,7 +8,7 @@ import { CreateLessonDto, GrammarLessonDto } from "../models/GrammarLesson";
     providedIn: "root"
 })
 export class GrammarLessonService {
-    private apiUrl = `${environment.apiUrl}/lessons`;
+    private apiUrl = `${environment.apiUrl}/grammar-lessons`;
 
     constructor(private http: HttpClient) {}
 
