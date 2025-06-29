@@ -16,6 +16,7 @@ import { ProfileComponent } from './features/profile/components/profile/profile.
 import { SettingsComponent } from './features/settings/components/settings/settings.component';
 import { LogoutComponent } from './core/user/components/logout/logout.component';
 import { SignUpComponent } from './core/user/components/sign-up/sign-up.component';
+import { CreateLessonComponent } from './features/grammar/components/create-lesson/create-lesson.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -29,6 +30,7 @@ export const routes: Routes = [
     { path: 'reading/:articleId/read', component: ReadArticleSummaryComponent, canActivate: [AuthGuard] },
     { path: 'vocabulary', component: VocabularyComponent, canActivate: [AuthGuard] },
     { path: 'grammar', component: GrammarComponent, canActivate: [AuthGuard] },
+    { path: 'grammar/add-lesson', component: CreateLessonComponent, canActivate: [AuthGuard] },
     { path: 'chat', component: ChatsComponent, canActivate: [AuthGuard] },
     { path: 'chat/new-chat', component: NewChatComponent, canActivate: [AuthGuard] },
     { path: 'chat/:chatId', component: ChatComponent, canActivate: [AuthGuard] },

@@ -12,24 +12,24 @@ export interface ExerciseData {
     answerType: ExerciseAnswerType;
 
     // Translation
-    srcSentence: string[];
-    destSentence: string[];
-    destMissingWordIndices: number[];
-    translateFull: boolean;
-    destWordOptions: string[];
-    wordTranslations: Record<string, string>;
+    srcSentence?: string[];
+    destSentence?: string[];
+    destMissingWordIndices?: number[];
+    translateFull?: boolean;
+    destWordOptions?: string[];
+    wordTranslations?: Record<string, string>;
 
     // Completion
-    sentence: string[];
-    missingWordIndices: number[];
-    completeFull: boolean;
-    wordOptions: string[];
+    sentence?: string[];
+    missingWordIndices?: number[];
+    completeFull?: boolean;
+    wordOptions?: string[];
 
     // Answer Question
-    text: string[];
-    question: string;
-    answerOptions: string[];
-    correctAnswer: string;
+    text?: string[];
+    question?: string;
+    answerOptions?: string[];
+    correctAnswer?: string;
 }
 
 export enum ExerciseType {
@@ -59,7 +59,7 @@ export interface ExerciseAnswerDto {
 }
 
 export interface ExerciseAnswerData {
-    destIndexWordMap: Record<number, string>; // for translation
-    indexWordMap: Record<number, string>; // for completion
-    questionAnswer: string; // for Q&A
+    destIndexWordMap?: Record<number, string>; // for translation
+    indexWordMap?: Record<number, string>; // for completion
+    questionAnswer?: string; // for Q&A
 }

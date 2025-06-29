@@ -23,8 +23,8 @@ export interface CreateLessonDto {
 
 export interface LessonExercise {
     exerciseType: LessonExerciseType;
-    existingExerciseId: number;
-    newExerciseData: ExerciseData;
+    existingExerciseId?: number;
+    newExerciseData?: ExerciseData;
 }
 
 export enum LessonExerciseType {

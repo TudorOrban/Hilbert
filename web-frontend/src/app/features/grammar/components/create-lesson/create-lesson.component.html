@@ -1,1 +1,51 @@
-<p>create-lesson works!</p>
+<div class="page-std-padding-x page-std-padding-y">
+    <div class="page-title py-4">
+        Create Lesson
+    </div>
+
+    <div class="space-y-4">
+        <div class="flex items-center space-x-8">
+            <h1 class="text-lg font-semibold">Exercises ({{ lessonExercises.length }})</h1>
+
+            <button class="standard-write-button flex items-center justify-center w-9 h-9" (click)="addExercise()">
+                <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+        </div>
+        
+        <div *ngFor="let exercise of lessonExercises; let i = index">
+            <div class="flex items-center font-semibold">
+                <div class="pr-4">
+                    Exercise {{ i + 1 }}.
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <button 
+                        class="px-3 py-1 rounded-full text-sm transition-colors duration-200"
+                        [ngClass]="{
+                            'bg-blue-600 text-white': exercise.exerciseType === LessonExerciseType.NEW,
+                            'bg-gray-200 text-gray-700 hover:bg-gray-300': exercise.exerciseType !== LessonExerciseType.NEW
+                        }"
+                        (click)="changeExerciseType(i, LessonExerciseType.NEW)"
+                    >New</button>
+
+                    <button 
+                        class="px-3 py-1 rounded-full text-sm transition-colors duration-200"
+                        [ngClass]="{
+                            'bg-blue-600 text-white': exercise.exerciseType === LessonExerciseType.EXISTING,
+                            'bg-gray-200 text-gray-700 hover:bg-gray-300': exercise.exerciseType !== LessonExerciseType.EXISTING
+                        }"
+                        (click)="changeExerciseType(i, LessonExerciseType.EXISTING)"
+                    >Existing</button>
+                </div>
+            </div>
+
+            <div *ngIf="exercise.exerciseType == LessonExerciseType.NEW">
+                <app-create-exercise></app-create-exercise>
+            </div>
+
+            <div *ngIf="exercise.exerciseType == LessonExerciseType.EXISTING">
+                Existing
+            </div>
+        </div>
+    </div>
+</div>
