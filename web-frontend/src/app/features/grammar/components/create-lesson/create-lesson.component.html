@@ -41,7 +41,7 @@
 
             <div *ngIf="exercise.exerciseType == LessonExerciseType.NEW">
                 <app-create-exercise
-                    [newExerciseData]="exercise.newExerciseData"
+                    [newExerciseData]="exercise.newExerciseData ?? defaultExerciseData"
                 ></app-create-exercise>
             </div>
 

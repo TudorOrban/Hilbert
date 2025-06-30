@@ -1,3 +1,4 @@
+import { Language } from "../../../shared/language/models/Language";
 
 export interface ExerciseFullDto {
     id: number;
@@ -8,6 +9,9 @@ export interface ExerciseFullDto {
 }
 
 export interface ExerciseData {
+    srcLanguage: Language;
+    destLanguage: Language;
+    
     exerciseType: ExerciseType;
     answerType: ExerciseAnswerType;
 

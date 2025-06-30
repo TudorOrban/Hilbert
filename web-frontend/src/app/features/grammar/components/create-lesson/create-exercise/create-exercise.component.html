@@ -1,23 +1,75 @@
 <div class="py-4 space-y-4">
-    <div>
-        <app-enum-selector
-            [enumType]="ExerciseType"
-            [selectedValue]="newExerciseData?.exerciseType"
-            (selectedValueChange)="handleExerciseTypeChange($event)"
-        ></app-enum-selector>
+    <div class="flex items-center space-x-8">
+        <div>
+            <h1 class="font-semibold">Source Language</h1>
+            <app-language-selector
+                (selectedLanguageChange)="handleSrcLanguageChange($event)"
+            ></app-language-selector>
+        </div>
+        <div>
+            <h1 class="font-semibold">Target Language</h1>
+            <app-language-selector
+                (selectedLanguageChange)="handleDestLanguageChange($event)"
+            ></app-language-selector>
+        </div>
+    </div>
+    <div class="flex items-center space-x-8">
+        <div>
+            <h1 class="font-semibold">Exercise Type</h1>
+            <app-enum-selector
+                [enumType]="ExerciseType"
+                [selectedValue]="newExerciseData.exerciseType"
+                (selectedValueChange)="handleExerciseTypeChange($event)"
+            ></app-enum-selector>
+        </div>
+        <div>
+            <h1 class="font-semibold">Answer Type</h1>
+            <app-enum-selector
+                [enumType]="ExerciseAnswerType"
+                [selectedValue]="newExerciseData.answerType"
+                (selectedValueChange)="handleAnswerTypeChange($event)"
+            ></app-enum-selector>
+        </div>
     </div>
 
     <div>
-        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.TARGET_SRC_TRANSLATION">
-            Target Src Translation
+        <div *ngIf="newExerciseData.exerciseType == ExerciseType.TARGET_SRC_TRANSLATION" class="space-y-2">
+            <div>
+                <h1 class="font-semibold">Sentence</h1>
+                <div *ngIf="isSrcSentenceEditable" class="flex items-center space-x-2">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="srcSentenceString"
+                        class="w-1/2 p-2 border border-gray-300 shadow-sm rounded-md"
+                    />
+                    <button class="standard-write-button" (click)="toggleSrcSentenceEdit()">Save</button>
+                </div>
+                <div *ngIf="!isSrcSentenceEditable" class="flex items-center space-x-2 flex-wrap">
+                    <div *ngFor="let word of newExerciseData.srcSentence" class="px-2 py-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm cursor-pointer hover:bg-gray-100">
+                        {{ word }}
+                    </div>
+                    <button class="standard-write-button" (click)="toggleSrcSentenceEdit()">Edit</button>
+                </div>
+            </div>
+            <div>
+                <h1 class="font-semibold">Translation</h1>
+                <div *ngIf="isDestSentenceEditable" class="flex items-center space-x-2">
+                    <input 
+                        type="text" 
+                        [(ngModel)]="newExerciseData.destSentence"
+                        class="w-1/2 p-2 border border-gray-300 shadow-sm rounded-md"
+                    />
+                    <button class="standard-write-button" (click)="toggleDestSentenceEdit()">Save</button>
+                </div>
+            </div>
         </div>
-        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.SRC_TARGET_TRANSLATION">
+        <div *ngIf="newExerciseData.exerciseType == ExerciseType.SRC_TARGET_TRANSLATION">
             Src Target Translation
         </div>
-        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.SENTENCE_COMPLETION">
+        <div *ngIf="newExerciseData.exerciseType == ExerciseType.SENTENCE_COMPLETION">
             Sentence Completion
         </div>
-        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.ANSWER_QUESTION">
+        <div *ngIf="newExerciseData.exerciseType == ExerciseType.ANSWER_QUESTION">
             Answer Question
         </div>
     </div>
