@@ -1,1 +1,24 @@
-<p>create-exercise works!</p>
+<div class="py-4 space-y-4">
+    <div>
+        <app-enum-selector
+            [enumType]="ExerciseType"
+            [selectedValue]="newExerciseData?.exerciseType"
+            (selectedValueChange)="handleExerciseTypeChange($event)"
+        ></app-enum-selector>
+    </div>
+
+    <div>
+        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.TARGET_SRC_TRANSLATION">
+            Target Src Translation
+        </div>
+        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.SRC_TARGET_TRANSLATION">
+            Src Target Translation
+        </div>
+        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.SENTENCE_COMPLETION">
+            Sentence Completion
+        </div>
+        <div *ngIf="newExerciseData?.exerciseType == ExerciseType.ANSWER_QUESTION">
+            Answer Question
+        </div>
+    </div>
+</div>
